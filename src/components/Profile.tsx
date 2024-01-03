@@ -2,9 +2,16 @@
 import Link from 'next/link'
 import useAuth from '@/hook/useAuth'
 import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 function Profile () {
   const { supabase, signOut } = useAuth()
+  const router = useRouter()
+
+  const handleClick = () => {
+    signOut()
+    router.push('/')
+  }
 
   useEffect(() => {
     supabase.auth.getUser().then(res => { console.log(res) })
@@ -17,9 +24,7 @@ function Profile () {
         Setting
       </Link >
 
-      <button onClick={() => {
-        signOut()
-      }}>
+      <button onClick={handleClick}>
         signOut
       </button>
     </>

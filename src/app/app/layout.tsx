@@ -1,8 +1,18 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Profile from '@/components/Profile'
 import Link from 'next/link'
 import { type ReactNode } from 'react'
+import { redirect } from 'next/navigation'
+import authUser from '@/util/authUser'
 
-function layout ({ children }: { children: ReactNode }) {
+async function layout ({ children }: { children: ReactNode }) {
+  const { supabase } = await authUser()
+  const { data } = await supabase.auth.getUser()
+
+  if (data.user === null) {
+    redirect('/auth/login')
+  }
+
   return (
     <main className='min-h-screen w-screen bg-secodary flex flex-col-reverse md:grid md:grid-cols-[16rem_1fr]'>
 

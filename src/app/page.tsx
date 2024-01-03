@@ -17,7 +17,7 @@ export default async function Home () {
           />
           <div className='flex flex-col gap-9'>
             <p className='w-[27rem]'>Lorem Ipsum es simplemente el texto de relleno de las imprentas</p>
-            <Link href='/auth/login' className='bg-tertiary w-[12rem] h-[3.5rem] rounded-xl flex justify-center items-center'>
+            <Link href='/app' className='bg-tertiary w-[12rem] h-[3.5rem] rounded-xl flex justify-center items-center'>
               Get started
             </Link>
           </div>
