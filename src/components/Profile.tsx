@@ -11,10 +11,11 @@ function Profile () {
   const handleClick = () => {
     signOut()
     router.push('/')
+    router.refresh()
   }
 
   useEffect(() => {
-    supabase.auth.getUser().then(res => { console.log(res) })
+    supabase.auth.getUser()
   }, [])
 
   return (

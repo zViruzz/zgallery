@@ -1,7 +1,11 @@
 import { redirect } from 'next/navigation'
 
 function page () {
-  redirect('/app/imagen')
+  // console.log('ruta app')
+  // redirect('/app/imagen')
+  return (
+    <div></div>
+  )
 }
 
 export default page

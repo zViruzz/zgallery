@@ -10,13 +10,6 @@ const { EMAIL, PASSWORD } = InputRegister
 function page () {
   const router = useRouter()
   const { loginUser } = useAuth()
-  // console.log('🚀 ~ file: page.tsx:13 ~ page ~ user:', user)
-
-  // if (user !== undefined) {
-  //   return (
-  //     <div>lol ya estas logeado</div>
-  //   )
-  // }
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
@@ -28,7 +21,9 @@ function page () {
     const { data, error } = await loginUser({ email, password })
     console.log('🚀 ~ file: page.tsx:22 ~ handleSubmit ~ error:', error)
     console.log('🚀 ~ file: page.tsx:22 ~ handleSubmit ~ data:', data)
+    console.log('redireccion app')
     router.push('/app')
+    router.refresh()
   }
 
   return (

@@ -26,6 +26,7 @@ function page () {
     const { data } = await registerUser({ email, password })
     console.log('🚀 ~ file: page.tsx:25 ~ handleSubmit ~ data:', data)
     router.push('/auth/verify')
+    router.refresh()
   }
 
   return (

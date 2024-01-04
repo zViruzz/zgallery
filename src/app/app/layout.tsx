@@ -5,11 +5,18 @@ import { type ReactNode } from 'react'
 import { redirect } from 'next/navigation'
 import authUser from '@/util/authUser'
 
+export const revalidate = 0
+// export const dynamic = 'force-dynamic'
+
 async function layout ({ children }: { children: ReactNode }) {
   const { supabase } = await authUser()
   const { data } = await supabase.auth.getUser()
 
+  console.log('🚀 ~ file: layout.tsx:13 ~ layout ~ data.user:', data)
+
   if (data.user === null) {
+    console.log('redireccion login')
+
     redirect('/auth/login')
   }
 
