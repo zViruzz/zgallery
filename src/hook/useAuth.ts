@@ -11,6 +11,20 @@ function useAuth () {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
+  const signInWithGoogle = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: 'http://localhost:3000/auth/verification/provider'
+        }
+      })
+      if (error != null) console.error('A ocurido un error al autenticar', error)
+      return { data, error }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const registerUser = async ({ email, password }: registerUserType) => {
     console.log({ email, password })
@@ -35,10 +49,10 @@ function useAuth () {
   }
 
   async function signOut () {
-    const { error } = await supabase.auth.signOut()
+    await supabase.auth.signOut()
   }
 
-  return { registerUser, loginUser, supabase, signOut }
+  return { registerUser, loginUser, supabase, signOut, signInWithGoogle }
 }
 
 export default useAuth

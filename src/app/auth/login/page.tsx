@@ -4,12 +4,14 @@ import useAuth from '@/hook/useAuth'
 import { InputRegister } from '@/static/registerStatic'
 import { useRouter } from 'next/navigation'
 import { type FormEvent } from 'react'
+import Link from 'next/link'
+import ButtonGoogle from '@/components/ButtonGoogle'
 
 const { EMAIL, PASSWORD } = InputRegister
 
 function page () {
   const router = useRouter()
-  const { loginUser } = useAuth()
+  const { loginUser, signInWithGoogle } = useAuth()
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
@@ -19,58 +21,64 @@ function page () {
     const password = target[PASSWORD].value
 
     const { data, error } = await loginUser({ email, password })
-    console.log('🚀 ~ file: page.tsx:22 ~ handleSubmit ~ error:', error)
-    console.log('🚀 ~ file: page.tsx:22 ~ handleSubmit ~ data:', data)
     console.log('redireccion app')
     router.push('/app')
     router.refresh()
   }
 
+  const handleClickGoogle = async () => {
+    await signInWithGoogle()
+  }
+
   return (
-      <div className='w-[25rem] h-[20rem] bg-black rounded-2xl p-14 py-16 box-content'>
-        <form
-          className='w-full h-full grid grid-rows-[1fr_2.5fr_1fr]'
-          onSubmit={handleSubmit}
+    <div className='w-[25rem] bg-black rounded-2xl p-14 py-16 box-content'>
+      <form
+        className='w-full h-full grid gap-5'
+        onSubmit={handleSubmit}
+      >
+
+        <div className='flex justify-center'>
+          <h2 className='text-3xl'>Login</h2>
+        </div>
+
+        <div className='flex flex-col h-full w-full gap-5'>
+          <div>
+            <Input
+              id={EMAIL}
+              type='email'
+              placeholder='Email'
+              required={true}
+            />
+          </div>
+          <div >
+            <Input
+              id={PASSWORD}
+              type='password'
+              placeholder='Password'
+              required={true}
+            />
+          </div>
+          <div className='flex justify-center gap-4'>
+            <ButtonGoogle onClick={handleClickGoogle} />
+            <ButtonGoogle onClick={handleClickGoogle} />
+          </div>
+        </div>
+
+        <div className='flex flex-col gap-3'>
+          <div className='flex justify-end'>
+            <a href='#'>Forgot password</a>
+          </div>
+          <button
+            type='submit'
+            className='bg-tertiary w-full py-3 rounded-lg'
           >
+            Login
+          </button>
+          <p className='text-center'>Dont have an account? <Link href='/auth/register'>Register</Link></p>
+        </div>
 
-          <div className='flex justify-center '>
-            <h2 className='text-3xl'>Login</h2>
-          </div>
-
-          <div className='grid grid-rows-2 h-full w-full items-center '>
-            <div>
-              <Input
-                id={EMAIL}
-                type='email'
-                placeholder='Email'
-                required={true}
-              />
-            </div>
-            <div >
-              <Input
-                id={PASSWORD}
-                type='password'
-                placeholder='Password'
-                required={true}
-              />
-            </div>
-          </div>
-
-          <div className='flex flex-col gap-3'>
-            <div className='flex justify-end'>
-              <a href='#'>Forgot password</a>
-            </div>
-            <button
-              type='submit'
-              className='bg-tertiary w-full py-3 rounded-lg'
-            >
-              Login
-            </button>
-            <p className='text-center'>Dont have an account? <a href="#">Register</a></p>
-          </div>
-
-        </form>
-      </div>
+      </form>
+    </div>
   )
 }
 

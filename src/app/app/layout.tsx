@@ -6,7 +6,6 @@ import { redirect } from 'next/navigation'
 import authUser from '@/util/authUser'
 
 export const revalidate = 0
-// export const dynamic = 'force-dynamic'
 
 async function layout ({ children }: { children: ReactNode }) {
   const { supabase } = await authUser()

@@ -4,12 +4,13 @@ import useAuth from '@/hook/useAuth'
 import { InputRegister } from '@/static/registerStatic'
 import { type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
+import ButtonGoogle from '@/components/ButtonGoogle'
 
 const { USERNAME, EMAIL, PASSWORD, REPASSWORD } = InputRegister
 
 function page () {
+  const { registerUser, signInWithGoogle } = useAuth()
   const router = useRouter()
-  const { registerUser } = useAuth()
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
@@ -18,15 +19,14 @@ function page () {
     const email = target[EMAIL].value
     const password = target[PASSWORD].value
 
-    // const target = event.target as HTMLFormElement
-    // const username = (target.elements.namedItem(USERNAME) as HTMLInputElement)?.value
-    // const email = (target.elements.namedItem(EMAIL) as HTMLInputElement)?.value
-    // const password = (target.elements.namedItem(PASSWORD) as HTMLInputElement)?.value
-
     const { data } = await registerUser({ email, password })
     console.log('🚀 ~ file: page.tsx:25 ~ handleSubmit ~ data:', data)
-    router.push('/auth/verify')
+    router.push('/auth/verification/provider')
     router.refresh()
+  }
+
+  const handleClickGoogle = async () => {
+    await signInWithGoogle()
   }
 
   return (
@@ -72,6 +72,11 @@ function page () {
                 required={true}
               />
             </div>
+
+          <div className='flex justify-center gap-4'>
+            <ButtonGoogle onClick={handleClickGoogle} />
+            <ButtonGoogle onClick={handleClickGoogle} />
+          </div>
 
             <div className='flex flex-col gap-3'>
               <button
