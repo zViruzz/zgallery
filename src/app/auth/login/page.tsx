@@ -20,7 +20,7 @@ function page () {
     const email = target[EMAIL].value
     const password = target[PASSWORD].value
 
-    const { data, error } = await loginUser({ email, password })
+    await loginUser({ email, password })
     console.log('redireccion app')
     router.push('/app')
     router.refresh()

@@ -1,34 +1,30 @@
-'use client'
 import Link from 'next/link'
-import useAuth from '@/hook/useAuth'
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { type User } from '@supabase/supabase-js'
+import Image from 'next/image'
+interface Props {
+  user: User
+}
 
-function Profile () {
-  const { supabase, signOut } = useAuth()
-  const router = useRouter()
-
-  const handleClick = () => {
-    signOut()
-    router.push('/')
-    router.refresh()
-  }
-
-  useEffect(() => {
-    supabase.auth.getUser()
-  }, [])
-
+function Profile ({ user }: Props) {
   return (
-    <>
+    <div className='flex justify-between'>
+      {(user != null) && (
+        <div className='flex text-sm items-center'>
+          <Image
+            src={user.user_metadata.avatar_url}
+            width={35}
+            height={35}
+            alt='user image'
+            />
+          {user.user_metadata.full_name}
 
-      <Link href='/app/setting' >
-        Setting
-      </Link >
+        </div>
+      )}
 
-      <button onClick={handleClick}>
-        signOut
-      </button>
-    </>
+      <Link href='/app/setting'>
+        ==
+      </Link>
+    </div>
   )
 }
 

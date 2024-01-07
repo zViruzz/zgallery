@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Profile from '@/components/Profile'
 import Link from 'next/link'
 import { type ReactNode } from 'react'
@@ -9,13 +8,10 @@ export const revalidate = 0
 
 async function layout ({ children }: { children: ReactNode }) {
   const { supabase } = await authUser()
-  const { data } = await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
 
-  console.log('🚀 ~ file: layout.tsx:13 ~ layout ~ data.user:', data)
-
-  if (data.user === null) {
+  if (user === null) {
     console.log('redireccion login')
-
     redirect('/auth/login')
   }
 
@@ -42,7 +38,7 @@ async function layout ({ children }: { children: ReactNode }) {
         </div>
 
         <div>
-          <Profile />
+          <Profile user={user}/>
         </div>
       </nav>
 
