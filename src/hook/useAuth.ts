@@ -12,6 +12,10 @@ function useAuth () {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 
+  const getUser = async () => {
+    return await supabase.auth.getUser()
+  }
+
   const signInWithGoogle = async () => {
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -59,10 +63,21 @@ function useAuth () {
   }
 
   async function signOut () {
-    await supabase.auth.signOut()
+    try {
+      await supabase.auth.signOut()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  return { registerUser, loginUser, supabase, signOut, signInWithGoogle }
+  return {
+    registerUser,
+    loginUser,
+    supabase,
+    signOut,
+    signInWithGoogle,
+    getUser
+  }
 }
 
 export default useAuth

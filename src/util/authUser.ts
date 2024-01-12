@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { cookies } from 'next/headers'
 import { createServerClient } from '@supabase/ssr'
 

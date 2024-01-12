@@ -8,6 +8,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+
+        // res: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))'
+        res: 'repeat(auto-fit, minmax(200px, 1fr))'
+
+      },
+      gridTemplateRows: {
+        res: 'repeat(auto-fit, 200px)'
+
+      },
       colors: {
         primary: '#000',
         secodary: '#121212',
