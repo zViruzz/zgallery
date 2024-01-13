@@ -1,4 +1,4 @@
-import Header from '@/components/Header'
+import Header from '@/components/header'
 import logo from '../../public/logo.svg'
 import illustration from '../../public/ilu.png'
 import Image from 'next/image'

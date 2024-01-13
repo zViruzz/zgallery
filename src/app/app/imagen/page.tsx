@@ -1,8 +1,8 @@
-import MenuIcon from '@/components/Icons/MenuIcon'
-import SearchIcon from '@/components/Icons/SearchIcon'
+import MenuIcon from '@/components/Icons/menu-icon'
+import SearchIcon from '@/components/Icons/search-icon'
 import AddButton from '@/components/add-button'
+import ViewImage from '@/components/view-image'
 import authUser from '@/util/authUser'
-import Image from 'next/image'
 
 async function page () {
   const { supabase } = await authUser()
@@ -13,18 +13,18 @@ async function page () {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  const objUrl = []
+  const imageUrl = []
 
   if (data === null) return
 
-  for (const { name } of data) {
+  for (const { name, id } of data) {
     const { data } = await supabase.storage
       .from('image')
       .createSignedUrl(`${user?.id}/${name}`, 3600)
 
     if (data === null) continue
-    const urlImage = data.signedUrl
-    objUrl.push(urlImage)
+    const url = data.signedUrl
+    imageUrl.push({ id, name, url })
   }
 
   return (
@@ -46,20 +46,7 @@ async function page () {
       </div>
 
       <div className='grid grid-cols-res grid-rows-res [&>div]:bg-black [&>div]:rounded-xl gap-5 overflow-y-scroll'>
-        {objUrl?.map((item, index) => {
-          return (
-            <div key={index}>
-              <Image className='object-cover w-svw h-full rounded-xl' src={item} width={200} height={200} alt='' />
-            </div>
-          )
-        })}
-        {objUrl?.map((item, index) => {
-          return (
-            <div key={index}>
-              <Image className='object-cover w-svw h-full rounded-xl' src={item} width={200} height={200} alt='' />
-            </div>
-          )
-        })}
+        <ViewImage list={imageUrl}/>
       </div>
 
     </div>

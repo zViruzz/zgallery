@@ -1,4 +1,4 @@
-import SignOutButton from '@/components/SignOutButton'
+import SignOutButton from '@/components/sign-out-button'
 import authUser from '@/util/authUser'
 
 async function page () {
