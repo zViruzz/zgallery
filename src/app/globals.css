@@ -10,9 +10,42 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    color-scheme: dark;
+    /* scrollbar-color: var(--tertiary) black; */
+
     --foreground-rgb: 255, 255, 255;
     --background-hex: #121212;
+
   }
+
+  .gallery-view::-webkit-scrollbar {
+    width: 10px;
+    /* or add it to the track */
+  }
+  
+  .gallery-view::-webkit-scrollbar-track {
+    background-color: transparent;
+    /* color of the tracking area */
+  }
+  
+  .gallery-view::-webkit-scrollbar-thumb {
+    background-color: #333333;
+    /* background-color: var(--tertiary); */
+    border-radius: 20px;
+    /* roundness of the scroll thumb */
+    /* border: 3px solid orange; */
+    /* creates padding around scroll thumb */
+  }
+
+}
+
+
+
+@media (max-width: 768px) {
+  .gallery-view::-webkit-scrollbar {
+      width: 5px;
+      /* or add it to the track */
+    }
 }
 
 body {

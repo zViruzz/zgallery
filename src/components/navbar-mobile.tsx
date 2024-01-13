@@ -1,9 +1,10 @@
 import Link from 'next/link'
+import MenuBurgerIcon from './Icons/menu-burger-icon'
 
 function NavbarMobile () {
   return (
-    <nav className='flex md:hidden fixed bottom-0 bg-black w-full h-20' >
-      <ul className='flex items-center justify-center gap-5 w-full'>
+    <nav className='flex md:hidden fixed bottom-0 bg-black w-full h-16' >
+      <ul className='flex items-center justify-evenly w-full'>
         <Link href='/app/imagen'>
           Imagen
         </Link>
@@ -13,9 +14,10 @@ function NavbarMobile () {
         <Link href='/app/videos'>
           Videos
         </Link>
-        <Link href='/app/favorites'>
-          Favorites
-        </Link>
+
+        <button>
+          <MenuBurgerIcon width={25} height={25}/>
+        </button>
       </ul>
     </nav>
   )

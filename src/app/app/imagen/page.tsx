@@ -28,24 +28,24 @@ async function page () {
   }
 
   return (
-    <div className="w-full h-full px-14 py-6 grid grid-rows-[6rem_1fr]">
+    <div className="w-full h-full md:py-6 grid grid-rows-[6rem_1fr] md:grid-rows-[6rem_1fr]">
 
-      <div className='flex items-center'>
+      <div className='flex items-center px-7 md:px-14'>
         <div className='w-full flex justify-between'>
 
           <div>
-            <h2 className='text-3xl'>Imagenes</h2>
+            <h2 className='md:text-3xl text-lg'>Imagenes</h2>
           </div>
           <div className='flex gap-3 items-center'>
             <AddButton type="image" />
-            <SearchIcon width={30} height={30} />
-            <MenuIcon width={30} height={30} />
+            <SearchIcon className='w-[23px] h-[23px] md:w-[30px] md:h-[30px]'/>
+            <MenuIcon className='w-[23px] h-[23px] md:w-[30px] md:h-[30px]' />
           </div>
         </div>
 
       </div>
 
-      <div className='grid grid-cols-res grid-rows-res [&>div]:bg-black [&>div]:rounded-xl gap-5 overflow-y-scroll'>
+      <div className='gallery-view grid grid-cols-res grid-rows-res [&>div]:bg-black [&>div]:rounded-xl gap-5 overflow-y-auto px-7 pr-4 mr-3 md:pl-14 md:mr-6 md:pr-8'>
         <ViewImage list={imageUrl}/>
       </div>
 

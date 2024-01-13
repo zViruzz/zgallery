@@ -33,7 +33,7 @@ function AddButton ({ type }: Props) {
         className='cursor-pointer'
         htmlFor='file-upload'
       >
-        <AddIcon width={38} height={38} />
+        <AddIcon className='w-[28px] h-[28px] md:w-[38px] md:h-[38px]'/>
       </label>
     </form>
   )

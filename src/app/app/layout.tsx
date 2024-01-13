@@ -72,7 +72,7 @@ async function layout ({ children }: { children: ReactNode }) {
       <NavbarMobile />
 
       <section className='md:py-4 md:pr-4 min-w-full h-screen'>
-        <div className='bg-secodary rounded-xl w-full h-full'>
+        <div className='md:bg-secodary rounded-xl w-full h-full'>
           {children}
         </div>
       </section>
