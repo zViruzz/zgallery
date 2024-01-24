@@ -3,7 +3,7 @@ import MenuBurgerIcon from './Icons/menu-burger-icon'
 
 function NavbarMobile () {
   return (
-    <nav className='flex md:hidden fixed bottom-0 bg-black w-full h-16' >
+    <nav className='flex md:hidden fixed bottom-0 bg-black w-full h-16 z-10' >
       <ul className='flex items-center justify-evenly w-full'>
         <Link href='/app/imagen'>
           Imagen

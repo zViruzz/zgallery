@@ -12,8 +12,10 @@
     "@supabase/ssr": "^0.0.10",
     "@supabase/supabase-js": "^2.39.1",
     "next": "14.0.4",
+    "photoswipe": "^5.4.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "sharp": "^0.33.2"
   },
   "devDependencies": {
     "@types/node": "20.10.5",

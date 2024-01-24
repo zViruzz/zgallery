@@ -9,14 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       gridTemplateColumns: {
-
         // res: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))'
-        res: 'repeat(auto-fit, minmax(200px, 1fr))'
-
+        gallery_md: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gallery: 'repeat(auto-fit, minmax(125px, 1fr))'
       },
       gridTemplateRows: {
-        res: 'repeat(auto-fit, 200px)'
-
+        gallery_md: 'repeat(auto-fit, 200px)',
+        gallery: 'repeat(auto-fit, 125px)'
       },
       colors: {
         primary: '#000',
