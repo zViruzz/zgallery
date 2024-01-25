@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createBrowserClient } from '@supabase/ssr'
+import { type User, type UserResponse } from '@supabase/supabase-js'
+import { useEffect, useState } from 'react'
 
 interface signinUserType {
   email: string
@@ -7,12 +9,13 @@ interface signinUserType {
 }
 
 function useAuth () {
+  const [user, setUser] = useState<User | null>(null)
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 
-  const getUser = async () => {
+  const getUser = async (): Promise<UserResponse> => {
     return await supabase.auth.getUser()
   }
 
@@ -25,6 +28,18 @@ function useAuth () {
         }
       })
       if (error != null) console.error('A ocurido un error al autenticar', error)
+      return { data, error }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const deleteUser = async () => {
+    try {
+      const id = user?.id
+      if (id === undefined) return
+      const { data, error } = await supabase.auth.admin.deleteUser(id)
+      if (error != null) console.error('A ocurido un error al eliminar user', error)
       return { data, error }
     } catch (error) {
       console.log(error)
@@ -70,13 +85,22 @@ function useAuth () {
     }
   }
 
+  useEffect(() => {
+    getUser()
+      .then(res => {
+        setUser(res.data.user)
+      })
+  }, [])
+
   return {
     registerUser,
     loginUser,
     supabase,
     signOut,
     signInWithGoogle,
-    getUser
+    getUser,
+    deleteUser,
+    user
   }
 }
 
