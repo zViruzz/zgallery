@@ -14,10 +14,14 @@ async function page () {
           <div>
             <h2 className='md:text-3xl text-lg'>Imagenes</h2>
           </div>
-          <div className='flex gap-3 items-center'>
+          <div className='flex gap-2 items-center'>
             <AddButton type="image" />
-            <SearchIcon className='w-[23px] h-[23px] md:w-[30px] md:h-[30px]' />
-            <MenuIcon className='w-[23px] h-[23px] md:w-[30px] md:h-[30px]' />
+            <button className='hover:bg-[#212121] rounded-full h-10 w-10 grid place-content-center'>
+              <SearchIcon className='w-[23px] h-[23px] md:w-[27px] md:h-[27px]' />
+            </button>
+            <button className='hover:bg-[#212121] rounded-full h-10 w-10 grid place-content-center'>
+              <MenuIcon className='w-[23px] h-[23px] md:w-[27px] md:h-[27px]' />
+            </button>
           </div>
         </div>
 

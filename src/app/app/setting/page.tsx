@@ -1,14 +1,20 @@
 'use client'
+import EditIcon from '@/components/Icons/edit-icon'
 import useAuth from '@/hook/useAuth'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import profileNull from '@/assets/profile-null.jpg'
 
 function page () {
-  const { user, signOut, deleteUser } = useAuth()
+  const { user, signOut, changePassword } = useAuth()
   const router = useRouter()
 
-  const handleClickDeleteUser = () => {
-    deleteUser()
+  const handleClickChangePassword = async () => {
+    changePassword()
+  }
+
+  const handleClickChangeName = async () => {
+    router.push('/app/setting/change/name')
   }
 
   const handleClickSignOut = () => {
@@ -20,7 +26,7 @@ function page () {
   return (
     <div className='w-full h-full'>
       <div className='w-full h-full mx-auto max-w-screen-md md:px-6 px-4 flex flex-col justify-center'>
-        <div className='bg-zinc-800 px-6 py-3 rounded-xl divide-zinc-700 divide-y [&>div]:py-5 [&>div]:flex [&>div]:justify-between'>
+        <div className='bg-[#1d1d1d] px-6 py-3 rounded-xl divide-zinc-700 divide-y [&>div]:py-6 [&>div]:flex [&>div]:justify-between'>
 
           <div className='items-center'>
             <div>
@@ -29,7 +35,7 @@ function page () {
                   ? null
                   : <Image
                     className='rounded-full'
-                    src={user?.user_metadata.avatar_url}
+                    src={user.user_metadata.avatar_url ?? profileNull}
                     alt="avatar"
                     width={100}
                     height={100}
@@ -51,8 +57,16 @@ function page () {
           </div>
 
           <div>
-            <div>
-              {user?.user_metadata.name}
+            <div className='flex gap-3'>
+              <div>
+                {user?.user_metadata.name}
+              </div>
+              <button
+                className='flex items-center'
+                onClick={handleClickChangeName}
+              >
+                <EditIcon className='text-zinc-500' width={15} height={15} />
+              </button>
             </div>
             <div>
               Name
@@ -60,8 +74,16 @@ function page () {
           </div>
 
           <div>
-            <div>
-              *********
+            <div className='flex gap-3'>
+              <div>
+                *********
+              </div>
+              <button
+                className='flex items-center'
+                onClick={handleClickChangePassword}
+              >
+                <EditIcon className='text-zinc-500' width={15} height={15} />
+              </button>
             </div>
             <div>
               Password
@@ -69,9 +91,7 @@ function page () {
           </div>
 
           <div className='[&>button]:px-3 [&>button]:py-2 [&>button]:rounded-lg [&>button]:bg-primary'>
-            <button onClick={handleClickDeleteUser}>
-              Delete user
-            </button>
+
             <button onClick={handleClickSignOut}>
               Sign out
             </button>

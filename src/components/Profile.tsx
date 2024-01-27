@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { type User } from '@supabase/supabase-js'
 import Image from 'next/image'
 import SettingIcon from './Icons/setting-icon'
+import profileNull from '@/assets/profile-null.jpg'
+
 interface Props {
   user: User
 }
@@ -13,12 +15,12 @@ function Profile ({ user }: Props) {
         <div className='flex text-sm items-center gap-3'>
           <Image
             className='rounded-full'
-            src={user.user_metadata.avatar_url}
+            src={user.user_metadata.avatar_url ?? profileNull}
             width={35}
             height={35}
             alt='user image'
           />
-          {user.user_metadata.full_name}
+          {user.user_metadata.name}
 
         </div>
       )}

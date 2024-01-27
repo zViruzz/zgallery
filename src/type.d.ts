@@ -4,3 +4,9 @@ export interface ElementImageList {
   height: number
   width: number
 }
+
+interface registerUserType {
+  email: string
+  password: string
+  name?: string
+}

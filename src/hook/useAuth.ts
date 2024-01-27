@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { type registerUserType } from '@/type'
 import { createBrowserClient } from '@supabase/ssr'
 import { type User, type UserResponse } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
@@ -34,28 +35,21 @@ function useAuth () {
     }
   }
 
-  const deleteUser = async () => {
+  const registerUser = async ({ email, password, name }: registerUserType) => {
     try {
-      const id = user?.id
-      if (id === undefined) return
-      const { data, error } = await supabase.auth.admin.deleteUser(id)
-      if (error != null) console.error('A ocurido un error al eliminar user', error)
-      return { data, error }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const registerUser = async ({ email, password }: signinUserType) => {
-    try {
-      console.log({ email, password })
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: 'https//example.com/welcome'
+          data: {
+            name
+          }
         }
       })
+
+      const id = data.user?.id
+      await createRowDataImage(id)
+
       if (error != null) console.error('A ocurido un error al autenticar', error)
       return { data, error }
     } catch (error) {
@@ -77,9 +71,53 @@ function useAuth () {
     }
   }
 
-  async function signOut () {
+  const signOut = async () => {
     try {
       await supabase.auth.signOut()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const changePassword = async () => {
+    try {
+      const email = user?.email
+      if (email === undefined) { console.log('email undefined'); return }
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: 'http://localhost:3000/app/setting/change/password'
+      })
+
+      if (error != null) console.error('A ocurido un error al cambiar de password', error)
+      return { data, error }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const changeName = async (name: string) => {
+    try {
+      const { data, error } = await supabase.auth.updateUser({
+        data: { name }
+      })
+
+      if (error != null) console.error('A ocurido un error al cambiar de nombre', error)
+      return { data, error }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const createRowDataImage = async (id: string | undefined) => {
+    try {
+      if (id === undefined) { console.log('email undefined'); return }
+      const { data, error } = await supabase
+        .from('data_image')
+        .insert([
+          { user_id: id, list_image: null }
+        ])
+        .select()
+      if (error != null) console.error('A ocurido un error al autenticar', error)
+      return { data, error }
     } catch (error) {
       console.log(error)
     }
@@ -93,13 +131,14 @@ function useAuth () {
   }, [])
 
   return {
+    supabase,
     registerUser,
     loginUser,
-    supabase,
     signOut,
     signInWithGoogle,
+    changePassword,
+    changeName,
     getUser,
-    deleteUser,
     user
   }
 }

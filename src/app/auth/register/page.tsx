@@ -5,6 +5,7 @@ import { InputRegister } from '@/static/registerStatic'
 import { type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import ButtonGoogle from '@/components/button-google'
+import Link from 'next/link'
 
 const { USERNAME, EMAIL, PASSWORD, REPASSWORD } = InputRegister
 
@@ -16,11 +17,11 @@ function page () {
     event.preventDefault()
 
     const target = event.target as HTMLFormElement
+    const name = target[USERNAME].value
     const email = target[EMAIL].value
     const password = target[PASSWORD].value
 
-    const { data } = await registerUser({ email, password })
-    console.log('🚀 ~ file: page.tsx:25 ~ handleSubmit ~ data:', data)
+    await registerUser({ email, password, name })
     router.push('/auth/verification/provider')
     router.refresh()
   }
@@ -89,7 +90,7 @@ function page () {
 
           </div>
           <div>
-            <p className='text-center'>Do you already have an account? <a href="#">Login</a></p>
+            <p className='text-center'>Do you already have an account? <Link href="/auth/login">Login</Link></p>
           </div>
 
         </form>

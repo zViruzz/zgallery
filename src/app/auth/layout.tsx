@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React from 'react'
-
 import { redirect } from 'next/navigation'
 import authUser from '@/util/authUser'
 
