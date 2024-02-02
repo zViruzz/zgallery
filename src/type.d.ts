@@ -1,8 +1,9 @@
-export interface ElementImageList {
+export interface ElementList {
   id: string
+  fileType: 'image' | 'video'
   name: string
-  height: number
-  width: number
+  height?: number
+  width?: number
 }
 
 interface registerUserType {

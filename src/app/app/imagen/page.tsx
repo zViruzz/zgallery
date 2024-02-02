@@ -9,6 +9,7 @@ async function page () {
     <div className="w-full h-full md:py-6 grid grid-rows-[6rem_1fr] md:grid-rows-[6rem_1fr]">
 
       <div className='flex items-center px-7 md:px-14'>
+
         <div className='w-full flex justify-between'>
 
           <div>

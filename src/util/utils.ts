@@ -43,6 +43,7 @@ export const incrementedName = (name: string, list: Array<{ name: string }>) => 
   const extension = arrayName[arrayName.length - 1]
   const newName = `${nameBefore}(${count}).${extension}`
 
+  if (count === 0) return name
   console.log('🚀 ~ incrementedName ~ newName:', newName)
   return newName
 }

@@ -2,7 +2,7 @@
 import { createBrowserClient } from '@supabase/ssr'
 import { getResolutionImage, incrementedName } from '../util/utils'
 import { type User } from '@supabase/supabase-js'
-import { type ElementImageList } from '@/type'
+import { type ElementList } from '@/type'
 
 function useUser () {
   const supabase = createBrowserClient(
@@ -12,6 +12,27 @@ function useUser () {
 
   const getUser = async () => {
     return await supabase.auth.getUser()
+  }
+
+  const updateDataBaseList = async (user: User | null, prevList: any, newFile: ElementList) => {
+    try {
+      await supabase
+        .from('data_image')
+        .update({
+          list_image: {
+            image: [
+              ...prevList,
+              {
+                ...newFile,
+                favorite: false
+              }
+            ]
+          }
+        })
+        .eq('user_id', user?.id)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const uploadImage = async (file: File) => {
@@ -31,17 +52,15 @@ function useUser () {
         .from('image')
         .upload(`${user?.id}/${fileName}`, file)
 
-      // const arrayPath = path.split('/')
-      // const nameImage = arrayPath[arrayPath.length - 1]
-
-      const newImage = {
+      const newImage: ElementList = {
         id,
+        fileType: 'image',
         name: fileName,
         height,
         width
       }
 
-      await updateDatabaseList(user, prevList, newImage)
+      await updateDataBaseList(user, prevList, newImage)
 
       if (error != null) console.error('A ocurido un error al subir la imagen', error)
     } catch (error) {
@@ -52,41 +71,70 @@ function useUser () {
   const uploadVideo = async (file: File) => {
     try {
       const { data: { user } } = await getUser()
-      const { data, error } = await supabase.storage
+
+      const { data: column } = await supabase
+        .from('data_image')
+        .select('list_image')
+        .eq('user_id', user?.id)
+
+      const prevList = column[0].list_image === null ? [] : column[0].list_image.image
+      const fileName = incrementedName(file.name, prevList)
+
+      const { data: fileResponse, error } = await supabase.storage
         .from('video')
-        .upload(`${user?.id}/${file.name}`, file)
+        .upload(`${user?.id}/${fileName}`, file)
+
+      const newVideo: ElementList = {
+        id: fileResponse.id,
+        fileType: 'video',
+        name: fileName
+      }
+
+      await updateDataBaseList(user, prevList, newVideo)
 
       if (error != null) console.error('A ocurido un error al subir el video', error)
-      return { data, error }
     } catch (error) {
       console.log(error)
     }
   }
 
-  const updateDatabaseList = async (user: User | null, prevList: any, newImage: ElementImageList) => {
-    const { id, name, height, width } = newImage
-    await supabase
-      .from('data_image')
-      .update({
-        list_image: {
-          image: [
-            ...prevList,
-            {
-              id,
-              name,
-              height,
-              width
-            }
-          ]
-        }
-      })
-      .eq('user_id', user?.id)
+  const deleteFile = async (fileName: string | undefined) => {
+    try {
+      const { data: { user } } = await getUser()
+
+      await supabase.storage
+        .from('image')
+        .remove([`${user?.id}/${fileName}`])
+
+      const { data: column } = await supabase
+        .from('data_image')
+        .select('list_image')
+        .eq('user_id', user?.id)
+
+      const prevList = column[0].list_image === null ? [] : column[0].list_image.image
+
+      const newList = prevList.filter(item => item.name !== fileName)
+
+      await supabase
+        .from('data_image')
+        .update({
+          list_image: {
+            image: [
+              ...newList
+            ]
+          }
+        })
+        .eq('user_id', user?.id)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return {
     supabase,
     uploadImage,
     uploadVideo,
+    deleteFile,
     getUser
   }
 }
