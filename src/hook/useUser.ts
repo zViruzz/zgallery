@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createBrowserClient } from '@supabase/ssr'
-import { getResolutionImage, incrementedName } from '../util/utils'
+import { getResolutionImage, getResolutionVideo, incrementedName, getVideoThumbnail } from '../util/utils'
 import { type User } from '@supabase/supabase-js'
 import { type ElementList } from '@/type'
 
@@ -71,6 +71,16 @@ function useUser () {
   const uploadVideo = async (file: File) => {
     try {
       const { data: { user } } = await getUser()
+      const { width, height } = await getResolutionVideo(file)
+      const fileImage = await getVideoThumbnail(file, 0)
+      // const FileImageThumbnail = fetch(imgSrc)
+      //   .then(async (res) => await res.blob())
+      //   .then((blob) => {
+      //     const NewFile = new File([blob], 'video_thumbnail', {
+      //       type: 'image/png'
+      //     })
+      //     console.log('NewFile', NewFile)
+      //   })
 
       const { data: column } = await supabase
         .from('data_image')
@@ -82,12 +92,22 @@ function useUser () {
 
       const { data: fileResponse, error } = await supabase.storage
         .from('video')
-        .upload(`${user?.id}/${fileName}`, file)
+        .upload(`${user?.id}/${fileName}/${fileName}`, file)
+
+      const { data: resThumbnail } = await supabase.storage
+        .from('video')
+        .upload(`${user?.id}/${fileName}/${fileImage.name}.png`, fileImage)
+
+      //  await supabase.storage
+      //   .from('video')
+      //   .upload(`${user?.id}/${fileName}/${urlThumbnail}`, file)
 
       const newVideo: ElementList = {
         id: fileResponse.id,
         fileType: 'video',
-        name: fileName
+        name: fileName,
+        width,
+        height
       }
 
       await updateDataBaseList(user, prevList, newVideo)
@@ -98,13 +118,22 @@ function useUser () {
     }
   }
 
-  const deleteFile = async (fileName: string | undefined) => {
+  const deleteFile = async (fileName: string | undefined, fileType: 'image' | 'video') => {
     try {
       const { data: { user } } = await getUser()
 
-      await supabase.storage
-        .from('image')
-        .remove([`${user?.id}/${fileName}`])
+      if (fileType === 'image') {
+        await supabase.storage
+          .from('image')
+          .remove([`${user?.id}/${fileName}`])
+      } else if (fileType === 'video') {
+        const { data: dataDelete, error } = await supabase.storage
+          .from('video')
+          .remove([`${user?.id}/${fileName}`])
+        console.log('fileName', fileName)
+        console.log('dataDelete', dataDelete)
+        console.log('error', error)
+      }
 
       const { data: column } = await supabase
         .from('data_image')

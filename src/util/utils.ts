@@ -1,4 +1,4 @@
-export const getResolutionImage = async (file: File): Promise<{ width: number, height: number }> => {
+export async function getResolutionImage (file: File): Promise<{ width: number, height: number }> {
   return await new Promise((resolve, reject) => {
     if (file !== null) {
       const lector = new FileReader()
@@ -23,32 +23,55 @@ export const getResolutionImage = async (file: File): Promise<{ width: number, h
   })
 }
 
-export const incrementedName = (name: string, list: Array<{ name: string }>) => {
+export async function getResolutionVideo (file: File): Promise<{ width: number, height: number }> {
+  return await new Promise((resolve, reject) => {
+    if (file !== null) {
+      const fileURL = URL.createObjectURL(file)
+      // Crear un elemento de video
+      const video = document.createElement('video')
+      video.src = fileURL
+      video.addEventListener('loadedmetadata', async () => {
+        // Aquí ya se puede acceder a las propiedades de videoWidth y videoHeight
+        const resolucion = {
+          width: video.videoWidth,
+          height: video.videoHeight
+        }
+        resolve(resolucion)
+        // No olvides liberar la URL temporal después de usarla
+        URL.revokeObjectURL(fileURL)
+      }, { once: true })
+    } else {
+      reject(new Error('No se seleccionó ninguna imagen'))
+    }
+  })
+}
+
+export function incrementedName (name: string, list: Array<{ name: string }>) {
   if (list.length === 0) return name
 
   let count = 0
   const result = getStringAndNumberBeforeParentheses(name)
 
   const nameBefore = result === null ? name : result.nameBefore
-  console.log('🚀 ~ incrementedName ~ nameBefore:', nameBefore)
+  // // // console.log('🚀 ~ incrementedName ~ nameBefore:', nameBefore)
 
   for (const element of list) {
     if (element.name.startsWith(nameBefore)) {
       count += 1
     }
   }
-  console.log('🚀 ~ incrementedName ~ count:', count)
+  // // // console.log('🚀 ~ incrementedName ~ count:', count)
 
   const arrayName = name.split('.')
   const extension = arrayName[arrayName.length - 1]
   const newName = `${nameBefore}(${count}).${extension}`
 
   if (count === 0) return name
-  console.log('🚀 ~ incrementedName ~ newName:', newName)
+  // // // console.log('🚀 ~ incrementedName ~ newName:', newName)
   return newName
 }
 
-function getStringAndNumberBeforeParentheses (text: string): { nameBefore: string, countParentheses?: string, extension?: string } | null {
+export function getStringAndNumberBeforeParentheses (text: string): { nameBefore: string, countParentheses?: string, extension?: string } | null {
   const regex = /(.+)(\(\d+\))/
   const match = text.match(regex)
 
@@ -64,4 +87,84 @@ function getStringAndNumberBeforeParentheses (text: string): { nameBefore: strin
   }
 
   return null
+}
+
+export async function importFileandPreview (file: File, revoke: boolean): Promise<string> {
+  return await new Promise((resolve, reject) => {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    window.URL = window.URL || window.webkitURL
+    const preview = window.URL.createObjectURL(file)
+    // remove reference
+    if (revoke) {
+      window.URL.revokeObjectURL(preview)
+    }
+    setTimeout(() => {
+      resolve(preview)
+    }, 100)
+  })
+}
+
+export async function getVideoThumbnailUrl (file: File, videoTimeInSeconds: number): Promise<string> {
+  return await new Promise((resolve, reject) => {
+    if (file.type.match('video') !== null) {
+      importFileandPreview(file, false)
+        .then((urlOfFIle) => {
+          const video = document.createElement('video')
+          const timeupdate = function () {
+            if (snapImage()) {
+              video.removeEventListener('timeupdate', timeupdate)
+              video.pause()
+            }
+          }
+          video.addEventListener('loadeddata', function () {
+            if (snapImage()) {
+              video.removeEventListener('timeupdate', timeupdate)
+            }
+          })
+          const snapImage = function () {
+            const canvas = document.createElement('canvas')
+            canvas.width = video.videoWidth
+            canvas.height = video.videoHeight
+            const context = canvas.getContext('2d')
+            if (context !== null) {
+              context.drawImage(video, 0, 0, canvas.width, canvas.height)
+            }
+            const image = canvas.toDataURL()
+            const success = image.length > 100000
+            if (success) {
+              URL.revokeObjectURL(urlOfFIle)
+              resolve(image)
+            }
+            return success
+          }
+          video.addEventListener('timeupdate', timeupdate)
+          video.preload = 'metadata'
+          video.src = urlOfFIle
+          // Load video in Safari / IE11
+          video.muted = true
+          video.playsInline = true
+          video.currentTime = videoTimeInSeconds
+          video.play()
+        })
+    } else {
+      reject(new Error('file not valid'))
+    }
+  })
+}
+
+export async function getVideoThumbnail (file: File, videoTimeInSeconds: number): Promise<File> {
+  return await new Promise((resolve, reject) => {
+    getVideoThumbnailUrl(file, videoTimeInSeconds)
+      .then(url => {
+        fetch(url)
+          .then(async (res) => await res.blob())
+          .then((blob) => {
+            const NewFile = new File([blob], 'video_thumbnail', {
+              type: 'image/png'
+            })
+            console.log('NewFile', NewFile)
+            resolve(NewFile)
+          })
+      })
+  })
 }
