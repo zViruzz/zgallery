@@ -118,7 +118,7 @@ function useUser () {
     }
   }
 
-  const deleteFile = async (fileName: string | undefined, fileType: 'image' | 'video') => {
+  const deleteFile = async (fileName: string, fileType: 'image' | 'video') => {
     try {
       const { data: { user } } = await getUser()
 
@@ -127,12 +127,13 @@ function useUser () {
           .from('image')
           .remove([`${user?.id}/${fileName}`])
       } else if (fileType === 'video') {
-        const { data: dataDelete, error } = await supabase.storage
+        await supabase.storage
           .from('video')
-          .remove([`${user?.id}/${fileName}`])
-        console.log('fileName', fileName)
-        console.log('dataDelete', dataDelete)
-        console.log('error', error)
+          .remove([
+            `${user?.id}/${fileName}/${fileName}`,
+            `${user?.id}/${fileName}/video_thumbnail.png`,
+            `${user?.id}/${fileName}`
+          ])
       }
 
       const { data: column } = await supabase

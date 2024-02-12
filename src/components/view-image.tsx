@@ -40,7 +40,7 @@ function ViewImage ({ list }: Props) {
 
     document.querySelector('.lg-delete')?.addEventListener('click', () => {
       const elementName = document.querySelector('.lg-sub-html')?.textContent
-      if (elementName !== null) {
+      if (elementName !== null && elementName !== undefined) {
         console.log('delete')
         deleteFile(elementName, 'video')
           .then(() => {
