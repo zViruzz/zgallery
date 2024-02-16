@@ -11,7 +11,7 @@ import 'lightgallery/css/lightgallery.css'
 import 'lightgallery/css/lg-video.css'
 import 'lightgallery/css/lg-thumbnail.css'
 import 'lightgallery/css/lg-zoom.css'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import useUser from '@/hook/useUser'
 import { useRouter } from 'next/navigation'
 
@@ -30,6 +30,13 @@ interface Props {
 function ViewImage ({ list }: Props) {
   const { deleteFile } = useUser()
   const router = useRouter()
+  const lightGallery = useRef<any>(null)
+
+  const onInit = useCallback((detail: any) => {
+    if (detail !== null) {
+      lightGallery.current = detail.instance
+    }
+  }, [])
 
   useEffect(() => {
     const nextBtn =
@@ -37,24 +44,33 @@ function ViewImage ({ list }: Props) {
 
     const $lgContainer = document.querySelector('.lg-toolbar')
     $lgContainer?.insertAdjacentHTML('beforeend', nextBtn)
+  }, [list])
+
+  const onSlideItemLoad = (detail) => {
+    // console.log('🚀 ~ onAfterOpen ~ detail:', detail)
+    const indexItem = detail.index
+    const ele = list[indexItem]
 
     document.querySelector('.lg-delete')?.addEventListener('click', () => {
       const elementName = document.querySelector('.lg-sub-html')?.textContent
       if (elementName !== null && elementName !== undefined) {
         console.log('delete')
-        deleteFile(elementName, 'video')
+        deleteFile(ele.name, 'video')
           .then(() => {
             router.refresh()
+            lightGallery.current.refresh()
           })
       }
     })
-  }, [])
+  }
 
   return (
     <div>
       <LightGallery
         elementClassNames='gallery-methods-demo gallery-view grid grid-cols-gallery grid-rows-gallery [&>div]:bg-black [&>div]:rounded-xl gap-5 overflow-y-auto px-7 pr-4 mr-3 md:pl-14 md:mr-6 md:pr-8 md:grid-cols-gallery_md md:grid-rows-gallery_md'
         speed={500}
+        onAfterAppendSubHtml={onSlideItemLoad}
+        onInit={onInit}
         plugins={[lgZoom, lgThumbnail, video, vimeoThumbnail]}
       >
         {
