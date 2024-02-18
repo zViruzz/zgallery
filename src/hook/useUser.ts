@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createBrowserClient } from '@supabase/ssr'
 import { getResolutionImage, getResolutionVideo, getVideoThumbnail } from '../util/utils'
-import { uploadImageSB, uploadRemoveSB, uploadVideoSB } from '@/util/requestManagement'
+import { uploadImageSB, uploadRemoveSB, uploadVideoSB } from '@/util/request-management'
 
 function useUser () {
   const supabase = createBrowserClient(

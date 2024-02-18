@@ -1,5 +1,5 @@
-import ViewImage from '@/components/view-image'
-import authUser from '@/util/authUser'
+import FileContainer from '@/components/file-container'
+import authUser from '@/util/auth-user'
 
 async function page () {
   const { supabase } = await authUser()
@@ -32,7 +32,7 @@ async function page () {
   }
   return (
     <>
-      <ViewImage list={imageUrl} />
+      <FileContainer list={imageUrl} />
     </>
   )
 }

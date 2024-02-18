@@ -12,7 +12,7 @@ interface Props {
   thumbnailUrl?: string
 }
 
-function ItemImage ({ url, name, fileType, id, width, height, thumbnailUrl }: Props) {
+function FileView ({ url, name, fileType, id, width, height, thumbnailUrl }: Props) {
   const [isLoading, setIsLoading] = useState(true)
 
   if (fileType === 'image') {
@@ -60,4 +60,4 @@ function ItemImage ({ url, name, fileType, id, width, height, thumbnailUrl }: Pr
   }
 }
 
-export default ItemImage
+export default FileView

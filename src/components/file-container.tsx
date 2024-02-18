@@ -1,5 +1,5 @@
 'use client'
-import ItemImage from './item-image'
+import FileView from './file-view'
 import LightGallery from 'lightgallery/react'
 
 import lgThumbnail from 'lightgallery/plugins/thumbnail'
@@ -27,7 +27,7 @@ interface Props {
   }>
 }
 
-function ViewImage ({ list }: Props) {
+function FileContainer ({ list }: Props) {
   const { deleteFile } = useUser()
   const router = useRouter()
   const pathname = usePathname()
@@ -73,7 +73,7 @@ function ViewImage ({ list }: Props) {
         {
           list.map((item, index) => {
             return (
-              <ItemImage key={index} index={index} {...item} />
+              <FileView key={index} index={index} {...item} />
             )
           })
         }
@@ -83,4 +83,4 @@ function ViewImage ({ list }: Props) {
   )
 }
 
-export default ViewImage
+export default FileContainer

@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import authUser from '@/util/authUser'
+import authUser from '@/util/auth-user'
 
 async function layout ({ children }: { children: React.ReactNode }) {
   const { supabase } = await authUser()
