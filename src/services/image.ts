@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { type ElementList } from '@/type'
 import { incrementedName } from '@/util/utils'
 import { type User } from '@supabase/supabase-js'
 import { createServerClientHandle, updateDataBaseList } from './supabase'
@@ -30,7 +29,7 @@ export async function interImage (image: File, resolution: any) {
 
     if (error !== null) return { data: null, error }
 
-    const newImage: ElementList = {
+    const newImage: File = {
       id: (data as any)?.id,
       fileType: 'image',
       name: fileName,

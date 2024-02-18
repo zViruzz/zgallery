@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { type ElementList } from '@/type'
 import { incrementedName } from '@/util/utils'
 import { type User } from '@supabase/supabase-js'
 import { createServerClientHandle, updateDataBaseList } from './supabase'
@@ -34,7 +33,7 @@ export async function interVideo (video: File, thumbnail: File, resolution: any)
 
     if (error !== null) return { data: null, error }
 
-    const newVideo: ElementList = {
+    const newVideo: File = {
       id: (responseVideo as any)?.id,
       fileType: 'video',
       name: fileName,

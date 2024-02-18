@@ -24,10 +24,6 @@ async function page () {
       .from('video')
       .createSignedUrl(`${user?.id}/${name}/video_thumbnail.png`, 3600)
 
-    if (data === null || dataThumbnail === null) continue
-    const url = data.signedUrl
-    const thumbnailUrl = dataThumbnail.signedUrl
-
     imageUrl.push({ id, name, url, height, width, fileType, thumbnailUrl })
   }
   return (

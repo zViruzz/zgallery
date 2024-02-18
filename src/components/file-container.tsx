@@ -14,17 +14,10 @@ import 'lightgallery/css/lg-zoom.css'
 import { useCallback, useEffect, useRef } from 'react'
 import useUser from '@/hook/useUser'
 import { usePathname, useRouter } from 'next/navigation'
+import { type ExtendedFileType } from '@/type'
 
 interface Props {
-  list: Array<{
-    id: string
-    name: string
-    fileType: string
-    url: string
-    width: string
-    height: string
-    thumbnailUrl?: string
-  }>
+  list: ExtendedFileType[]
 }
 
 function FileContainer ({ list }: Props) {
@@ -73,7 +66,7 @@ function FileContainer ({ list }: Props) {
         {
           list.map((item, index) => {
             return (
-              <FileView key={index} index={index} {...item} />
+              <FileView key={index} {...item} />
             )
           })
         }

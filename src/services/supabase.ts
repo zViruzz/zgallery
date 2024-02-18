@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { type ElementList } from '@/type'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { type User } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
@@ -29,7 +28,7 @@ export async function createServerClientHandle () {
   return supabase
 }
 
-export async function updateDataBaseList (supabase: any, user: User | null, prevList: any, newFile: ElementList) {
+export async function updateDataBaseList (supabase: any, user: User | null, prevList: any, newFile: File) {
   try {
     await supabase
       .from('data_image')
@@ -62,7 +61,7 @@ export async function deleteFile (fileName: string, fileType: 'image' | 'video')
         .eq('user_id', user?.id)
 
       if (column === null) return []
-      const prevList: ElementList[] = column[0].list_image === null ? [] : column[0].list_image.image
+      const prevList: File[] = column[0].list_image === null ? [] : column[0].list_image.image
 
       return prevList
     }

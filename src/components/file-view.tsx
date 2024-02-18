@@ -1,18 +1,8 @@
 import { useState } from 'react'
 import Image from 'next/image'
+import { type ExtendedFileType } from '@/type'
 
-interface Props {
-  id: string
-  name: string
-  url: string
-  fileType: string
-  index: number
-  width: string
-  height: string
-  thumbnailUrl?: string
-}
-
-function FileView ({ url, name, fileType, id, width, height, thumbnailUrl }: Props) {
+function FileView ({ url, name, fileType, width, height, thumbnailUrl }: ExtendedFileType) {
   const [isLoading, setIsLoading] = useState(true)
 
   if (fileType === 'image') {
