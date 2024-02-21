@@ -15,15 +15,15 @@ async function page () {
   if (data === null) return
   const list: ExtendedFileType[] = data[0].list_image === null ? [] : data[0].list_image.image
 
-  for (const { name, id, height, width, fileType, favorite } of list) {
+  for (const { fileName, name, id, height, width, fileType, favorite } of list) {
     const { data } = await supabase.storage
       .from('image')
-      .createSignedUrl(`${user?.id}/${name}`, 3600)
+      .createSignedUrl(`${user?.id}/${fileName}`, 3600)
 
     if (data === null) continue
     const url = data.signedUrl
 
-    imageUrl.push({ id, name, url, height, width, favorite, fileType })
+    imageUrl.push({ id, fileName, name, url, height, width, favorite, fileType })
   }
 
   return (

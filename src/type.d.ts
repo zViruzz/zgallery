@@ -3,6 +3,7 @@ export interface FileType {
   fileType: 'image' | 'video'
   favorite: boolean
   name: string
+  fileName: string
   height: number
   width: number
 }

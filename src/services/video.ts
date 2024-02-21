@@ -37,6 +37,7 @@ export async function interVideo (video: File, thumbnail: File, resolution: any)
       id: (responseVideo as any)?.id,
       fileType: 'video',
       name: fileName,
+      fileName,
       ...resolution
     }
 

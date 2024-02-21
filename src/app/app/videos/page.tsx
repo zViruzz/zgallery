@@ -16,22 +16,22 @@ async function page () {
 
   const list = data[0].list_image === null ? [] : data[0].list_image.image
 
-  for (const { name, id, height, width, favorite, fileType } of list) {
+  for (const { fileName, name, id, height, width, favorite, fileType } of list) {
     const { data } = await supabase.storage
       .from('video')
-      .createSignedUrl(`${user?.id}/${name}/${name}`, 3600)
+      .createSignedUrl(`${user?.id}/${fileName}/${fileName}`, 3600)
 
     if (data === null) continue
     const url = data.signedUrl
 
     const { data: dataThumbnail } = await supabase.storage
       .from('video')
-      .createSignedUrl(`${user?.id}/${name}/video_thumbnail.png`, 3600)
+      .createSignedUrl(`${user?.id}/${fileName}/video_thumbnail.png`, 3600)
 
     if (dataThumbnail === null) continue
     const thumbnailUrl = dataThumbnail.signedUrl
 
-    imageUrl.push({ id, name, url, height, width, fileType, favorite, thumbnailUrl })
+    imageUrl.push({ id, fileName, name, url, height, width, fileType, favorite, thumbnailUrl })
   }
   return (
     <>

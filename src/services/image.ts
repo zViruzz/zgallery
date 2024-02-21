@@ -33,6 +33,7 @@ export async function interImage (image: File, resolution: any) {
       id: (data as any)?.id,
       fileType: 'image',
       name: fileName,
+      fileName,
       ...resolution
     }
 

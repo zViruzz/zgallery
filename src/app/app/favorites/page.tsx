@@ -20,31 +20,31 @@ async function page () {
   }
   const newList = filterFavorite(list)
 
-  for (const { name, id, height, width, fileType, favorite } of newList) {
+  for (const { fileName, name, id, height, width, fileType, favorite } of newList) {
     let url
     let thumbnailUrl
 
     if (fileType === 'image') {
       const { data } = await supabase.storage
         .from('image')
-        .createSignedUrl(`${user?.id}/${name}`, 3600)
+        .createSignedUrl(`${user?.id}/${fileName}`, 3600)
       if (data === null) continue
       url = data.signedUrl
     } else if (fileType === 'video') {
       const { data } = await supabase.storage
         .from('video')
-        .createSignedUrl(`${user?.id}/${name}/${name}`, 3600)
+        .createSignedUrl(`${user?.id}/${fileName}/${fileName}`, 3600)
 
       const { data: dataThumbnail } = await supabase.storage
         .from('video')
-        .createSignedUrl(`${user?.id}/${name}/video_thumbnail.png`, 3600)
+        .createSignedUrl(`${user?.id}/${fileName}/video_thumbnail.png`, 3600)
 
       if (data === null || dataThumbnail === null) continue
       url = data.signedUrl
       thumbnailUrl = dataThumbnail.signedUrl
     }
     if (url === undefined) { console.log('url undefined'); return }
-    imageUrl.push({ id, name, url, height, width, fileType, favorite, thumbnailUrl })
+    imageUrl.push({ id, fileName, name, url, height, width, fileType, favorite, thumbnailUrl })
   }
 
   return (

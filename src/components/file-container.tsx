@@ -58,7 +58,7 @@ function FileContainer ({ list }: Props) {
     })
 
     document.querySelector('.lg-favorite')?.addEventListener('click', () => {
-      const elementName = document.querySelector('.lg-sub-html')?.textContent
+      const elementName = document.querySelector('.lg-file-name')?.textContent
       if (elementName !== null && elementName !== undefined) {
         console.log('favorite ', elementName)
         favoriteFile(elementName)
