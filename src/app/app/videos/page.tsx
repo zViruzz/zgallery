@@ -1,4 +1,5 @@
 import FileContainer from '@/components/file-container'
+import { type ExtendedFileType } from '@/type'
 import authUser from '@/util/auth-user'
 
 async function page () {
@@ -10,21 +11,27 @@ async function page () {
     .select('list_image')
     .eq('user_id', user?.id)
 
-  const imageUrl = []
+  const imageUrl: ExtendedFileType[] = []
   if (data === null) return
 
   const list = data[0].list_image === null ? [] : data[0].list_image.image
 
-  for (const { name, id, height, width, fileType } of list) {
+  for (const { name, id, height, width, favorite, fileType } of list) {
     const { data } = await supabase.storage
       .from('video')
       .createSignedUrl(`${user?.id}/${name}/${name}`, 3600)
+
+    if (data === null) continue
+    const url = data.signedUrl
 
     const { data: dataThumbnail } = await supabase.storage
       .from('video')
       .createSignedUrl(`${user?.id}/${name}/video_thumbnail.png`, 3600)
 
-    imageUrl.push({ id, name, url, height, width, fileType, thumbnailUrl })
+    if (dataThumbnail === null) continue
+    const thumbnailUrl = dataThumbnail.signedUrl
+
+    imageUrl.push({ id, name, url, height, width, fileType, favorite, thumbnailUrl })
   }
   return (
     <>
