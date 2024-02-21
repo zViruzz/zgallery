@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { interImage } from '@/services/image'
-import { deleteFile } from '@/services/supabase'
+import { deleteFile, favoriteFile } from '@/services/supabase'
 
 export async function POST (request: Request) {
   try {
@@ -27,4 +27,14 @@ export async function DELETE (request: Request) {
   if (error !== null) return NextResponse.json(error)
 
   return NextResponse.json(data)
+}
+
+export async function PATCH (request: Request) {
+  const { searchParams } = new URL(request.url)
+  const name = searchParams.get('name')
+
+  if (name === null) return
+  const res = favoriteFile(name)
+
+  return NextResponse.json(res)
 }

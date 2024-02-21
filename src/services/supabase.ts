@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { type FileType } from '@/type'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { type User } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
@@ -99,6 +100,50 @@ export async function deleteFile (fileName: string, fileType: 'image' | 'video')
       if (error !== null) return { data: null, error }
       return { data, error: null }
     }
+  } catch (error) {
+    console.log(error)
+    return { data: null, error }
+  }
+}
+
+export async function favoriteFile (fileName: string) {
+  try {
+    const supabase = await createServerClientHandle()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    const getPrevList = async (user: User | null) => {
+      const { data: column } = await supabase
+        .from('data_image')
+        .select('list_image')
+        .eq('user_id', user?.id)
+
+      if (column === null) return []
+      const prevList: FileType[] = column[0].list_image === null ? [] : column[0].list_image.image
+
+      return prevList
+    }
+    const prevList = await getPrevList(user)
+
+    const newList = prevList.map((item) => {
+      if (item.name === fileName) {
+        return {
+          ...item,
+          favorite: !item.favorite
+        }
+      }
+      return item
+    })
+
+    await supabase
+      .from('data_image')
+      .update({
+        list_image: {
+          image: [
+            ...newList
+          ]
+        }
+      })
+      .eq('user_id', user?.id)
   } catch (error) {
     console.log(error)
     return { data: null, error }

@@ -21,7 +21,7 @@ interface Props {
 }
 
 function FileContainer ({ list }: Props) {
-  const { deleteFile } = useUser()
+  const { deleteFile, favoriteFile } = useUser()
   const router = useRouter()
   const pathname = usePathname()
   const lightGallery = useRef<any>(null)
@@ -35,8 +35,11 @@ function FileContainer ({ list }: Props) {
   useEffect(() => {
     const nextBtn =
       '<button type="button" aria-label="Next slide" class="lg-delete lg-icon flex justify-center items-center"> <svg width="21" height="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m18 6-.8 12.013c-.071 1.052-.106 1.578-.333 1.977a2 2 0 0 1-.866.81c-.413.2-.94.2-1.995.2H9.994c-1.055 0-1.582 0-1.995-.2a2 2 0 0 1-.866-.81c-.227-.399-.262-.925-.332-1.977L6 6M4 6h16m-4 0-.27-.812c-.263-.787-.394-1.18-.637-1.471a2 2 0 0 0-.803-.578C13.938 3 13.524 3 12.694 3h-1.388c-.829 0-1.244 0-1.596.139a2 2 0 0 0-.803.578c-.243.29-.374.684-.636 1.471L8 6m6 4v7m-4-7v7" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> </button>'
+    const favoriteBtn =
+      '<button type="button" aria-label="Next slide" class="lg-favorite lg-icon flex justify-center items-center"> <svg width="23" height="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M12 6c-1.8-2.097-4.806-2.745-7.06-.825-2.255 1.92-2.573 5.131-.802 7.402 1.472 1.888 5.927 5.87 7.387 7.16.163.144.245.216.34.245a.456.456 0 0 0 .258 0c.095-.029.176-.1.34-.245 1.46-1.29 5.915-5.272 7.387-7.16 1.77-2.27 1.492-5.502-.802-7.402C16.755 3.275 13.8 3.903 12 6Z" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
 
     const $lgContainer = document.querySelector('.lg-toolbar')
+    $lgContainer?.insertAdjacentHTML('beforeend', favoriteBtn)
     $lgContainer?.insertAdjacentHTML('beforeend', nextBtn)
 
     const fileType = pathname === '/app/imagen' ? 'image' : 'video'
@@ -51,6 +54,14 @@ function FileContainer ({ list }: Props) {
           .then(() => {
             router.refresh()
           })
+      }
+    })
+
+    document.querySelector('.lg-favorite')?.addEventListener('click', () => {
+      const elementName = document.querySelector('.lg-sub-html')?.textContent
+      if (elementName !== null && elementName !== undefined) {
+        console.log('favorite ', elementName)
+        favoriteFile(elementName)
       }
     })
   }, [list])

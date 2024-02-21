@@ -67,3 +67,25 @@ export async function uploadRemoveSB (name: string, fileType: 'image' | 'video')
     console.error('Error de red:', error)
   }
 }
+
+export async function updatingFileFavorites (name: string) {
+  const params = new URLSearchParams()
+  params.append('name', name)
+
+  const apiUrl = 'http://localhost:3000/api/image?' + params.toString()
+
+  console.log('🚀 ~ updatingFileFavorites ~ apiUrl:', apiUrl)
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'PATCH'
+    })
+
+    if (response.ok) {
+      console.log('Does')
+    } else {
+      console.error('Error', response.statusText)
+    }
+  } catch (error) {
+    console.error('Error de red:', error)
+  }
+}
