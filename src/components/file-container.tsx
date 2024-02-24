@@ -11,7 +11,7 @@ import 'lightgallery/css/lightgallery.css'
 import 'lightgallery/css/lg-video.css'
 import 'lightgallery/css/lg-thumbnail.css'
 import 'lightgallery/css/lg-zoom.css'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import useUser from '@/hook/useUser'
 import { usePathname, useRouter } from 'next/navigation'
 import { type ExtendedFileType } from '@/type'
@@ -21,6 +21,8 @@ interface Props {
 }
 
 function FileContainer ({ list }: Props) {
+  const [hiddenError, setHiddenError] = useState(true)
+  const [nameTag, setNameTag] = useState('')
   const { deleteFile, favoriteFile } = useUser()
   const router = useRouter()
   const pathname = usePathname()
@@ -42,18 +44,11 @@ function FileContainer ({ list }: Props) {
     $lgContainer?.insertAdjacentHTML('beforeend', favoriteBtn)
     $lgContainer?.insertAdjacentHTML('beforeend', nextBtn)
 
-    const fileType = pathname === '/app/imagen' ? 'image' : 'video'
-
     document.querySelector('.lg-delete')?.addEventListener('click', () => {
-      const elementName = document.querySelector('.lg-sub-html')?.textContent
+      const elementName = document.querySelector('.lg-file-name')?.textContent
       if (elementName !== null && elementName !== undefined) {
-        deleteFile(elementName, fileType)
-          .then(() => {
-            lightGallery.current.closeGallery()
-          })
-          .then(() => {
-            router.refresh()
-          })
+        setNameTag(elementName)
+        setHiddenError(false)
       }
     })
 
@@ -64,10 +59,45 @@ function FileContainer ({ list }: Props) {
         favoriteFile(elementName)
       }
     })
-  }, [list])
+  }, [list, hiddenError])
+
+  const handleClickDelete = () => {
+    const fileType = pathname === '/app/imagen' ? 'image' : 'video'
+
+    deleteFile(nameTag, fileType)
+      .then(() => {
+        setHiddenError(true)
+      })
+      .then(() => {
+        router.refresh()
+      })
+  }
 
   return (
     <div>
+      <div className={`${hiddenError ? 'hidden' : 'grid'} bg-black bg-opacity-20 absolute z-[5999] top-0 left-0 min-w-full h-screen place-content-center`}>
+        <div className='bg-black flex flex-col p-11 gap-5  rounded-2xl relative'>
+            <button
+              className='absolute px-5 py-3 right-0 top-0'
+              onClick={() => { setHiddenError(true) }}
+              >
+              X
+            </button>
+          <div className='text-xl'>
+            <p>
+              {`Are you sure you want to delete ${nameTag}?`}
+            </p>
+          </div>
+          <div className='grid place-content-center'>
+            <button
+              className='bg-tertiary p-3 rounded-lg block'
+              onClick={handleClickDelete}
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
       <LightGallery
         elementClassNames='gallery-methods-demo gallery-view grid grid-cols-gallery grid-rows-gallery [&>div]:bg-black [&>div]:rounded-xl gap-5 overflow-y-auto px-7 pr-4 mr-3 md:pl-14 md:mr-6 md:pr-8 md:grid-cols-gallery_md md:grid-rows-gallery_md'
         speed={500}
