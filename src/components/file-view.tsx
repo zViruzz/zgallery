@@ -26,7 +26,7 @@ function FileView ({ url, fileName, name, fileType, width, height, thumbnailUrl 
       </a>
     )
   } else if (fileType === 'video' && thumbnailUrl !== undefined) {
-    const source = `{"source": [{"src":"${url}", "type":"video/mp4"}], "attributes": {"preload": false, "controls": true}}`
+    const source = `{"source": [{"src":"${url}", "type":"video/mp4"}], "attributes": {"preload": false, "controls": true, "autoplay": false}}`
 
     return (
       <a

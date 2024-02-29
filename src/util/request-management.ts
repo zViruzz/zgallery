@@ -74,7 +74,6 @@ export async function updatingFileFavorites (name: string) {
 
   const apiUrl = 'http://localhost:3000/api/image?' + params.toString()
 
-  console.log('🚀 ~ updatingFileFavorites ~ apiUrl:', apiUrl)
   try {
     const response = await fetch(apiUrl, {
       method: 'PATCH'
