@@ -11,7 +11,7 @@ import 'lightgallery/css/lg-video.css'
 import 'lightgallery/css/lg-thumbnail.css'
 import 'lightgallery/css/lg-zoom.css'
 
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef } from 'react'
 import { type ExtendedFileType } from '@/type'
 import { useRouter } from 'next/navigation'
 import useUser from '@/hook/useUser'
@@ -21,8 +21,8 @@ interface Props {
 }
 
 function FileContainer ({ list }: Props) {
-  const [hiddenError, setHiddenError] = useState(true)
   const { deleteFile, favoriteFile } = useUser()
+  const lightGallery = useRef<any>(null)
   const router = useRouter()
   const selectedItem = useRef<ExtendedFileType>({
     id: '',
@@ -34,7 +34,6 @@ function FileContainer ({ list }: Props) {
     width: 0,
     url: ''
   })
-  const lightGallery = useRef<any>(null)
 
   const onInit = useCallback((detail: any) => {
     if (detail !== null) {
@@ -48,7 +47,10 @@ function FileContainer ({ list }: Props) {
 
     deleteFile(fileName, fileType)
       .then(() => {
-        setHiddenError(true)
+        const $messageDelete = document.querySelector('.message-delete')
+        $messageDelete?.classList.remove('grid')
+        $messageDelete?.classList.add('hidden')
+        lightGallery.current.closeGallery()
       })
       .then(() => {
         router.refresh()
@@ -56,7 +58,14 @@ function FileContainer ({ list }: Props) {
   }
 
   const onClickDelete = () => {
-    setHiddenError(false)
+    const $messageDelete = document.querySelector('.message-delete')
+    $messageDelete?.classList.remove('hidden')
+    $messageDelete?.classList.add('grid')
+
+    const $textDelete = document.querySelector('.text-delete')
+    if ($textDelete !== null) {
+      $textDelete.innerHTML = `Are you sure you want to delete ${selectedItem.current.fileName}?`
+    }
   }
 
   const onClickFavorite = () => {
@@ -108,17 +117,21 @@ function FileContainer ({ list }: Props) {
 
   return (
     <div>
-      <div className={`${hiddenError ? 'hidden' : 'grid'} bg-black bg-opacity-20 absolute z-[5999] top-0 left-0 min-w-full h-screen place-content-center`}>
+      <div className={'hidden message-delete bg-black bg-opacity-20 absolute z-[5999] top-0 left-0 min-w-full h-screen place-content-center'}>
         <div className='bg-black flex flex-col p-11 gap-5  rounded-2xl relative'>
           <button
             className='absolute px-5 py-3 right-0 top-0'
-            onClick={() => { setHiddenError(true) }}
+            onClick={() => {
+              const $messageDelete = document.querySelector('.message-delete')
+              $messageDelete?.classList.remove('grid')
+              $messageDelete?.classList.add('hidden')
+            }}
           >
             X
           </button>
           <div className='text-xl'>
-            <p>
-              {`Are you sure you want to delete ${selectedItem.current.fileName}?`}
+            <p className='text-delete'>
+              {/* {`Are you sure you want to delete ${selectedItem.current.fileName}?`} */}
             </p>
           </div>
           <div className='grid place-content-center'>
