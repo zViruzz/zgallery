@@ -116,7 +116,7 @@ function FileContainer ({ list }: Props) {
   }
 
   return (
-    <div>
+    <>
       <div className={'hidden message-delete bg-black bg-opacity-20 absolute z-[5999] top-0 left-0 min-w-full h-screen place-content-center'}>
         <div className='bg-black flex flex-col p-11 gap-5  rounded-2xl relative'>
           <button
@@ -161,7 +161,7 @@ function FileContainer ({ list }: Props) {
         }
       </LightGallery>
 
-    </div>
+    </>
   )
 }
 

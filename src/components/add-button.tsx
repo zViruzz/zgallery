@@ -14,7 +14,6 @@ function AddButton ({ type }: Props) {
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files === null) return
     const file = event.target.files[0]
-    console.log('🚀 ~ handleChange ~ file:', file)
 
     if (type === 'image') {
       await uploadImage(file)

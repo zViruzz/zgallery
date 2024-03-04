@@ -11,7 +11,7 @@ function layout ({ children }: { children: ReactNode }) {
         <div className='w-full flex justify-between'>
 
           <div>
-            <h2 className='md:text-3xl text-lg'>Imagenes</h2>
+            <h2 className='md:text-3xl text-lg'>Favorites</h2>
           </div>
           <div className='flex gap-2 items-center'>
 
