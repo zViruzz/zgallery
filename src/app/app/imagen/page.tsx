@@ -2,7 +2,15 @@ import FileContainer from '@/components/file-container'
 import { type ExtendedFileType } from '@/type'
 import authUser from '@/util/auth-user'
 
-async function page () {
+interface Props {
+  searchParams: {
+    name: string
+  }
+}
+
+async function page ({ searchParams }: Props) {
+  const { name } = searchParams
+
   const { supabase } = await authUser()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -26,10 +34,15 @@ async function page () {
     imageUrl.push({ id, fileName, name, url, height, width, favorite, fileType })
   }
 
+  if (name !== undefined) {
+    const filteredName = imageUrl.filter(img => img.name.includes(name))
+    return (
+      <FileContainer list={filteredName} />
+    )
+  }
+
   return (
-    <>
       <FileContainer list={imageUrl} />
-    </>
   )
 }
 

@@ -27,7 +27,7 @@ function SearchBar ({ setHiddenSearch, isHiddenSearch }: Props) {
     event.preventDefault()
     if (searchRef.current === null) return
     const value = searchRef.current.value
-    router.push(`/shop?page=1&name=${value}`)
+    router.push(`?name=${value}`)
   }
 
   return (
