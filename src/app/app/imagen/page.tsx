@@ -1,5 +1,5 @@
 import FileContainer from '@/components/file-container'
-import { type ExtendedFileType } from '@/type'
+import { type FileType, type ExtendedFileType } from '@/type'
 import authUser from '@/util/auth-user'
 
 interface Props {
@@ -9,40 +9,48 @@ interface Props {
 }
 
 async function page ({ searchParams }: Props) {
-  const { name } = searchParams
-
   const { supabase } = await authUser()
   const { data: { user } } = await supabase.auth.getUser()
+  const { name } = searchParams
 
   const { data } = await supabase
     .from('data_image')
     .select('list_image')
     .eq('user_id', user?.id)
 
-  const imageUrl: ExtendedFileType[] = []
   if (data === null) return
-  const list: ExtendedFileType[] = data[0].list_image === null ? [] : data[0].list_image.image
 
-  for (const { fileName, name, id, height, width, fileType, favorite } of list) {
-    const { data } = await supabase.storage
-      .from('image')
-      .createSignedUrl(`${user?.id}/${fileName}`, 3600)
-
-    if (data === null) continue
-    const url = data.signedUrl
-
-    imageUrl.push({ id, fileName, name, url, height, width, favorite, fileType })
-  }
+  let list: FileType[] =
+    data[0].list_image === null
+      ? []
+      : data[0].list_image.image
 
   if (name !== undefined) {
-    const filteredName = imageUrl.filter(img => img.name.includes(name))
-    return (
-      <FileContainer list={filteredName} />
-    )
+    list = list.filter(img => img.name.includes(name))
   }
 
+  const pathList = list
+    .filter(img => img.fileType === 'image')
+    .map(img => `${user?.id}/${img.fileName}`)
+
+  const { data: listOfUrls } = await supabase.storage
+    .from('image')
+    .createSignedUrls(pathList, 10000)
+
+  if (listOfUrls === null) return
+
+  const imageUrl: ExtendedFileType[] = list
+    .filter((item, index) =>
+      item.fileType === 'image' &&
+      listOfUrls[index] !== undefined
+    )
+    .map((item, index) => ({
+      ...item,
+      url: listOfUrls[index].signedUrl
+    }))
+
   return (
-      <FileContainer list={imageUrl} />
+    <FileContainer list={imageUrl} />
   )
 }
 

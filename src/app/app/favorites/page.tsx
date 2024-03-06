@@ -1,10 +1,25 @@
 import FileContainer from '@/components/file-container'
 import { type ExtendedFileType } from '@/type'
 import authUser from '@/util/auth-user'
+import { type SupabaseClient } from '@supabase/supabase-js'
 
-async function page () {
+interface Props {
+  searchParams: {
+    name: string
+  }
+}
+
+const getSignedUrls = async (supabase: SupabaseClient, pathList: string[], bucket: string) => {
+  const { data: resultUrls } = await supabase.storage
+    .from(bucket)
+    .createSignedUrls(pathList, 10000)
+  return resultUrls ?? []
+}
+
+async function page ({ searchParams }: Props) {
   const { supabase } = await authUser()
   const { data: { user } } = await supabase.auth.getUser()
+  const { name } = searchParams
 
   const { data } = await supabase
     .from('data_image')
@@ -13,42 +28,54 @@ async function page () {
 
   const imageUrl: ExtendedFileType[] = []
   if (data === null) return
-  const list: ExtendedFileType[] = data[0].list_image === null ? [] : data[0].list_image.image
+  let list: ExtendedFileType[] = data[0].list_image === null ? [] : data[0].list_image.image
+
+  if (name !== undefined) {
+    list = list.filter(img => img.name.includes(name))
+  }
 
   const filterFavorite = (list: ExtendedFileType[]) => {
     return list.filter(item => item.favorite)
   }
-  const newList = filterFavorite(list)
+  const favoritesList = filterFavorite(list)
 
-  for (const { fileName, name, id, height, width, fileType, favorite } of newList) {
+  const imagePathList = favoritesList
+    .filter(img => img.fileType === 'image')
+    .map(img => `${user?.id}/${img.fileName}`)
+
+  const videoPathList = favoritesList
+    .filter(video => video.fileType === 'video')
+    .map(video => `${user?.id}/${video.fileName}/${video.fileName}`)
+
+  const thumbnailPathList = favoritesList
+    .filter(video => video.fileType === 'video')
+    .map(video => `${user?.id}/${video.fileName}/video_thumbnail.png`)
+
+  const listOfImageUrls = await getSignedUrls(supabase, imagePathList, 'image')
+  const listOfIVideoUrls = await getSignedUrls(supabase, videoPathList, 'video')
+  const listOfThumbnailUrls = await getSignedUrls(supabase, thumbnailPathList, 'video')
+
+  let indexImage = 0
+  let indexVideo = 0
+  for (const file of favoritesList) {
     let url
     let thumbnailUrl
+    const { fileType } = file
 
     if (fileType === 'image') {
-      const { data } = await supabase.storage
-        .from('image')
-        .createSignedUrl(`${user?.id}/${fileName}`, 3600)
-      if (data === null) continue
-      url = data.signedUrl
+      url = listOfImageUrls[indexImage].signedUrl
+      imageUrl.push({ ...file, url })
+      indexImage++
     } else if (fileType === 'video') {
-      const { data } = await supabase.storage
-        .from('video')
-        .createSignedUrl(`${user?.id}/${fileName}/${fileName}`, 3600)
-
-      const { data: dataThumbnail } = await supabase.storage
-        .from('video')
-        .createSignedUrl(`${user?.id}/${fileName}/video_thumbnail.png`, 3600)
-
-      if (data === null || dataThumbnail === null) continue
-      url = data.signedUrl
-      thumbnailUrl = dataThumbnail.signedUrl
+      url = listOfIVideoUrls[indexVideo].signedUrl
+      thumbnailUrl = listOfThumbnailUrls[indexVideo].signedUrl
+      imageUrl.push({ ...file, url, thumbnailUrl })
+      indexVideo++
     }
-    if (url === undefined) { console.log('url undefined'); return }
-    imageUrl.push({ id, fileName, name, url, height, width, fileType, favorite, thumbnailUrl })
   }
 
   return (
-      <FileContainer list={imageUrl} />
+    <FileContainer list={imageUrl} />
   )
 }
 

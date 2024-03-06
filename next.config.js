@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'ptqtitvjamtrjyniaxqk.supabase.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'us-tuna-sounds-images.voicemod.net',
+      },
     ],
   },
 }
