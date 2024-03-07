@@ -1,14 +1,12 @@
 'use client'
 import AddIcon from '@/components/Icons/add-icon'
 import useUser from '@/hook/useUser'
-import { useRouter } from 'next/navigation'
 
 interface Props {
   type: 'image' | 'video'
 }
 
 function AddButton ({ type }: Props) {
-  const router = useRouter()
   const { uploadImage, uploadVideo } = useUser()
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +18,8 @@ function AddButton ({ type }: Props) {
     } else {
       await uploadVideo(file)
     }
-    router.refresh()
+    // * No se usa el router.refresh() porque da conflicto con al metodo afterOpen de componente file-container, acumulando llamadas
+    location.reload()
   }
 
   return (

@@ -7,7 +7,6 @@ interface Props {
     name: string
   }
 }
-
 async function page ({ searchParams }: Props) {
   const { supabase } = await authUser()
   const { data: { user } } = await supabase.auth.getUser()
