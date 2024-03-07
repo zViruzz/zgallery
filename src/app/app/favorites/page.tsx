@@ -1,5 +1,5 @@
 import FileContainer from '@/components/file-container'
-import { type ExtendedFileType } from '@/type'
+import { type FileType, type ExtendedFileType } from '@/type'
 import authUser from '@/util/auth-user'
 import { type SupabaseClient } from '@supabase/supabase-js'
 
@@ -20,21 +20,25 @@ async function page ({ searchParams }: Props) {
   const { supabase } = await authUser()
   const { data: { user } } = await supabase.auth.getUser()
   const { name } = searchParams
+  const imageUrl: ExtendedFileType[] = []
 
   const { data } = await supabase
     .from('data_image')
     .select('list_image')
     .eq('user_id', user?.id)
 
-  const imageUrl: ExtendedFileType[] = []
   if (data === null) return
-  let list: ExtendedFileType[] = data[0].list_image === null ? [] : data[0].list_image.image
+
+  let list: FileType[] =
+    data[0].list_image === null
+      ? []
+      : data[0].list_image.image
 
   if (name !== undefined) {
     list = list.filter(img => img.name.includes(name))
   }
 
-  const filterFavorite = (list: ExtendedFileType[]) => {
+  const filterFavorite = (list: FileType[]) => {
     return list.filter(item => item.favorite)
   }
   const favoritesList = filterFavorite(list)

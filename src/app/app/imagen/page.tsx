@@ -21,16 +21,17 @@ async function page ({ searchParams }: Props) {
   if (data === null) return
 
   let list: FileType[] =
-    data[0].list_image === null
-      ? []
-      : data[0].list_image.image
+  data[0].list_image === null
+    ? []
+    : data[0].list_image.image
+
+  list = list.filter(img => img.fileType === 'image')
 
   if (name !== undefined) {
     list = list.filter(img => img.name.includes(name))
   }
 
   const pathList = list
-    .filter(img => img.fileType === 'image')
     .map(img => `${user?.id}/${img.fileName}`)
 
   const { data: listOfUrls } = await supabase.storage

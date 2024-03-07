@@ -27,7 +27,13 @@ async function page ({ searchParams }: Props) {
     .eq('user_id', user?.id)
 
   if (data === null) return
-  let list: FileType[] = data[0].list_image === null ? [] : data[0].list_image.image
+
+  let list: FileType[] =
+    data[0].list_image === null
+      ? []
+      : data[0].list_image.image
+
+  list = list.filter(img => img.fileType === 'video')
 
   if (name !== undefined) {
     list = list.filter(img => img.name.includes(name))
