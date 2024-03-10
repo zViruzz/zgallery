@@ -51,7 +51,7 @@ async function layout ({ children }: { children: ReactNode }) {
               <li>
                 <Link href='/app/videos'>
                   <VideoIcon width={25} height={25} />
-                  Videos
+                  Video
                 </Link>
               </li>
               <li>

@@ -25,7 +25,7 @@ function NavbarMobile () {
           href='/app/videos'
           className={`${pathname === '/app/videos' ? 'underline decoration-[3px] underline-offset-[6px]' : ''}`}
         >
-          Videos
+          Video
         </Link>
 
         <button>
