@@ -18,7 +18,6 @@ async function layout ({ children }: { children: ReactNode }) {
   const { data: { user } } = await supabase.auth.getUser()
 
   if (user === null) {
-    console.log('redireccion login')
     redirect('/auth/login')
   }
 
