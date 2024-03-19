@@ -5,7 +5,7 @@ import logo from '../../../public/logo.svg'
 import { type ReactNode } from 'react'
 import { redirect } from 'next/navigation'
 import authUser from '@/util/auth-user'
-import NavbarMobile from '@/components/navbar-mobile'
+import NavBarMobile from '@/components/navbar-mobile'
 import GalleryIcon from '@/components/Icons/gallery-icon'
 import AlbumIcon from '@/components/Icons/album-icon'
 import VideoIcon from '@/components/Icons/video-icon'
@@ -68,7 +68,10 @@ async function layout ({ children }: { children: ReactNode }) {
         </div>
       </nav>
 
-      <NavbarMobile />
+      <NavBarMobile
+        name={user.user_metadata.name}
+        avatar={user.user_metadata.avatar_url}
+      />
 
       <section className='md:py-4 md:pr-4 min-w-full h-screen'>
         <div className='md:bg-secodary rounded-xl w-full h-full'>
