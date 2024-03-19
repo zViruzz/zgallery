@@ -7,7 +7,6 @@ export const config = {
 }
 
 export async function middleware (req: NextRequest) {
-  console.log('middleware')
   if (req.nextUrl.pathname === '/app') {
     return NextResponse.redirect(new URL('/app/imagen', req.url))
   }
