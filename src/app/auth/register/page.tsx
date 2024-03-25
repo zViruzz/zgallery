@@ -1,7 +1,7 @@
 'use client'
 import Input from '@/components/input'
 import useAuth from '@/hook/useAuth'
-import { InputRegister } from '@/static/registerStatic'
+import { InputRegister } from '@/static/static'
 import { type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import ButtonGoogle from '@/components/button-google'

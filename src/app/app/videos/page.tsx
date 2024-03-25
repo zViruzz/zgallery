@@ -1,11 +1,14 @@
 import FileContainer from '@/components/file-container'
+import { SORT_TYPE } from '@/static/static'
 import { type FileType, type ExtendedFileType } from '@/type'
 import authUser from '@/util/auth-user'
+import { sortList } from '@/util/utils'
 import { type SupabaseClient } from '@supabase/supabase-js'
 
 interface Props {
   searchParams: {
     name: string
+    sort: string
   }
 }
 
@@ -19,7 +22,7 @@ const getSignedUrls = async (supabase: SupabaseClient, pathList: string[]) => {
 async function page ({ searchParams }: Props) {
   const { supabase } = await authUser()
   const { data: { user } } = await supabase.auth.getUser()
-  const { name } = searchParams
+  const { name, sort } = searchParams
 
   const { data } = await supabase
     .from('data_image')
@@ -61,6 +64,20 @@ async function page ({ searchParams }: Props) {
       url: listOfVideoUrls[index].signedUrl,
       thumbnailUrl: listOfThumbnailUrls[index].signedUrl
     }))
+
+  if (sort !== undefined) {
+    if (
+      sort !== SORT_TYPE.RECENT &&
+      sort !== SORT_TYPE.RECENT_INVERT &&
+      sort !== SORT_TYPE.A_Z &&
+      sort !== SORT_TYPE.Z_A
+    ) return
+
+    const newList = sortList(imageUrl, sort)
+    return (
+      <FileContainer list={newList} />
+    )
+  }
 
   return (
     <FileContainer list={imageUrl} />

@@ -1,3 +1,6 @@
+import { SORT_TYPE, type OrderParameter } from '@/static/static'
+import { type ExtendedFileType } from '@/type'
+
 export async function getResolutionImage (file: File): Promise<{ width: number, height: number }> {
   return await new Promise((resolve, reject) => {
     if (file !== null) {
@@ -167,4 +170,33 @@ export async function getVideoThumbnail (file: File, videoTimeInSeconds: number)
           })
       })
   })
+}
+export function sortList (list: ExtendedFileType[], order: OrderParameter): any[] {
+  if (order === SORT_TYPE.RECENT) {
+    return list
+  } else if (order === SORT_TYPE.RECENT_INVERT) {
+    return list.reverse()
+  } else if (order === SORT_TYPE.A_Z) {
+    return list.sort((a, b) => {
+      const nombreA = a.name.toUpperCase()
+      const nombreB = b.name.toUpperCase()
+
+      if (nombreA < nombreB) return -1
+      if (nombreA > nombreB) return 1
+
+      return 0
+    })
+  } else if (order === SORT_TYPE.Z_A) {
+    return list.sort((a, b) => {
+      const nombreA = a.name.toUpperCase()
+      const nombreB = b.name.toUpperCase()
+
+      if (nombreA > nombreB) return -1
+      if (nombreA < nombreB) return 1
+
+      return 0
+    })
+  }
+
+  return list
 }

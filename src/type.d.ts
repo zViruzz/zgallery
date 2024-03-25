@@ -13,7 +13,7 @@ export interface ExtendedFileType extends FileType {
   thumbnailUrl?: string
 }
 
-interface registerUserType {
+export interface registerUserType {
   email: string
   password: string
   name?: string
