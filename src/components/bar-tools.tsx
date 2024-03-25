@@ -43,7 +43,7 @@ function BarTools ({ type, title }: Props) {
           {title}
         </h2>
       </div>
-      <div className='flex gap-3 items-center w-full md:w-auto justify-end'>
+      <div className='flex gap-3 items-center w-full md:w-auto justify-end hover:[&>div]:bg-neutral-800 hover:[&>div]:rounded-full [&>div]:transition-all [&>div]:ease-out [&>div]:duration-200'>
         <SearchBar
           isHiddenSearch={isHiddenSearch}
           setHiddenSearch={setHiddenSearch}
@@ -51,12 +51,17 @@ function BarTools ({ type, title }: Props) {
         {
           type === undefined
             ? null
-            : <button className={`${isHiddenSearch ? 'block' : 'hidden md:block'} `}>
+            : <div
+              tabIndex={0}
+              className={`${isHiddenSearch ? 'block' : 'hidden md:block'} hover:bg-neutral-800 rounded-full`}
+            >
               <AddButton type={type} />
-            </button>
+            </div>
         }
-        <div className={`${isHiddenSearch ? 'grid' : 'hidden md:grid'}  hover:bg-[#212121] rounded-full h-10 w-10 place-content-center relative`} >
-          <button onClick={handleClickMenu}>
+        <div className={`${isHiddenSearch ? 'grid' : 'hidden md:grid'} rounded-full h-10 w-10 place-content-center relative`}>
+          <button
+            className='rounded-full grid h-10 w-10 place-content-center '
+            onClick={handleClickMenu}>
             <MenuIcon className='w-[23px] h-[23px] md:w-[27px] md:h-[27px]' />
           </button>
           <MenuTools

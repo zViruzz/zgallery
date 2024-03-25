@@ -32,10 +32,10 @@ function AddButton ({ type }: Props) {
         onChange={handleChange}
       />
       <label
-        className='cursor-pointer hover:bg-[#212121] rounded-full h-10 w-10  grid place-content-center'
+        className='h-10 w-10  grid place-content-center cursor-pointer'
         htmlFor='file-upload'
       >
-        <AddIcon className='w-[28px] h-[28px] md:w-[35px] md:h-[35px]'/>
+        <AddIcon className='w-[28px] h-[28px] md:w-[35px] md:h-[35px]' />
       </label>
     </form>
   )

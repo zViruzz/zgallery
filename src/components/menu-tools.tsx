@@ -56,7 +56,7 @@ function MenuTools ({ isHiddenMenu, setHiddenMenu }: Props) {
   return (
     <div
       ref={containerRef}
-      className={`${isHiddenMenu ? 'hidden' : 'flex'} flex-col absolute bg-neutral-800 w-80 rounded-2xl right-0 z-50 border border-neutral-600`}
+      className={`${isHiddenMenu ? 'invisible origin-top-right  opacity-0 scale-75' : 'visible opacity-100 '} flex flex-col absolute bg-neutral-800 w-80 rounded-2xl right-0 z-50 border border-neutral-600 transition-all ease-in-out`}
 
     >
       <h3 className='py-2 px-5'>Sort by</h3>
