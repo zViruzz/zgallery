@@ -2,7 +2,9 @@ import React from 'react'
 
 function page () {
   return (
-    <div>album</div>
+    <div className='w-full h-full grid place-content-center text-2xl'>
+      Coming soon
+    </div>
   )
 }
 
