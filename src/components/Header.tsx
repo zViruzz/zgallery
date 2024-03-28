@@ -1,5 +1,3 @@
-import React from 'react'
-
 function Header () {
   return (
     <header className='flex justify-end items-center w-full h-24 absolute'>
