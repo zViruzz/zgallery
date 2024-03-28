@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { type User } from '@supabase/supabase-js'
+import Link from 'next/link'
 import Image from 'next/image'
 import SettingIcon from './Icons/setting-icon'
 import profileNull from '@/assets/profile-null.jpg'
@@ -9,6 +9,7 @@ interface Props {
 }
 
 function Profile ({ user }: Props) {
+  console.log('client')
   return (
     <div className='flex justify-between items-center'>
       {(user != null) && (
