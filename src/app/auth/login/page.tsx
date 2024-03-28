@@ -1,15 +1,16 @@
 'use client'
-import InputForm from '@/components/input-form'
 import useAuth from '@/hook/useAuth'
 import { InputRegister } from '@/static/static'
 import { useRouter } from 'next/navigation'
 import { type FormEvent } from 'react'
 import Link from 'next/link'
 import ButtonGoogle from '@/components/button-google'
+import InputForm from '@/components/input-form'
 
 const { EMAIL, PASSWORD } = InputRegister
 
 function page () {
+  console.log('page login client')
   const router = useRouter()
   const { loginUser, signInWithGoogle } = useAuth()
 
