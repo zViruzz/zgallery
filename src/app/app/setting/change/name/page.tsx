@@ -1,4 +1,3 @@
-'use client'
 import InputForm from '@/components/input-form'
 import useAuth from '@/hook/useAuth'
 import { InputRegister } from '@/static/static'
