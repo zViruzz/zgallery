@@ -1,5 +1,5 @@
 'use client'
-import Input from '@/components/input'
+import InputForm from '@/components/input-form'
 import useAuth from '@/hook/useAuth'
 import { InputRegister } from '@/static/static'
 import { useRouter } from 'next/navigation'
@@ -43,7 +43,7 @@ function page () {
 
         <div className='flex flex-col h-full w-full gap-5'>
           <div>
-            <Input
+            <InputForm
               id={EMAIL}
               type='email'
               placeholder='Email'
@@ -51,7 +51,7 @@ function page () {
             />
           </div>
           <div >
-            <Input
+            <InputForm
               id={PASSWORD}
               type='password'
               placeholder='Password'

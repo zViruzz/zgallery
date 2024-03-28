@@ -1,5 +1,5 @@
 'use client'
-import Input from '@/components/input'
+import InputForm from '@/components/input-form'
 import useAuth from '@/hook/useAuth'
 import { InputRegister } from '@/static/static'
 import { type FormEvent } from 'react'
@@ -43,14 +43,14 @@ function page () {
 
           <div className=' flex flex-col h-full w-full gap-5'>
             <div>
-              <Input
+              <InputForm
                 id={USERNAME}
                 type='text'
                 placeholder='Username'
               />
             </div>
             <div>
-              <Input
+              <InputForm
                 id={EMAIL}
                 type='email'
                 placeholder='Email'
@@ -58,7 +58,7 @@ function page () {
               />
             </div>
             <div>
-              <Input
+              <InputForm
                 id={PASSWORD}
                 type='password'
                 placeholder='Password'
@@ -66,7 +66,7 @@ function page () {
               />
             </div>
             <div>
-              <Input
+              <InputForm
                 id={REPASSWORD}
                 type='password'
                 placeholder='Password'
