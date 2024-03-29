@@ -26,7 +26,7 @@ dependencies:
 
 devDependencies:
   '@next/eslint-plugin-next':
-    specifier: ^14.1.4
+    specifier: 14.1.4
     version: 14.1.4
   '@types/node':
     specifier: 20.11.30
