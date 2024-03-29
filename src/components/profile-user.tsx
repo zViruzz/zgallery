@@ -9,7 +9,6 @@ interface Props {
 }
 
 function Profile ({ user }: Props) {
-  console.log('client')
   return (
     <div className='flex justify-between items-center'>
       {(user != null) && (

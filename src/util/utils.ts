@@ -56,21 +56,19 @@ export function incrementedName (name: string, list: Array<{ name: string }>) {
   const result = getStringAndNumberBeforeParentheses(name)
 
   const nameBefore = result === null ? name : result.nameBefore
-  // // // console.log('🚀 ~ incrementedName ~ nameBefore:', nameBefore)
 
   for (const element of list) {
     if (element.name.startsWith(nameBefore)) {
       count += 1
     }
   }
-  // // // console.log('🚀 ~ incrementedName ~ count:', count)
 
   const arrayName = name.split('.')
   const extension = arrayName[arrayName.length - 1]
   const newName = `${nameBefore}(${count}).${extension}`
 
   if (count === 0) return name
-  // // // console.log('🚀 ~ incrementedName ~ newName:', newName)
+
   return newName
 }
 
@@ -165,7 +163,6 @@ export async function getVideoThumbnail (file: File, videoTimeInSeconds: number)
             const NewFile = new File([blob], 'video_thumbnail', {
               type: 'image/png'
             })
-            console.log('NewFile', NewFile)
             resolve(NewFile)
           })
       })
