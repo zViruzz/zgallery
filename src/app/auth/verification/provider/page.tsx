@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 'use client'
 import Link from 'next/link'
 import { createBrowserClient } from '@supabase/ssr'
