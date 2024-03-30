@@ -12,6 +12,10 @@ export const enum SORT_TYPE {
   Z_A = 'Z-A'
 }
 
+export const enum SP_TABLET {
+  PROFILES = 'profiles',
+}
+
 export type OrderParameter = `${SORT_TYPE.RECENT}` | `${SORT_TYPE.RECENT_INVERT}` | `${SORT_TYPE.A_Z}` | `${SORT_TYPE.Z_A}`
 
 export type InputRegisterType = typeof InputRegister

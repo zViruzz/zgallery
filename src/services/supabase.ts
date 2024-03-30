@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { SP_TABLET } from '@/static/static'
 import { type FileType } from '@/type'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { type User } from '@supabase/supabase-js'
@@ -32,9 +33,9 @@ export async function createServerClientHandle () {
 export async function updateDataBaseList (supabase: any, user: User | null, prevList: any, newFile: File) {
   try {
     await supabase
-      .from('data_image')
+      .from(SP_TABLET.PROFILES)
       .update({
-        list_image: {
+        list_files: {
           image: [
             ...prevList,
             {
@@ -57,12 +58,12 @@ export async function deleteFile (fileName: string, fileType: 'image' | 'video')
 
     const getPrevList = async (user: User | null) => {
       const { data: column } = await supabase
-        .from('data_image')
-        .select('list_image')
+        .from(SP_TABLET.PROFILES)
+        .select('list_files')
         .eq('user_id', user?.id)
 
       if (column === null) return []
-      const prevList: File[] = column[0].list_image === null ? [] : column[0].list_image.image
+      const prevList: File[] = column[0].list_files === null ? [] : column[0].list_files.image
 
       return prevList
     }
@@ -71,9 +72,9 @@ export async function deleteFile (fileName: string, fileType: 'image' | 'video')
     const newList = prevList.filter(item => item.name !== fileName)
 
     await supabase
-      .from('data_image')
+      .from(SP_TABLET.PROFILES)
       .update({
-        list_image: {
+        list_files: {
           image: [
             ...newList
           ]
@@ -113,12 +114,12 @@ export async function favoriteFile (fileName: string) {
 
     const getPrevList = async (user: User | null) => {
       const { data: column } = await supabase
-        .from('data_image')
-        .select('list_image')
+        .from(SP_TABLET.PROFILES)
+        .select('list_files')
         .eq('user_id', user?.id)
 
       if (column === null) return []
-      const prevList: FileType[] = column[0].list_image === null ? [] : column[0].list_image.image
+      const prevList: FileType[] = column[0].list_files === null ? [] : column[0].list_files.image
 
       return prevList
     }
@@ -135,9 +136,9 @@ export async function favoriteFile (fileName: string) {
     })
 
     await supabase
-      .from('data_image')
+      .from(SP_TABLET.PROFILES)
       .update({
-        list_image: {
+        list_files: {
           image: [
             ...newList
           ]

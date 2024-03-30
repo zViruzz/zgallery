@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { SP_TABLET } from '@/static/static'
 import { type registerUserType } from '@/type'
 import { createBrowserClient } from '@supabase/ssr'
 import { type User, type UserResponse } from '@supabase/supabase-js'
@@ -8,6 +9,8 @@ interface signinUserType {
   email: string
   password: string
 }
+
+const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
 
 function useAuth () {
   const [user, setUser] = useState<User | null>(null)
@@ -25,7 +28,7 @@ function useAuth () {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: 'http://localhost:3000/auth/verification/provider'
+          redirectTo: `${DOMAIN_URL}/auth/verification/provider`
         }
       })
       if (error != null) console.error('A ocurido un error al autenticar', error)
@@ -84,7 +87,7 @@ function useAuth () {
       const email = user?.email
       if (email === undefined) { console.log('email undefined'); return }
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: 'http://localhost:3000/app/setting/change/password'
+        redirectTo: `${DOMAIN_URL}/app/setting/change/password`
       })
 
       if (error != null) console.error('A ocurido un error al cambiar de password', error)
@@ -111,9 +114,9 @@ function useAuth () {
     try {
       if (id === undefined) { console.log('email undefined'); return }
       const { data, error } = await supabase
-        .from('data_image')
+        .from(SP_TABLET.PROFILES)
         .insert([
-          { user_id: id, list_image: null }
+          { user_id: id, list_files: null }
         ])
         .select()
       if (error != null) console.error('A ocurido un error al autenticar', error)

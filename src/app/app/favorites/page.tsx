@@ -1,4 +1,5 @@
 import FileContainer from '@/components/file-container'
+import { SP_TABLET } from '@/static/static'
 import { type FileType, type ExtendedFileType } from '@/type'
 import authUser from '@/util/auth-user'
 import { type SupabaseClient } from '@supabase/supabase-js'
@@ -23,16 +24,16 @@ async function page ({ searchParams }: Props) {
   const imageUrl: ExtendedFileType[] = []
 
   const { data } = await supabase
-    .from('data_image')
-    .select('list_image')
+    .from(SP_TABLET.PROFILES)
+    .select('list_files')
     .eq('user_id', user?.id)
 
   if (data === null) return
 
   let list: FileType[] =
-    data[0].list_image === null
+    data[0].list_files === null
       ? []
-      : data[0].list_image.image
+      : data[0].list_files.image
 
   if (name !== undefined) {
     list = list.filter(img => img.name.includes(name))

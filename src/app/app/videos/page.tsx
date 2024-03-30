@@ -1,5 +1,5 @@
 import FileContainer from '@/components/file-container'
-import { SORT_TYPE } from '@/static/static'
+import { SORT_TYPE, SP_TABLET } from '@/static/static'
 import { type FileType, type ExtendedFileType } from '@/type'
 import authUser from '@/util/auth-user'
 import { sortList } from '@/util/utils'
@@ -25,16 +25,16 @@ async function page ({ searchParams }: Props) {
   const { name, sort } = searchParams
 
   const { data } = await supabase
-    .from('data_image')
-    .select('list_image')
+    .from(SP_TABLET.PROFILES)
+    .select('list_files')
     .eq('user_id', user?.id)
 
   if (data === null) return
 
   let list: FileType[] =
-    data[0].list_image === null
+    data[0].list_files === null
       ? []
-      : data[0].list_image.image
+      : data[0].list_files.image
 
   list = list.filter(img => img.fileType === 'video')
 

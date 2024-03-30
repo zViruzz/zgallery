@@ -2,6 +2,7 @@
 import { incrementedName } from '@/util/utils'
 import { type User } from '@supabase/supabase-js'
 import { createServerClientHandle, updateDataBaseList } from './supabase'
+import { SP_TABLET } from '@/static/static'
 
 export async function interVideo (video: File, thumbnail: File, resolution: any) {
   try {
@@ -10,12 +11,12 @@ export async function interVideo (video: File, thumbnail: File, resolution: any)
 
     const getPrevList = async (user: User | null) => {
       const { data: column } = await supabase
-        .from('data_image')
-        .select('list_image')
+        .from(SP_TABLET.PROFILES)
+        .select('list_files')
         .eq('user_id', user?.id)
 
       if (column === null) return []
-      const prevList = column[0].list_image === null ? [] : column[0].list_image.image
+      const prevList = column[0].list_files === null ? [] : column[0].list_files.image
 
       return prevList
     }
