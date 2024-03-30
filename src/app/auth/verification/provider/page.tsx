@@ -13,11 +13,8 @@ function page () {
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('🚀 ~ file: page.tsx:52 ~ supabase.auth.onAuthStateChange ~ event:', event)
       if (session === null) {
         console.log('Session is null')
-      } else {
-        console.log('🚀 ~ file: page.tsx:59 ~ supabase.auth.onAuthStateChange ~ session?.user:', session?.user)
       }
     })
 

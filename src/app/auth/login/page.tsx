@@ -10,7 +10,6 @@ import InputForm from '@/components/input-form'
 const { EMAIL, PASSWORD } = InputRegister
 
 function page () {
-  console.log('page login client')
   const router = useRouter()
   const { loginUser, signInWithGoogle } = useAuth()
 
