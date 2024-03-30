@@ -13,6 +13,7 @@ interface signinUserType {
 const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
 
 function useAuth () {
+  if (DOMAIN_URL === undefined) console.error('DOMAIN_URL  is undefined')
   const [user, setUser] = useState<User | null>(null)
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
