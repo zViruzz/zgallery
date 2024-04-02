@@ -29,6 +29,7 @@ function FileContainer ({ list }: Props) {
     fileName: '',
     height: 0,
     width: 0,
+    size: 0,
     url: ''
   })
 
@@ -64,6 +65,7 @@ function FileContainer ({ list }: Props) {
       $textDelete.innerHTML = `Are you sure you want to delete ${selectedItem.current.fileName}?`
     }
   }
+
   const onClickFavorite = () => {
     const fileName = selectedItem.current.fileName
     favoriteFile(fileName)

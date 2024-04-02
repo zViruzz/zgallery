@@ -11,7 +11,7 @@ const config: Config = {
       gridTemplateColumns: {
         // res: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))'
         gallery_md: 'repeat(auto-fill, minmax(200px, 1fr))',
-        gallery: 'repeat(auto-fit, minmax(125px, 1fr))'
+        gallery: 'repeat(auto-fill, minmax(125px, 1fr))'
       },
       gridTemplateRows: {
         gallery_md: 'repeat(auto-fit, 200px)',

@@ -3,7 +3,7 @@
 import { SP_TABLET } from '@/static/static'
 import { type FileType } from '@/type'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
-import { type User } from '@supabase/supabase-js'
+import { type SupabaseClient, type User } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 
 export async function createServerClientHandle () {
@@ -30,7 +30,8 @@ export async function createServerClientHandle () {
   return supabase
 }
 
-export async function updateDataBaseList (supabase: any, user: User | null, prevList: any, newFile: File) {
+export async function updateDataBaseList (params: { supabase: SupabaseClient, user: User | null, prevList: any, newFile: FileType, size: number }) {
+  const { supabase, user, size, prevList, newFile } = params
   try {
     await supabase
       .from(SP_TABLET.PROFILES)
@@ -39,16 +40,40 @@ export async function updateDataBaseList (supabase: any, user: User | null, prev
           image: [
             ...prevList,
             {
-              ...newFile,
-              favorite: false
+              ...newFile
             }
           ]
-        }
+        },
+        bucket_size: size
       })
       .eq('user_id', user?.id)
   } catch (error) {
     console.log(error)
   }
+}
+
+export async function getListFiles (supabase: SupabaseClient, user: User | null) {
+  const { data: column } = await supabase
+    .from(SP_TABLET.PROFILES)
+    .select('list_files')
+    .eq('user_id', user?.id)
+
+  if (column === null) return []
+  const prevList = column[0].list_files === null ? [] : column[0].list_files.image
+
+  return prevList
+}
+
+export async function getBucketSize (supabase: SupabaseClient, user: User | null) {
+  const { data: column } = await supabase
+    .from(SP_TABLET.PROFILES)
+    .select('bucket_size')
+    .eq('user_id', user?.id)
+
+  if (column === null) throw new Error('error column not found')
+  const prevSize = column[0].bucket_size
+
+  return prevSize
 }
 
 export async function deleteFile (fileName: string, fileType: 'image' | 'video') {

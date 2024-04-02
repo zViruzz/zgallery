@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server'
 import { interImage } from '@/services/image'
 import { deleteFile, favoriteFile } from '@/services/supabase'
+import { type resolutionType } from '@/type'
 
 export async function POST (request: Request) {
   try {
     const formData = await request.formData()
     const image = formData.get('image') as File
-    const resolution = JSON.parse(formData.get('resolution') as string) as { width: number, height: number }
+    const resolution = JSON.parse(formData.get('resolution') as string) as resolutionType
 
     const { data, error } = await interImage(image, resolution)
 

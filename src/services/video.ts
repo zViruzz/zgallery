@@ -1,28 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { incrementedName } from '@/util/utils'
-import { type User } from '@supabase/supabase-js'
-import { createServerClientHandle, updateDataBaseList } from './supabase'
-import { SP_TABLET } from '@/static/static'
+import { createServerClientHandle, getBucketSize, getListFiles, updateDataBaseList } from './supabase'
+import { type resolutionType, type FileType } from '@/type'
 
-export async function interVideo (video: File, thumbnail: File, resolution: any) {
+export async function interVideo (video: File, thumbnail: File, resolution: resolutionType) {
   try {
     const supabase = await createServerClientHandle()
     const { data: { user } } = await supabase.auth.getUser()
 
-    const getPrevList = async (user: User | null) => {
-      const { data: column } = await supabase
-        .from(SP_TABLET.PROFILES)
-        .select('list_files')
-        .eq('user_id', user?.id)
-
-      if (column === null) return []
-      const prevList = column[0].list_files === null ? [] : column[0].list_files.image
-
-      return prevList
-    }
-
-    const prevList = await getPrevList(user)
+    const prevList = await getListFiles(supabase, user)
+    const prevSize = await getBucketSize(supabase, user)
     const fileName = incrementedName(video.name, prevList)
+    const newSize = prevSize + video.size
 
     const { data: responseVideo, error } = await supabase.storage
       .from('video')
@@ -34,15 +23,23 @@ export async function interVideo (video: File, thumbnail: File, resolution: any)
 
     if (error !== null) return { data: null, error }
 
-    const newVideo: File = {
+    const newVideo: FileType = {
       id: (responseVideo as any)?.id,
       fileType: 'video',
+      favorite: false,
       name: fileName,
+      size: video.size,
       fileName,
       ...resolution
     }
 
-    await updateDataBaseList(supabase, user, prevList, newVideo)
+    await updateDataBaseList({
+      supabase,
+      user,
+      prevList,
+      newFile: newVideo,
+      size: newSize
+    })
 
     return { data: responseVideo, error: null }
   } catch (error) {
