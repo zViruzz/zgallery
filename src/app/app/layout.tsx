@@ -34,11 +34,40 @@ async function layout ({ children }: { children: ReactNode }) {
                 alt="Logo"
               />
             </div>
-            <ul className='flex flex-col gap-6 mt-5
+            {/* <ul className='flex flex-col gap-6 mt-5
             [&>li>a]:flex [&>li>a]:items-center [&>li>a]:gap-3 [&>li]:transition-colors
             hover:[&>li]:text-tertiary  hover:[&>li]:underline [&>li]:decoration-[3px]
             [&>li]:underline-offset-[6px]'>
               <li className='hover:text-tertiary hover:brightness-150 hover:underline decoration-[3px] underline-offset-[6px]'>
+                <Link href='/app/imagen'>
+                  <GalleryIcon width={24} height={24} />
+                  Imagen
+                </Link>
+              </li>
+              <li >
+                <Link href='/app/album'>
+                  <AlbumIcon width={27} height={27} />
+                  Album
+                </Link>
+              </li>
+              <li>
+                <Link href='/app/videos'>
+                  <VideoIcon width={25} height={25} />
+                  Video
+                </Link>
+              </li>
+              <li >
+                <Link href='/app/favorites'>
+                  <HeartIcon width={27} height={27} />
+                  Favorites
+                </Link>
+              </li>
+            </ul> */}
+            <ul className='flex flex-col gap-4 mt-5
+            [&>li>a]:flex [&>li>a]:items-center [&>li>a]:gap-3 [&>li>a]:transition-all
+            [&>li>a]:duration-75 [&>li>a]:ease-out
+            [&>li]:underline-offset-[6px] [&>li>a]:bg-secodary [&>li>a]:p-3 [&>li>a]:rounded-xl hover:[&>li>a]:bg-transparent hover:[&>li>a]:scale-[1.07]'>
+              <li>
                 <Link href='/app/imagen'>
                   <GalleryIcon width={24} height={24} />
                   Imagen
