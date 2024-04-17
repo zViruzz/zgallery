@@ -1,7 +1,7 @@
-import { getStringAndNumberBeforeParentheses, incrementedName } from '@/util/utils'
+import { incrementedName } from '@/util/utils'
 
 describe('Test incrementedName', () => {
-  it('comprobar si no devuelve un elemento item de la lista', () => {
+  test('comprobar si no devuelve un elemento item de la lista', () => {
     const listName = [
       { name: 'gato.png' },
       { name: 'dog.jpg' },
@@ -13,44 +13,49 @@ describe('Test incrementedName', () => {
     expect(listNameArray).not.toEqual(expect.arrayContaining([resultName]))
   })
 
-  it('----------------------', () => {
+  test('check that it does not increment the name if it has different formatting', () => {
     const listName = [
       { name: 'gato.png' },
       { name: 'dog.jpg' },
       { name: 'panda.png' }
     ]
 
-    const name = 'panda.jpg'
-    const resultUniqueName = incrementedName(name, listName) // panda(1).jpg
-    console.log('🚀 ~ it ~ resultUniqueName:', resultUniqueName)
-    const resultMatch = getStringAndNumberBeforeParentheses(name)
+    // Manejar errores si la función incrementedName() lanza una excepción
+    expect(() => incrementedName('panda.jpg', listName)).not.toThrow()
 
-    if (resultMatch === null) { console.log('resultMatch null'); return }
-    const { nameBefore, extension } = resultMatch
+    // Prueba con diferentes extensiones
+    expect(incrementedName('panda.jpg', listName)).toBe('panda.jpg')
+    expect(incrementedName('panda.jpeg', listName)).toBe('panda.jpeg')
 
-    const nameOnlyOfList = listName.find(item => item.name.includes(nameBefore))
-    console.log('🚀 ~ it ~ nameOnlyOfList:', nameOnlyOfList)
+    // Prueba con nombres que ya existen en la lista
+    expect(incrementedName('gato.jpg', listName)).toBe('gato.jpg')
 
-    if (extension === undefined) { console.log('extension undefined'); return }
-    const isName = nameOnlyOfList?.name.includes(nameBefore)
-    const isFormat = nameOnlyOfList?.name.includes(extension)
-    // console.log('🚀 ~ it ~ isName:', nameBefore, isName)
-    // console.log('🚀 ~ it ~ isFormat:', extension, isFormat)
-
-    if (isName === true && isFormat === false) {
-      const regex = /\(\d+\)/
-      console.log('🚀 ~ it ~ regex.test(name):', regex.test(resultUniqueName))
-      if (regex.test(resultUniqueName)) {
-        console.error('contiene un numero adentro con parentesis', resultUniqueName, listName)
-      }
-    } else {
-      console.log('Todo correcto', name, nameOnlyOfList)
-    }
-    // const resultMatch = getStringAndNumberBeforeParentheses(name)
-    // expect(listNameArray).not.toEqual(expect.arrayContaining([resultName]))
+    // Prueba con nombres que contienen caracteres especiales
+    expect(incrementedName('pepé.jpg', listName)).toBe('pepé.jpg')
   })
 
-  // it('does not match if received does not contain expected elements', () => {
-  //   expect(['Bob', 'Eve']).not.toEqual(expect.arrayContaining(expected))
-  // })
+  test('check that the name increments in number depending on whether the name is repeated', () => {
+    const listName = [
+      { name: 'gato.png' },
+      { name: 'dog.jpg' },
+      { name: 'panda.png' }
+    ]
+
+    // Manejar errores si la función incrementedName() lanza una excepción
+    expect(() => incrementedName('panda.png', listName)).not.toThrow()
+    // Prueba que incremente el contador del nombre
+    expect(incrementedName('panda.png', listName)).toBe('panda(1).png')
+
+    const listName2 = [
+      { name: 'gato.png' },
+      { name: 'dog.jpg' },
+      { name: 'panda.png' },
+      { name: 'panda(1).png' }
+    ]
+
+    // Manejar errores si la función incrementedName() lanza una excepción
+    expect(() => incrementedName('panda.png', listName2)).not.toThrow()
+    // Prueba que incremente el contador del nombre
+    expect(incrementedName('panda.png', listName2)).toBe('panda(2).png')
+  })
 })

@@ -55,7 +55,7 @@ export function incrementedName (name: string, list: Array<{ name: string }>) {
   let count = 0
   const result = getStringAndNumberBeforeParentheses(name)
 
-  const nameBefore = result === null ? name : result.nameBefore
+  const nameBefore = typeof result === 'string' ? name : result.nameBefore
 
   for (const element of list) {
     if (element.name.startsWith(nameBefore)) {
@@ -72,7 +72,7 @@ export function incrementedName (name: string, list: Array<{ name: string }>) {
   return newName
 }
 
-export function getStringAndNumberBeforeParentheses (text: string): { nameBefore: string, countParentheses?: string, extension?: string } | null {
+export function getStringAndNumberBeforeParentheses (text: string): { nameBefore: string, countParentheses?: string, extension?: string } | string {
   const regex = /(.+)(\(\d+\))/
   const match = text.match(regex)
 
@@ -86,8 +86,9 @@ export function getStringAndNumberBeforeParentheses (text: string): { nameBefore
   if (matchFormat !== null) {
     return { nameBefore: matchFormat[1], extension: matchFormat[2] }
   }
+  console.log('🚀 ~ getStringAndNumberBeforeParentheses ~ matchFormat:', matchFormat)
 
-  return null
+  return text
 }
 
 export async function importFileandPreview (file: File, revoke: boolean): Promise<string> {
