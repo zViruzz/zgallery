@@ -24,13 +24,29 @@ describe('Test incrementedName', () => {
     const resultUniqueName = incrementedName(name, listName) // panda(1).jpg
     console.log('🚀 ~ it ~ resultUniqueName:', resultUniqueName)
     const resultMatch = getStringAndNumberBeforeParentheses(name)
-    const nameBefore = resultMatch === null ? name : resultMatch.nameBefore
-    const isexist = resultUniqueName.includes(nameBefore)
-    console.log('🚀 ~ it ~ isexist:', isexist)
-    // const resultMatch = getStringAndNumberBeforeParentheses(name)
 
-    const isInclude = listName.find(item => item.name === name)
-    console.log('🚀 ~ it ~ isInclude:', isInclude)
+    if (resultMatch === null) { console.log('resultMatch null'); return }
+    const { nameBefore, extension } = resultMatch
+
+    const nameOnlyOfList = listName.find(item => item.name.includes(nameBefore))
+    console.log('🚀 ~ it ~ nameOnlyOfList:', nameOnlyOfList)
+
+    if (extension === undefined) { console.log('extension undefined'); return }
+    const isName = nameOnlyOfList?.name.includes(nameBefore)
+    const isFormat = nameOnlyOfList?.name.includes(extension)
+    // console.log('🚀 ~ it ~ isName:', nameBefore, isName)
+    // console.log('🚀 ~ it ~ isFormat:', extension, isFormat)
+
+    if (isName === true && isFormat === false) {
+      const regex = /\(\d+\)/
+      console.log('🚀 ~ it ~ regex.test(name):', regex.test(resultUniqueName))
+      if (regex.test(resultUniqueName)) {
+        console.error('contiene un numero adentro con parentesis', resultUniqueName, listName)
+      }
+    } else {
+      console.log('Todo correcto', name, nameOnlyOfList)
+    }
+    // const resultMatch = getStringAndNumberBeforeParentheses(name)
     // expect(listNameArray).not.toEqual(expect.arrayContaining([resultName]))
   })
 
