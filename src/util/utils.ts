@@ -51,20 +51,22 @@ export async function getResolutionVideo (file: File): Promise<{ width: number, 
 
 export function incrementedName (name: string, list: Array<{ name: string }>) {
   if (list.length === 0) return name
-
-  let count = 0
-  const result = getStringAndNumberBeforeParentheses(name)
-
-  if (typeof result === 'string') {
+  if (list.every(x => x.name !== name)) {
+    console.log('name already', name)
     return name
   }
 
-  const nameData = result
+  let count = 0
+  const nameData = getNameAndFormat(name)
+
+  if (typeof nameData === 'string') {
+    return name
+  }
 
   for (const element of list) {
     if (
       element.name.startsWith(nameData.nameBefore) &&
-      element.name.endsWith(nameData.extension)
+      element.name.endsWith(nameData.format)
     ) {
       count += 1
     }
@@ -79,7 +81,7 @@ export function incrementedName (name: string, list: Array<{ name: string }>) {
   return newName
 }
 
-export function getStringAndNumberBeforeParentheses (text: string): { nameBefore: string, extension: string } | string {
+export function getNameAndFormat (text: string): { nameBefore: string, format: string } | string {
   // const regex = /(.+)(\(\d+\))/
   // const match = text.match(regex)
 
@@ -91,7 +93,7 @@ export function getStringAndNumberBeforeParentheses (text: string): { nameBefore
   const matchFormat = text.match(regexFormat)
 
   if (matchFormat !== null) {
-    return { nameBefore: matchFormat[1], extension: matchFormat[2] }
+    return { nameBefore: matchFormat[1], format: matchFormat[2] }
   }
   return text
 }

@@ -58,4 +58,15 @@ describe('Test incrementedName', () => {
     // Prueba que incremente el contador del nombre
     expect(incrementedName('panda.png', listName2)).toBe('panda(2).png')
   })
+
+  test('check  not to increment the name if there is no value equal to it ', () => {
+    const listName = [
+      { name: 'gato.png' },
+      { name: 'dog.jpg' },
+      { name: 'panda(1).png' }
+    ]
+
+    expect(() => incrementedName('panda.png', listName)).not.toThrow()
+    expect(incrementedName('panda.png', listName)).toBe('panda.png')
+  })
 })
