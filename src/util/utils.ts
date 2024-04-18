@@ -55,30 +55,37 @@ export function incrementedName (name: string, list: Array<{ name: string }>) {
   let count = 0
   const result = getStringAndNumberBeforeParentheses(name)
 
-  const nameBefore = typeof result === 'string' ? name : result.nameBefore
+  if (typeof result === 'string') {
+    return name
+  }
+
+  const nameData = result
 
   for (const element of list) {
-    if (element.name.startsWith(nameBefore)) {
+    if (
+      element.name.startsWith(nameData.nameBefore) &&
+      element.name.endsWith(nameData.extension)
+    ) {
       count += 1
     }
   }
 
   const arrayName = name.split('.')
   const extension = arrayName[arrayName.length - 1]
-  const newName = `${nameBefore}(${count}).${extension}`
+  const newName = `${nameData.nameBefore}(${count}).${extension}`
 
   if (count === 0) return name
 
   return newName
 }
 
-export function getStringAndNumberBeforeParentheses (text: string): { nameBefore: string, countParentheses?: string, extension?: string } | string {
-  const regex = /(.+)(\(\d+\))/
-  const match = text.match(regex)
+export function getStringAndNumberBeforeParentheses (text: string): { nameBefore: string, extension: string } | string {
+  // const regex = /(.+)(\(\d+\))/
+  // const match = text.match(regex)
 
-  if (match !== null) {
-    return { nameBefore: match[1], countParentheses: match[2] }
-  }
+  // if (match !== null) {
+  //   return { nameBefore: match[1], countParentheses: match[2] }
+  // }
 
   const regexFormat = /^(.+)\.([^.]+)$/
   const matchFormat = text.match(regexFormat)
@@ -86,8 +93,6 @@ export function getStringAndNumberBeforeParentheses (text: string): { nameBefore
   if (matchFormat !== null) {
     return { nameBefore: matchFormat[1], extension: matchFormat[2] }
   }
-  console.log('🚀 ~ getStringAndNumberBeforeParentheses ~ matchFormat:', matchFormat)
-
   return text
 }
 
