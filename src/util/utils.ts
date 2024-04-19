@@ -49,20 +49,22 @@ export async function getResolutionVideo (file: File): Promise<{ width: number, 
   })
 }
 
+// Definición de función exportada para incrementar un nombre en una lista
 export function incrementedName (name: string, list: Array<{ name: string }>) {
+  // Si la lista está vacía, devuelve el nombre sin cambios
   if (list.length === 0) return name
+  // Comprueba si el nombre no está en la lista, si es así, devuelve el nombre sin cambios
   if (list.every(x => x.name !== name)) {
-    console.log('name already', name)
     return name
   }
 
   let count = 0
   const nameData = getNameAndFormat(name)
 
-  if (typeof nameData === 'string') {
-    return name
-  }
+  // Si el nombre no se puede analizar correctamente, devuelve el nombre sin cambios
+  if (typeof nameData === 'string') return name
 
+  // Itera sobre la lista para contar la cantidad de nombres duplicados con el mismo formato
   for (const element of list) {
     if (
       element.name.startsWith(nameData.nameBefore) &&
@@ -72,12 +74,21 @@ export function incrementedName (name: string, list: Array<{ name: string }>) {
     }
   }
 
-  const arrayName = name.split('.')
-  const extension = arrayName[arrayName.length - 1]
-  const newName = `${nameData.nameBefore}(${count}).${extension}`
+  // Itera sobre la lista para encontrar si el nuevo nombre generado ya existe
+  for (const element of list) {
+    const newName = `${nameData.nameBefore}(${count}).${nameData.format}`
+    // Si el nuevo nombre generado ya existe en la lista, incrementa el contador
+    if (newName === element.name) {
+      count += 1
+    }
+  }
 
+  // Genera el nuevo nombre con el contador actualizado
+  const newName = `${nameData.nameBefore}(${count}).${nameData.format}`
+  // Si no se encontraron nombres duplicados, devuelve el nombre sin cambios
   if (count === 0) return name
 
+  // Devuelve el nuevo nombre generado
   return newName
 }
 
