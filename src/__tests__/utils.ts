@@ -1,4 +1,5 @@
-import { incrementedName } from '@/util/utils'
+import { type ExtendedFileType } from '@/type'
+import { incrementedName, sortList } from '@/util/utils'
 
 describe('Test incrementedName', () => {
   test('check if it does not return a list item', () => {
@@ -83,7 +84,7 @@ describe('Test incrementedName', () => {
     expect(incrementedName('panda.png', listName)).toBe('panda.png')
   })
 
-  test('new test -----', () => {
+  test('check that the name is not repeated if there are already other incremental names in the list', () => {
     const listName = [
       { name: 'gato.png' },
       { name: 'dog.jpg' },
@@ -103,5 +104,245 @@ describe('Test incrementedName', () => {
     ]
 
     expect(incrementedName('panda.png', listName2)).toBe('panda(5).png')
+  })
+})
+
+describe('Test sortList', () => {
+  test('Order from a-z', () => {
+    const data: ExtendedFileType[] = [
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Cocodrilo.jpg',
+        fileName: 'Cocodrilo.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      },
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Alacran.jpg',
+        fileName: 'Alacrán.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      },
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Ballena.jpg',
+        fileName: 'Ballena.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      }
+    ]
+
+    expect(sortList(data, 'A-Z')).toEqual([
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Alacran.jpg',
+        fileName: 'Alacrán.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      },
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Ballena.jpg',
+        fileName: 'Ballena.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      },
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Cocodrilo.jpg',
+        fileName: 'Cocodrilo.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      }
+    ])
+  })
+  test('Order from z-a', () => {
+    const data: ExtendedFileType[] = [
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Cocodrilo.jpg',
+        fileName: 'Cocodrilo.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      },
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Alacran.jpg',
+        fileName: 'Alacrán.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      },
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Ballena.jpg',
+        fileName: 'Ballena.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      }
+    ]
+
+    expect(sortList(data, 'Z-A')).toEqual([
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Cocodrilo.jpg',
+        fileName: 'Cocodrilo.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      },
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Ballena.jpg',
+        fileName: 'Ballena.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      }, {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Alacran.jpg',
+        fileName: 'Alacrán.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      }
+    ])
+  })
+
+  test('Order from RECENT', () => {
+    const data: ExtendedFileType[] = [
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Cocodrilo.jpg',
+        fileName: 'Cocodrilo.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      },
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Alacran.jpg',
+        fileName: 'Alacrán.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      },
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Ballena.jpg',
+        fileName: 'Ballena.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      }
+    ]
+
+    expect(sortList(data, 'RECENT')).toEqual([
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Cocodrilo.jpg',
+        fileName: 'Cocodrilo.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      },
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Alacran.jpg',
+        fileName: 'Alacrán.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      },
+      {
+        id: '2A8875782',
+        fileType: 'image',
+        favorite: false,
+        name: 'Ballena.jpg',
+        fileName: 'Ballena.jpg',
+        height: 222,
+        width: 222,
+        size: 1200,
+        url: 'http://web/panda.jpg',
+        thumbnailUrl: 'http://web/panda.jpg'
+      }
+    ])
   })
 })

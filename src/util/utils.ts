@@ -194,8 +194,8 @@ export function sortList (list: ExtendedFileType[], order: OrderParameter): any[
     return list.reverse()
   } else if (order === SORT_TYPE.A_Z) {
     return list.sort((a, b) => {
-      const nombreA = a.name.toUpperCase()
-      const nombreB = b.name.toUpperCase()
+      const nombreA = a.name.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      const nombreB = b.name.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
       if (nombreA < nombreB) return -1
       if (nombreA > nombreB) return 1
