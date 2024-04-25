@@ -22,7 +22,7 @@ function page () {
     const password = target[PASSWORD].value
 
     await registerUser({ email, password, name })
-    router.push('/auth/verification/provider')
+    router.push('/auth/verification/email')
     router.refresh()
   }
 

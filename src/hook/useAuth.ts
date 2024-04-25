@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { useNotificationContext } from '@/context/notification'
 import { SP_TABLET } from '@/static/static'
 import { type registerUserType } from '@/type'
 import { createBrowserClient } from '@supabase/ssr'
@@ -14,6 +15,8 @@ const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
 
 function useAuth () {
   if (DOMAIN_URL === undefined) console.error('DOMAIN_URL  is undefined')
+  const { notification, handleNotification } = useNotificationContext()
+
   const [user, setUser] = useState<User | null>(null)
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -46,13 +49,11 @@ function useAuth () {
         password,
         options: {
           data: {
-            name
+            name,
+            full_name: name
           }
         }
       })
-
-      const id = data.user?.id
-      await createRowDataImage(id)
 
       if (error != null) console.error('A ocurido un error al autenticar', error)
       return { data, error }
@@ -67,6 +68,20 @@ function useAuth () {
         email,
         password
       })
+
+      console.log('🚀 ~ loginUser ~ error:', error?.message)
+      if (error?.message === 'Email not confirmed') {
+        handleNotification({
+          message: 'Email not confirmed',
+          type: 'ERROR'
+        })
+      }
+      if (error?.message === 'Invalid login credentials') {
+        handleNotification({
+          message: 'Your password or email address is invalid',
+          type: 'ERROR'
+        })
+      }
 
       if (error != null) console.error('A ocurido un error al autenticar', error)
       return { data, error }
@@ -137,6 +152,7 @@ function useAuth () {
   return {
     supabase,
     registerUser,
+    notification,
     loginUser,
     signOut,
     signInWithGoogle,

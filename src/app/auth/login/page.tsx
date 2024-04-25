@@ -6,12 +6,13 @@ import { type FormEvent } from 'react'
 import Link from 'next/link'
 import ButtonGoogle from '@/components/button-google'
 import InputForm from '@/components/input-form'
+import NotificationLayout from '@/components/notification-layout'
 
 const { EMAIL, PASSWORD } = InputRegister
 
 function page () {
   const router = useRouter()
-  const { loginUser, signInWithGoogle } = useAuth()
+  const { loginUser, signInWithGoogle, notification } = useAuth()
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
@@ -21,8 +22,6 @@ function page () {
     const password = target[PASSWORD].value
 
     await loginUser({ email, password })
-    console.log('redireccion app')
-    router.push('/app')
     router.refresh()
   }
 
@@ -30,7 +29,8 @@ function page () {
     await signInWithGoogle()
   }
 
-  return (
+  return (<>
+    <NotificationLayout {...notification}/>
     <div className='w-[25rem] bg-black rounded-2xl p-14 py-16 box-content'>
       <form
         className='w-full h-full grid gap-5'
@@ -79,6 +79,7 @@ function page () {
 
       </form>
     </div>
+  </>
   )
 }
 

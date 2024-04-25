@@ -24,3 +24,9 @@ export interface resolutionType {
   width: number
   height: number
 }
+
+interface NotificationType {
+  message: string
+  visible: boolean
+  type: 'ERROR' | 'DONE'
+}

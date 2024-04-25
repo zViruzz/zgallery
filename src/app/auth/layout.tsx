@@ -1,8 +1,13 @@
+'use client'
+import { NotificationProvider } from '@/context/notification'
+
 async function layout ({ children }: { children: React.ReactNode }) {
   return (
-    <main className='w-screen h-screen flex items-center justify-center'>
-      {children}
-    </main>
+    <NotificationProvider>
+      <main className='w-screen h-screen flex items-center justify-center'>
+        {children}
+      </main>
+    </NotificationProvider>
   )
 }
 
