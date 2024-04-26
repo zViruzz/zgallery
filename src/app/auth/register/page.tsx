@@ -1,10 +1,10 @@
 'use client'
-import InputForm from '@/components/input-form'
+import InputForm from '@/components/InputForm'
 import useAuth from '@/hook/useAuth'
 import { InputRegister } from '@/static/static'
 import { type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import ButtonGoogle from '@/components/button-google'
+import ButtonGoogle from '@/components/ButtonGoogle'
 import Link from 'next/link'
 
 const { USERNAME, EMAIL, PASSWORD, REPASSWORD } = InputRegister

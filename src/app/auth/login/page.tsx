@@ -4,9 +4,9 @@ import { InputRegister } from '@/static/static'
 import { useRouter } from 'next/navigation'
 import { type FormEvent } from 'react'
 import Link from 'next/link'
-import ButtonGoogle from '@/components/button-google'
-import InputForm from '@/components/input-form'
-import NotificationLayout from '@/components/notification-layout'
+import ButtonGoogle from '@/components/ButtonGoogle'
+import InputForm from '@/components/InputForm'
+import NotificationLayout from '@/components/Notification'
 
 const { EMAIL, PASSWORD } = InputRegister
 
