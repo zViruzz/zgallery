@@ -1,9 +1,9 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
-import SearchBar from './search-bar'
-import AddButton from './add-button'
-import MenuIcon from './Icons/menu-icon'
-import MenuTools from './menu-tools'
+import SearchBar from './SearchBar'
+import AddButton from './AddButton'
+import MenuIcon from './Icons/MenuIcon'
+import MenuTools from './MenuTools'
 
 interface Props {
   title: string

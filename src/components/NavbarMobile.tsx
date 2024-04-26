@@ -1,9 +1,9 @@
 'use client'
 import Link from 'next/link'
-import MenuBurgerIcon from './Icons/menu-burger-icon'
+import MenuBurgerIcon from './Icons/MenuBurgerIcon'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import MobileMenu from './mobile-menu'
+import MobileMenu from './MobileMenu'
 
 interface Props {
   avatar: string

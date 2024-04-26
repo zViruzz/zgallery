@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import profileNull from '@/assets/profile-null.jpg'
-import HeartIcon from './Icons/heart-icon'
-import SettingIcon from './Icons/setting-icon'
+import HeartIcon from './Icons/HeartIcon'
+import SettingIcon from './Icons/SettingIcon'
 import Link from 'next/link'
 
 interface Props {

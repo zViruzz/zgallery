@@ -4,12 +4,12 @@ import logo from '../../../public/logo.svg'
 import { type ReactNode } from 'react'
 import { redirect } from 'next/navigation'
 import authUser from '@/util/auth-user'
-import Profile from '@/components/profile-user'
-import NavBarMobile from '@/components/navbar-mobile'
-import GalleryIcon from '@/components/Icons/gallery-icon'
-import AlbumIcon from '@/components/Icons/album-icon'
-import VideoIcon from '@/components/Icons/video-icon'
-import HeartIcon from '@/components/Icons/heart-icon'
+import Profile from '@/components/ProfileUser'
+import NavBarMobile from '@/components/NavbarMobile'
+import GalleryIcon from '@/components/Icons/GalleryIcon'
+import AlbumIcon from '@/components/Icons/AlbumIcon'
+import VideoIcon from '@/components/Icons/VideoIcon'
+import HeartIcon from '@/components/Icons/HeartIcon'
 
 export const revalidate = 0
 

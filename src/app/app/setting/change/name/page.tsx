@@ -1,5 +1,5 @@
 'use client'
-import InputForm from '@/components/input-form'
+import InputForm from '@/components/InputForm'
 import useAuth from '@/hook/useAuth'
 import { InputRegister } from '@/static/static'
 import { useRouter } from 'next/navigation'

@@ -1,5 +1,5 @@
 'use client'
-import FileView from './file-view'
+import FileView from './FileView'
 import LightGallery from 'lightgallery/react'
 
 import lgThumbnail from 'lightgallery/plugins/thumbnail'

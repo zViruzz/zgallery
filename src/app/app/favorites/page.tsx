@@ -1,4 +1,4 @@
-import FileContainer from '@/components/file-container'
+import FileContainer from '@/components/FileContainer'
 import { SP_TABLET } from '@/static/static'
 import { type FileType, type ExtendedFileType } from '@/type'
 import authUser from '@/util/auth-user'

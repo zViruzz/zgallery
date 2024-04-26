@@ -1,4 +1,4 @@
-import BarTools from '@/components/bar-tools'
+import BarTools from '@/components/BarTools'
 import React, { type ReactNode } from 'react'
 
 function layout ({ children }: { children: ReactNode }) {

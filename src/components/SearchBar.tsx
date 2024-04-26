@@ -1,5 +1,5 @@
 import React, { type FormEvent, useRef } from 'react'
-import SearchIcon from './Icons/search-icon'
+import SearchIcon from './Icons/SearchIcon'
 import { useRouter } from 'next/navigation'
 
 interface Props {
