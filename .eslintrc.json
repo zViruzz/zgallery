@@ -6,8 +6,8 @@
     },
     "extends": [
         "standard-with-typescript",
-        "plugin:react/recommended",
-        "plugin:@next/next/recommended"
+        "eslint:recommended",
+        "plugin:react/recommended"
     ],
     "parserOptions": {
         "ecmaVersion": "latest",

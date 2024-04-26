@@ -35,6 +35,16 @@ async function page ({ searchParams }: Props) {
       ? []
       : data[0].list_files.image
 
+  if (list.length === 0) {
+    return (
+      <div className='grid place-content-center md:text-2xl'>
+        <div>
+          No favorites added
+        </div>
+      </div>
+    )
+  }
+
   if (name !== undefined) {
     list = list.filter(img => img.name.includes(name))
   }

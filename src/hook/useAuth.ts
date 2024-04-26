@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useNotificationContext } from '@/context/notification'
-import { SP_TABLET } from '@/static/static'
 import { type registerUserType } from '@/type'
 import { createBrowserClient } from '@supabase/ssr'
 import { type User, type UserResponse } from '@supabase/supabase-js'
@@ -120,22 +119,6 @@ function useAuth () {
       })
 
       if (error != null) console.error('A ocurido un error al cambiar de nombre', error)
-      return { data, error }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const createRowDataImage = async (id: string | undefined) => {
-    try {
-      if (id === undefined) { console.log('email undefined'); return }
-      const { data, error } = await supabase
-        .from(SP_TABLET.PROFILES)
-        .insert([
-          { user_id: id, list_files: null }
-        ])
-        .select()
-      if (error != null) console.error('A ocurido un error al autenticar', error)
       return { data, error }
     } catch (error) {
       console.log(error)

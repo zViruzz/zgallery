@@ -1,4 +1,5 @@
 import FileContainer from '@/components/file-container'
+import AddIcon from '@/components/Icons/add-icon'
 import { SORT_TYPE, SP_TABLET } from '@/static/static'
 import { type FileType, type ExtendedFileType } from '@/type'
 import authUser from '@/util/auth-user'
@@ -26,6 +27,16 @@ async function page ({ searchParams }: Props) {
     data[0].list_files === null
       ? []
       : data[0].list_files.image
+
+  if (list.length === 0) {
+    return (
+      <div className='grid place-content-center md:text-2xl'>
+        <div>
+          Upload images with the <AddIcon className='inline mb-1 md:w-7 md:h-7 h-5 w-5' /> button
+        </div>
+      </div>
+    )
+  }
 
   list = list.filter(img => img.fileType === 'image')
 
