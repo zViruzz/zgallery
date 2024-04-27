@@ -1,5 +1,5 @@
 'use client'
-import AddIcon from '@/components/Icons/AddIcon'
+import AddIcon from '@/components/icons/AddIcon'
 import useUser from '@/hook/useUser'
 
 interface Props {

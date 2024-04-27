@@ -1,5 +1,5 @@
 import FileContainer from '@/components/FileContainer'
-import AddIcon from '@/components/Icons/AddIcon'
+import AddIcon from '@/components/icons/AddIcon'
 import { SORT_TYPE, SP_TABLET } from '@/static/static'
 import { type FileType, type ExtendedFileType } from '@/type'
 import authUser from '@/util/auth-user'

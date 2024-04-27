@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import SearchBar from './SearchBar'
 import AddButton from './AddButton'
-import MenuIcon from './Icons/MenuIcon'
+import MenuIcon from './icons/MenuIcon'
 import MenuTools from './MenuTools'
 
 interface Props {

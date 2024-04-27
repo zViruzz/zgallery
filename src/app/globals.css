@@ -8,6 +8,21 @@
   --tertiary: #E91052;
 }
 
+@layer components {
+  .loader-loop {
+    width: 60px;
+    aspect-ratio: 2;
+    --loadingAn: no-repeat radial-gradient(circle closest-side, #ffffff 90%, #0000);
+    background:
+      var(--loadingAn) 0% 50%,
+      var(--loadingAn) 50% 50%,
+      var(--loadingAn) 100% 50%;
+    background-size: calc(100%/3) 50%;
+    animation: l3 1s infinite linear;
+  }
+
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
@@ -22,34 +37,20 @@
     width: 10px;
     /* or add it to the track */
   }
-  
+
   .gallery-view::-webkit-scrollbar-track {
     background-color: transparent;
     /* color of the tracking area */
   }
-  
+
   .gallery-view::-webkit-scrollbar-thumb {
     background-color: #333333;
-    /* background-color: var(--tertiary); */
     border-radius: 20px;
-    /* roundness of the scroll thumb */
-    /* border: 3px solid orange; */
-    /* creates padding around scroll thumb */
+
   }
 
 }
 
-.loader {
-  width: 60px;
-  aspect-ratio: 2;
-  --_g: no-repeat radial-gradient(circle closest-side, #ffffff 90%, #0000);
-  background:
-    var(--_g) 0% 50%,
-    var(--_g) 50% 50%,
-    var(--_g) 100% 50%;
-  background-size: calc(100%/3) 50%;
-  animation: l3 1s infinite linear;
-}
 
 @keyframes l3 {
   20% {
@@ -73,9 +74,9 @@
 
 @media (max-width: 768px) {
   .gallery-view::-webkit-scrollbar {
-      width: 5px;
-      /* or add it to the track */
-    }
+    width: 5px;
+    /* or add it to the track */
+  }
 }
 
 body {
@@ -86,4 +87,3 @@ body {
 main {
   grid-auto-flow: revert;
 }
-

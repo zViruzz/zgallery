@@ -6,10 +6,10 @@ import { redirect } from 'next/navigation'
 import authUser from '@/util/auth-user'
 import Profile from '@/components/ProfileUser'
 import NavBarMobile from '@/components/NavbarMobile'
-import GalleryIcon from '@/components/Icons/GalleryIcon'
-import AlbumIcon from '@/components/Icons/AlbumIcon'
-import VideoIcon from '@/components/Icons/VideoIcon'
-import HeartIcon from '@/components/Icons/HeartIcon'
+import GalleryIcon from '@/components/icons/GalleryIcon'
+import AlbumIcon from '@/components/icons/AlbumIcon'
+import VideoIcon from '@/components/icons/VideoIcon'
+import HeartIcon from '@/components/icons/HeartIcon'
 
 export const revalidate = 0
 

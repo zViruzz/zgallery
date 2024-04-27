@@ -1,7 +1,7 @@
 import { type User } from '@supabase/supabase-js'
 import Link from 'next/link'
 import Image from 'next/image'
-import SettingIcon from './Icons/SettingIcon'
+import SettingIcon from './icons/SettingIcon'
 import profileNull from '@/assets/profile-null.jpg'
 
 interface Props {

@@ -72,6 +72,7 @@ async function page ({ searchParams }: Props) {
 
   let indexImage = 0
   let indexVideo = 0
+
   for (const file of favoritesList) {
     let url
     let thumbnailUrl

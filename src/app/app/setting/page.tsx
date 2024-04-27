@@ -1,5 +1,5 @@
 'use client'
-import EditIcon from '@/components/Icons/EditIcon'
+import EditIcon from '@/components/icons/EditIcon'
 import useAuth from '@/hook/useAuth'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'

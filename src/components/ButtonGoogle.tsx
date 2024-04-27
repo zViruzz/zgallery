@@ -1,5 +1,5 @@
 import React from 'react'
-import GoogleIcon from './Icons/GoogleIcon'
+import GoogleIcon from './icons/GoogleIcon'
 
 interface Props {
   onClick: () => void
