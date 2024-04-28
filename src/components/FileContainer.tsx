@@ -14,7 +14,7 @@ import 'lightgallery/css/lg-zoom.css'
 import { useCallback, useRef } from 'react'
 import { type ExtendedFileType } from '@/type'
 import useUser from '@/hook/useUser'
-import { buttonDelete, buttonFavorite, iconFavoriteFalse, iconFavoriteTrue } from './strings'
+import { buttonDelete, buttonEditSize, buttonFavorite, iconFavoriteFalse, iconFavoriteTrue } from './strings'
 import DeletionWarning from './DeletionWarning'
 
 interface Props {
@@ -68,6 +68,17 @@ function FileContainer ({ list }: Props) {
     }
   }
 
+  const onClickEditSize = () => {
+    const $panelEdit = document.querySelector('.panel-edit')
+    $panelEdit?.classList.remove('hidden')
+    $panelEdit?.classList.add('grid')
+
+    const $textDelete = document.querySelector('.text-delete')
+    if ($textDelete !== null) {
+      $textDelete.innerHTML = `Are you sure you want to delete ${selectedItem.current.fileName}?`
+    }
+  }
+
   const onClickFavorite = () => {
     const fileName = selectedItem.current.fileName
     favoriteFile(fileName)
@@ -92,6 +103,7 @@ function FileContainer ({ list }: Props) {
       const $lgContainer = document.querySelector('.lg-toolbar')
       $lgContainer?.insertAdjacentHTML('beforeend', buttonFavorite)
       $lgContainer?.insertAdjacentHTML('beforeend', buttonDelete)
+      $lgContainer?.insertAdjacentHTML('beforeend', buttonEditSize)
     }
 
     const $btnFavorite = document.querySelector('#lg-favorite')
@@ -103,15 +115,43 @@ function FileContainer ({ list }: Props) {
 
     document.querySelector('#lg-delete')?.addEventListener('click', onClickDelete)
     document.querySelector('#lg-favorite')?.addEventListener('click', onClickFavorite)
+    document.querySelector('#lg-edit')?.addEventListener('click', onClickEditSize)
   }
 
   const beforeLoad = () => {
     document.querySelector('#lg-delete')?.removeEventListener('click', onClickDelete)
     document.querySelector('#lg-favorite')?.removeEventListener('click', onClickFavorite)
+    document.querySelector('#lg-edit')?.removeEventListener('click', onClickEditSize)
   }
 
   return (
     <>
+      <div className={'hidden panel-edit bg-black bg-opacity-20 absolute z-[5999] top-0 left-0 min-w-full h-screen place-content-center'}>
+        <div className='bg-black flex flex-col p-11 gap-5  rounded-2xl relative'>
+          <button
+            className='absolute px-5 py-3 right-0 top-0'
+            onClick={() => {
+              const $panelEdit = document.querySelector('.panel-edit')
+              $panelEdit?.classList.remove('grid')
+              $panelEdit?.classList.add('hidden')
+            }}
+          >
+            X
+          </button>
+          <div className='text-xl'>
+            <p className='text-delete'>
+            </p>
+          </div>
+          <div className='grid place-content-center'>
+            <button
+              className='bg-tertiary p-3 rounded-lg block'
+              onClick={handleClickDelete}
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
       <DeletionWarning handleClickDelete={handleClickDelete}/>
       <LightGallery
         elementClassNames='gallery-methods-demo gallery-view grid grid-cols-gallery grid-rows-gallery [&>div]:bg-black [&>div]:rounded-xl gap-5 overflow-y-auto px-7 pr-4 mr-3 md:pl-14 md:mr-6 md:pr-8 md:grid-cols-gallery_md md:grid-rows-gallery_md py-3'
