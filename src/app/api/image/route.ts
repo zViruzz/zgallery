@@ -11,8 +11,12 @@ export async function POST (request: Request) {
 
     const { data, error } = await interImage(image, resolution)
 
-    if (error !== null) return NextResponse.json(error)
-
+    if (error !== null) {
+      return NextResponse.json(
+        { message: error.message, error: true },
+        { status: error.status }
+      )
+    }
     return NextResponse.json(data)
   } catch (error) {
     console.log(error)

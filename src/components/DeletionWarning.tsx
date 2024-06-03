@@ -16,7 +16,7 @@ function DeletionWarning ({ handleClickDelete }: Props) {
             $messageDelete?.classList.add('hidden')
           }}
         >
-          X
+
         </button>
         <div className='text-xl'>
           <p className='text-delete'>

@@ -34,6 +34,7 @@ function useAuth () {
           redirectTo: `${DOMAIN_URL}/auth/verification/provider`
         }
       })
+
       if (error != null) console.error('A ocurido un error al autenticar', error)
       return { data, error }
     } catch (error) {
@@ -49,7 +50,8 @@ function useAuth () {
         options: {
           data: {
             name,
-            full_name: name
+            full_name: name,
+            user_plan: 'FREE'
           }
         }
       })

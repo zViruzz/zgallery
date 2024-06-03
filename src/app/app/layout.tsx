@@ -21,6 +21,14 @@ async function layout ({ children }: { children: ReactNode }) {
     redirect('/auth/login')
   }
 
+  const isPlan = user.user_metadata.user_plan
+
+  if (isPlan === undefined) {
+    await supabase.auth.updateUser({
+      data: { user_plan: 'FREE' }
+    })
+  }
+
   return (
     <main className='min-h-screen w-full bg-primary flex flex-col md:grid md:grid-cols-[16rem_1fr]'>
 

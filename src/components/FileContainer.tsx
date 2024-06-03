@@ -97,7 +97,8 @@ function FileContainer ({ list }: Props) {
 
     const btnExits =
       (document.querySelector('#lg-delete') !== null) &&
-      (document.querySelector('#lg-favorite') !== null)
+      (document.querySelector('#lg-favorite') !== null) &&
+      (document.querySelector('#lg-edit') !== null)
 
     if (!btnExits) {
       const $lgContainer = document.querySelector('.lg-toolbar')
@@ -126,32 +127,6 @@ function FileContainer ({ list }: Props) {
 
   return (
     <>
-      <div className={'hidden panel-edit bg-black bg-opacity-20 absolute z-[5999] top-0 left-0 min-w-full h-screen place-content-center'}>
-        <div className='bg-black flex flex-col p-11 gap-5  rounded-2xl relative'>
-          <button
-            className='absolute px-5 py-3 right-0 top-0'
-            onClick={() => {
-              const $panelEdit = document.querySelector('.panel-edit')
-              $panelEdit?.classList.remove('grid')
-              $panelEdit?.classList.add('hidden')
-            }}
-          >
-            X
-          </button>
-          <div className='text-xl'>
-            <p className='text-delete'>
-            </p>
-          </div>
-          <div className='grid place-content-center'>
-            <button
-              className='bg-tertiary p-3 rounded-lg block'
-              onClick={handleClickDelete}
-            >
-              Eliminar
-            </button>
-          </div>
-        </div>
-      </div>
       <DeletionWarning handleClickDelete={handleClickDelete}/>
       <LightGallery
         elementClassNames='gallery-methods-demo gallery-view grid grid-cols-gallery grid-rows-gallery [&>div]:bg-black [&>div]:rounded-xl gap-5 overflow-y-auto px-7 pr-4 mr-3 md:pl-14 md:mr-6 md:pr-8 md:grid-cols-gallery_md md:grid-rows-gallery_md py-3'
