@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      listStyleImage: {
+        checkmark: 'url("/src/assets/tilIcon.svg")'
+      },
+      height: {
+        86: '22rem'
+      },
       gridTemplateColumns: {
         gallery_md: 'repeat(auto-fill, minmax(200px, 1fr))',
         gallery: 'repeat(auto-fill, minmax(125px, 1fr))'
