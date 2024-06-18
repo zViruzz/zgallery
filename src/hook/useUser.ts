@@ -4,6 +4,7 @@ import { getResolutionImage, getResolutionVideo, getVideoThumbnail } from '../ut
 import { updatingFileFavorites, uploadImageSB, uploadRemoveSB, uploadVideoSB } from '@/util/request-management'
 import { useNotificationContext } from '@/context/notification'
 import { useRouter } from 'next/navigation'
+import { type ExtendedFileType } from '@/type'
 
 function useUser () {
   const { handleNotification } = useNotificationContext()
@@ -36,6 +37,22 @@ function useUser () {
     }
   }
 
+  const getNewResolutionImage = async (file: ExtendedFileType, transform: { width: number, height: number }) => {
+    try {
+      const { data: { user } } = await getUser()
+
+      const { data } = await supabase.storage
+        .from('image')
+        .createSignedUrl(`${user?.id}/${file.fileName}`, 2000, {
+          transform
+        })
+
+      console.log('🚀 ~ getNewResolutionImage ~ data:', data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const uploadVideo = async (file: File) => {
     try {
       const resolution = await getResolutionVideo(file)
@@ -61,6 +78,7 @@ function useUser () {
     uploadVideo,
     deleteFile,
     favoriteFile,
+    getNewResolutionImage,
     getUser
   }
 }

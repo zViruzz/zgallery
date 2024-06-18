@@ -11,17 +11,18 @@ import 'lightgallery/css/lg-video.css'
 import 'lightgallery/css/lg-thumbnail.css'
 import 'lightgallery/css/lg-zoom.css'
 
+import { buttonDelete, buttonEditSize, buttonFavorite, iconFavoriteFalse, iconFavoriteTrue } from './strings'
 import { useCallback, useRef } from 'react'
 import { type ExtendedFileType } from '@/type'
-import useUser from '@/hook/useUser'
-import { buttonDelete, buttonEditSize, buttonFavorite, iconFavoriteFalse, iconFavoriteTrue } from './strings'
 import DeletionWarning from './DeletionWarning'
+import useUser from '@/hook/useUser'
+import PanelEditImage from './PanelEditImage'
 
 interface Props {
   list: ExtendedFileType[]
 }
 function FileContainer ({ list }: Props) {
-  const { deleteFile, favoriteFile } = useUser()
+  const { deleteFile, favoriteFile, getNewResolutionImage } = useUser()
   const lightGallery = useRef<any>(null)
   const selectedItem = useRef<ExtendedFileType>({
     id: '',
@@ -71,11 +72,11 @@ function FileContainer ({ list }: Props) {
   const onClickEditSize = () => {
     const $panelEdit = document.querySelector('.panel-edit')
     $panelEdit?.classList.remove('hidden')
-    $panelEdit?.classList.add('grid')
+    $panelEdit?.classList.add('flex')
 
-    const $textDelete = document.querySelector('.text-delete')
+    const $textDelete = document.querySelector('.text-delete-edit')
     if ($textDelete !== null) {
-      $textDelete.innerHTML = `Are you sure you want to delete ${selectedItem.current.fileName}?`
+      $textDelete.innerHTML = `${selectedItem.current.fileName}`
     }
   }
 
@@ -127,7 +128,13 @@ function FileContainer ({ list }: Props) {
 
   return (
     <>
-      <DeletionWarning handleClickDelete={handleClickDelete}/>
+      <PanelEditImage
+        selectedItem={selectedItem}
+        imageTransform={getNewResolutionImage}
+      />
+      <DeletionWarning
+        handleClickDelete={handleClickDelete}
+      />
       <LightGallery
         elementClassNames='gallery-methods-demo gallery-view grid grid-cols-gallery grid-rows-gallery [&>div]:bg-black [&>div]:rounded-xl gap-5 overflow-y-auto px-7 pr-4 mr-3 md:pl-14 md:mr-6 md:pr-8 md:grid-cols-gallery_md md:grid-rows-gallery_md py-3'
         speed={500}

@@ -8,6 +8,13 @@
   --tertiary: #E91052;
 }
 
+
+css input[type="number"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 @layer components {
   .loader-loop {
     width: 60px;

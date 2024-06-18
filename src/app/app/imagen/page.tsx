@@ -49,7 +49,7 @@ async function page ({ searchParams }: Props) {
 
   const { data: listOfUrls } = await supabase.storage
     .from('image')
-    .createSignedUrls(pathList, 10000)
+    .createSignedUrls(pathList, 1000)
 
   if (listOfUrls === null) return
 
