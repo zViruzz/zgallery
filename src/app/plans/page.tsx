@@ -3,10 +3,10 @@ import React from 'react'
 
 export default function page () {
   return (
-    <section className='w-full grid grid-rows-[14rem_1fr] md:h-full md:grid-rows-[1fr_1fr]'>
+    <section className='w-full grid grid-rows-[14rem_1fr] md:h-full md:grid-rows-[20rem_1fr]'>
       <div className='flex flex-col items-center justify-center'>
-        <p className='md:w-[58%] w-[90%] text-center'>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa, commodi alias? Excepturi, quibusdam nesciunt laboriosam enim officiis quidem eum voluptas!
+        <p className='md:w-[58%] w-[90%] text-center text-3xl'>
+          Discover the perfect plan for you
         </p>
       </div>
 

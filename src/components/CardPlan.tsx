@@ -11,8 +11,8 @@ interface Props {
 
 export default function CardPlan ({ title, price, description, features, textButton }: Props) {
   return (
-    <div className='h-auto w-[90%] sm:w-[70%] box-content border-2 rounded-3xl border-neutral-700 md:w-80'>
-      <div className='w-full h-full p-8'>
+    <div className='h-96 w-[90%] sm:w-[70%] box-content border-2 rounded-3xl border-neutral-700 md:w-80'>
+      <div className='w-full h-full p-8 flex flex-col'>
         <div>
           <div>
             <h2 className='text-tertiary text-2xl mb-4'>{title}</h2>
@@ -35,9 +35,11 @@ export default function CardPlan ({ title, price, description, features, textBut
           </ul>
         </div>
 
-        <button className='bg-tertiary w-full h-10 rounded-lg mt-11'>
-          {textButton}
-        </button>
+        <div className='h-full flex flex-col justify-end'>
+          <button className='bg-tertiary w-full h-10 rounded-lg hover:bg-[#930b34] active:bg-[#76092a]'>
+            {textButton}
+          </button>
+        </div>
       </div>
 
     </div>
