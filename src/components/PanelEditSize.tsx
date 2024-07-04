@@ -1,23 +1,34 @@
 import { type MutableRefObject, useRef } from 'react'
 import InputResolution from './InputResolution'
 import { type ExtendedFileType } from '@/type'
+import DownloadIcon from './icons/DownloadIcon'
 
 interface Props {
   selectedItem: MutableRefObject<ExtendedFileType>
   imageTransform: (item: ExtendedFileType, transform: { width: number, height: number }) => void
 }
 
-export default function PanelEditImage ({ selectedItem, imageTransform }: Props) {
+export default function PanelEditSize ({ selectedItem, imageTransform }: Props) {
   const widthRef = useRef<HTMLInputElement>(null)
   const heightRef = useRef<HTMLInputElement>(null)
 
+  const handleClickOutside = () => {
+    const $panelEdit = document.querySelector('.panel-edit')
+    $panelEdit?.classList.remove('flex')
+    $panelEdit?.classList.add('hidden')
+  }
+
   return (
-    <div className='hidden panel-edit bg-black bg-opacity-20 absolute z-[5999] top-0 left-0 min-w-full h-screen items-end'>
-      <div className='bg-[#212121] w-full h-[144px] flex flex-col relative'>
+    <div className='hidden panel-edit bg-black bg-opacity-30 absolute z-[5999] top-0 left-0 min-w-full h-screen flex-col'>
+      <div
+      className='h-full w-full'
+      onClick={handleClickOutside}
+      />
+      <div className='bg-neutral-900 w-full h-[11rem] flex flex-col relative'>
         <div className='text-lg flex flex-col  items-center'>
-          <h3 className='my-1'>Convert reslution</h3>
+          <h3 className='my-1'>Edit image size</h3>
           <p className='text-sm text-delete-edit'>
-            cattt.png
+            {selectedItem.current.name}
           </p>
         </div>
         <div className='flex flex-1'>
@@ -32,14 +43,14 @@ export default function PanelEditImage ({ selectedItem, imageTransform }: Props)
             />
 
             <button
-              className='bg-tertiary h-12 w-12 rounded-lg block'
+              className='bg-tertiary py-[6px] px-2 rounded-lg block hover:bg-[#930b34] active:bg-[#76092a]'
               onClick={() => {
                 const width = Number(widthRef.current?.value)
                 const height = Number(heightRef.current?.value)
                 imageTransform(selectedItem.current, { width, height })
               }}
             >
-              Ok
+              <DownloadIcon width={22} height={22}/>
             </button>
           </div>
         </div>

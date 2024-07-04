@@ -12,7 +12,7 @@ export default function InputResolution ({ placeholder, inputRef }: Props) {
       type="number"
       id="success"
       placeholder={placeholder}
-      className="bg-primary border border-tertiary text-green-900 dark:text-inherit placeholder-tertiary dark:placeholder-tertiary text-sm rounded-lg ring-tertiary ring-offset-transparent focus:outline-none focus:ring-1 ring-offset-1 focus:border-tertiary block w-16 h-12 px-3 dark:bg-primary dark:border-tertiary"
+      className="w-20 h-7 bg-transparent border-b-2 border-white focus:border-tertiary focus:outline-0 placeholder:text-neutral-500"
     />
 
   )

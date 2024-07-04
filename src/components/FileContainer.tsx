@@ -16,13 +16,13 @@ import { useCallback, useRef } from 'react'
 import { type ExtendedFileType } from '@/type'
 import DeletionWarning from './DeletionWarning'
 import useUser from '@/hook/useUser'
-import PanelEditImage from './PanelEditImage'
+import PanelEditSize from './PanelEditSize'
 
 interface Props {
   list: ExtendedFileType[]
 }
 function FileContainer ({ list }: Props) {
-  const { deleteFile, favoriteFile, getNewResolutionImage } = useUser()
+  const { deleteFile, favoriteFile, imageTransform } = useUser()
   const lightGallery = useRef<any>(null)
   const selectedItem = useRef<ExtendedFileType>({
     id: '',
@@ -128,9 +128,9 @@ function FileContainer ({ list }: Props) {
 
   return (
     <>
-      <PanelEditImage
+      <PanelEditSize
         selectedItem={selectedItem}
-        imageTransform={getNewResolutionImage}
+        imageTransform={imageTransform}
       />
       <DeletionWarning
         handleClickDelete={handleClickDelete}

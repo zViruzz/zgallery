@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createBrowserClient } from '@supabase/ssr'
-import { getResolutionImage, getResolutionVideo, getVideoThumbnail } from '../util/utils'
+import { changeResolution, getResolutionImage, getResolutionVideo, getVideoThumbnail } from '../util/utils'
 import { updatingFileFavorites, uploadImageSB, uploadRemoveSB, uploadVideoSB } from '@/util/request-management'
 import { useNotificationContext } from '@/context/notification'
 import { useRouter } from 'next/navigation'
@@ -37,7 +37,7 @@ function useUser () {
     }
   }
 
-  const getNewResolutionImage = async (file: ExtendedFileType, transform: { width: number, height: number }) => {
+  const imageTransform = async (file: ExtendedFileType, transform: { width: number, height: number }) => {
     try {
       const { data: { user } } = await getUser()
 
@@ -47,7 +47,15 @@ function useUser () {
           transform
         })
 
-      console.log('🚀 ~ getNewResolutionImage ~ data:', data)
+      const imageUrl = data?.signedUrl
+      if (imageUrl === undefined) return
+
+      const url = await changeResolution(imageUrl, transform)
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', file.fileName)
+      document.body.appendChild(link)
+      link.click()
     } catch (error) {
       console.log(error)
     }
@@ -78,7 +86,7 @@ function useUser () {
     uploadVideo,
     deleteFile,
     favoriteFile,
-    getNewResolutionImage,
+    imageTransform,
     getUser
   }
 }

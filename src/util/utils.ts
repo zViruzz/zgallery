@@ -216,3 +216,32 @@ export function sortList (list: ExtendedFileType[], order: OrderParameter): any[
 
   return list
 }
+
+export async function changeResolution (image: string, transform: { width: number, height: number }): Promise<string> {
+  return await new Promise((resolve, reject) => {
+    const img = new Image()
+    img.crossOrigin = 'Anonymous' // Esto es necesario si la imagen está en otro dominio
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      if (ctx === null) return
+      canvas.width = transform.width
+      canvas.height = transform.height
+      ctx.drawImage(img, 0, 0, transform.width, transform.height)
+
+      let format = 'image/png'
+      if (image.endsWith('.jpg') || image.endsWith('.jpeg')) {
+        format = 'image/jpeg'
+      }
+
+      const resizedImageUrl = canvas.toDataURL(format)
+      resolve(resizedImageUrl)
+    }
+    img.onerror = function () {
+      console.error('No se pudo cargar la imagen. Verifica la URL y el soporte CORS.')
+    }
+    img.src = image
+  }
+  )
+}
