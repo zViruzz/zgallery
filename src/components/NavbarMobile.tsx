@@ -26,10 +26,10 @@ function NavBarMobile ({ name, avatar }: Props) {
     <nav className='flex md:hidden fixed bottom-0 bg-black w-full h-16 z-10' >
       <ul className='flex items-center justify-evenly w-full'>
         <Link
-          href='/app/imagen'
-          className={`${pathname === '/app/imagen' ? 'underline decoration-[3px] underline-offset-[6px]' : ''}`}
+          href='/app/images'
+          className={`${pathname === '/app/images' ? 'underline decoration-[3px] underline-offset-[6px]' : ''}`}
         >
-          Imagen
+          Images
         </Link>
         <Link
           href='/app/album'

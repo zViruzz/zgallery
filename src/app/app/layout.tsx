@@ -47,9 +47,9 @@ async function layout ({ children }: { children: ReactNode }) {
             [&>li>a]:duration-75 [&>li>a]:ease-out
             [&>li]:underline-offset-[6px] [&>li>a]:bg-secodary [&>li>a]:p-3 [&>li>a]:rounded-xl hover:[&>li>a]:bg-transparent hover:[&>li>a]:scale-[1.07]'>
               <li>
-                <Link href='/app/imagen'>
+                <Link href='/app/images'>
                   <GalleryIcon width={24} height={24} />
-                  Imagen
+                  Images
                 </Link>
               </li>
               <li >

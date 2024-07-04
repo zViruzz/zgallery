@@ -17,12 +17,15 @@ import { type ExtendedFileType } from '@/type'
 import DeletionWarning from './DeletionWarning'
 import useUser from '@/hook/useUser'
 import PanelEditSize from './PanelEditSize'
+import { usePathname } from 'next/navigation'
 
 interface Props {
   list: ExtendedFileType[]
 }
 function FileContainer ({ list }: Props) {
   const { deleteFile, favoriteFile, imageTransform } = useUser()
+  const pathname = usePathname()
+  console.log('🚀 ~ FileContainer ~ pathname:', pathname)
   const lightGallery = useRef<any>(null)
   const selectedItem = useRef<ExtendedFileType>({
     id: '',
@@ -96,16 +99,19 @@ function FileContainer ({ list }: Props) {
     const select = list[element.index]
     selectedItem.current = select
 
+    if (document.querySelector('#lg-edit') === null && pathname === '/app/images') {
+      const $lgContainer = document.querySelector('.lg-toolbar')
+      $lgContainer?.insertAdjacentHTML('beforeend', buttonEditSize)
+    }
+
     const btnExits =
       (document.querySelector('#lg-delete') !== null) &&
-      (document.querySelector('#lg-favorite') !== null) &&
-      (document.querySelector('#lg-edit') !== null)
+      (document.querySelector('#lg-favorite') !== null)
 
     if (!btnExits) {
       const $lgContainer = document.querySelector('.lg-toolbar')
       $lgContainer?.insertAdjacentHTML('beforeend', buttonFavorite)
       $lgContainer?.insertAdjacentHTML('beforeend', buttonDelete)
-      $lgContainer?.insertAdjacentHTML('beforeend', buttonEditSize)
     }
 
     const $btnFavorite = document.querySelector('#lg-favorite')

@@ -18,7 +18,7 @@ export async function getResolutionImage (file: File): Promise<{ width: number, 
         img.src = e.target?.result as string
       }
       lector.onerror = function () {
-        reject(new Error('No se pudo leer la imagen'))
+        reject(new Error('No se pudo leer la images'))
       }
     } else {
       reject(new Error('No se seleccionó ninguna imagen'))
