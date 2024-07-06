@@ -2,14 +2,9 @@
 import { createBrowserClient } from '@supabase/ssr'
 import { changeResolution, getResolutionImage, getResolutionVideo, getVideoThumbnail } from '../util/utils'
 import { updatingFileFavorites, uploadImageSB, uploadRemoveSB, uploadVideoSB } from '@/util/request-management'
-import { useNotificationContext } from '@/context/notification'
-import { useRouter } from 'next/navigation'
 import { type ExtendedFileType } from '@/type'
 
 function useUser () {
-  const { handleNotification } = useNotificationContext()
-  const router = useRouter()
-
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -24,12 +19,13 @@ function useUser () {
       const resolution = await getResolutionImage(file)
       const result = await uploadImageSB(file, resolution)
 
-      if (result.error === true) {
-        handleNotification({ message: result.message, type: 'ERROR' })
-      } else {
-        router.refresh()
-        handleNotification({ message: `El archivo ${file.name} se envio correctamente`, type: 'DONE' })
-      }
+      // if (result.error === true) {
+      //   handleNotification({ message: result.message, type: 'ERROR' })
+      // } else {
+      //   router.refresh()
+      //   handleNotification({ message: `El archivo ${file.name} se envio correctamente`, type: 'DONE' })
+      // }
+      location.reload()
 
       return result
     } catch (error) {

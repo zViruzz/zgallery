@@ -17,15 +17,17 @@ import { type ExtendedFileType } from '@/type'
 import DeletionWarning from './DeletionWarning'
 import useUser from '@/hook/useUser'
 import PanelEditSize from './PanelEditSize'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 interface Props {
   list: ExtendedFileType[]
 }
+
+// TODO: Arreglar el problema de fovoritos o el refresh
 function FileContainer ({ list }: Props) {
   const { deleteFile, favoriteFile, imageTransform } = useUser()
   const pathname = usePathname()
-  console.log('🚀 ~ FileContainer ~ pathname:', pathname)
+  const router = useRouter()
   const lightGallery = useRef<any>(null)
   const selectedItem = useRef<ExtendedFileType>({
     id: '',
@@ -97,6 +99,7 @@ function FileContainer ({ list }: Props) {
 
   const afterLoad = (element: any) => {
     const select = list[element.index]
+    if (select === undefined) return
     selectedItem.current = select
 
     if (document.querySelector('#lg-edit') === null && pathname === '/app/images') {
@@ -126,7 +129,7 @@ function FileContainer ({ list }: Props) {
     document.querySelector('#lg-edit')?.addEventListener('click', onClickEditSize)
   }
 
-  const beforeLoad = () => {
+  const beforeLoad = (element: any) => {
     document.querySelector('#lg-delete')?.removeEventListener('click', onClickDelete)
     document.querySelector('#lg-favorite')?.removeEventListener('click', onClickFavorite)
     document.querySelector('#lg-edit')?.removeEventListener('click', onClickEditSize)
