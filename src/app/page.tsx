@@ -8,21 +8,22 @@ export default function Home () {
   return (
     <>
       <Header />
-      <main className="min-h-screen justify-items-center items-center grid grid-cols-2">
-        <div className='w-[40rem] text-2xl'>
+      <main className="min-h-screen justify-items-center items-center grid lg:grid-cols-2">
+        <div className='lg:text-2xl  text-[20px] lg:text-left text-center flex flex-col  items-center lg:items-start'>
           <Image
+          className='lg:w-80 lg:h-auto w-[70%] mb-5 '
             src={logo}
             width={350}
             alt="Logo"
           />
-          <div className='flex flex-col gap-9'>
-            <p className='w-[27rem]'>Lorem Ipsum es simplemente el texto de relleno de las imprentas</p>
-            <Link href='/app' className='bg-tertiary w-[12rem] h-[3.5rem] rounded-xl flex justify-center items-center'>
+          <div className='flex flex-col gap-9 items-center lg:items-start'>
+            <p className='lg:w-[27rem] w-[90%] '>Gallery to save your images and videos in the cloud</p>
+            <Link href='/app' className='bg-tertiary lg:px-8 lg:py-3 py-2 px-6 rounded-xl flex justify-center items-center text-lg lg:text-2xl'>
               Get started
             </Link>
           </div>
         </div>
-        <div>
+        <div className='lg:flex hidden'>
           <Image
             src={illustration}
             width={520}
