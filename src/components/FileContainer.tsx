@@ -17,7 +17,7 @@ import { type ExtendedFileType } from '@/type'
 import DeletionWarning from './DeletionWarning'
 import useUser from '@/hook/useUser'
 import PanelEditSize from './PanelEditSize'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 interface Props {
   list: ExtendedFileType[]
@@ -27,7 +27,6 @@ interface Props {
 function FileContainer ({ list }: Props) {
   const { deleteFile, favoriteFile, imageTransform } = useUser()
   const pathname = usePathname()
-  const router = useRouter()
   const lightGallery = useRef<any>(null)
   const selectedItem = useRef<ExtendedFileType>({
     id: '',
@@ -94,6 +93,7 @@ function FileContainer ({ list }: Props) {
         $btnFavorite.children[0].id === 'favorite-true'
           ? $btnFavorite.innerHTML = iconFavoriteFalse
           : $btnFavorite.innerHTML = iconFavoriteTrue
+        location.reload()
       })
   }
 

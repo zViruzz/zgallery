@@ -11,6 +11,9 @@ interface Props {
     sort: string
   }
 }
+
+export const revalidate = 0
+
 async function page ({ searchParams }: Props) {
   const { supabase } = await authUser()
   const { data: { user } } = await supabase.auth.getUser()
