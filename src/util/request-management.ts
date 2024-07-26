@@ -73,9 +73,10 @@ export async function uploadRemoveSB (name: string, fileType: 'image' | 'video')
   }
 }
 
-export async function updatingFileFavorites (name: string) {
+export async function updatingFileFavorites (name: string, favorite: string) {
   const params = new URLSearchParams()
   params.append('name', name)
+  params.append('favorite', favorite)
 
   const apiUrl = `${DOMAIN_URL}/api/image?` + params.toString()
 

@@ -132,7 +132,7 @@ export async function deleteFile (fileName: string, fileType: 'image' | 'video')
   }
 }
 
-export async function favoriteFile (fileName: string) {
+export async function favoriteFile (fileName: string, favorite: string) {
   try {
     const supabase = await createServerClientHandle()
     const { data: { user } } = await supabase.auth.getUser()
@@ -150,11 +150,13 @@ export async function favoriteFile (fileName: string) {
     }
     const prevList = await getPrevList(user)
 
+    const newFavorite = favorite === 'true'
+
     const newList = prevList.map((item) => {
       if (item.name === fileName) {
         return {
           ...item,
-          favorite: !item.favorite
+          favorite: newFavorite
         }
       }
       return item

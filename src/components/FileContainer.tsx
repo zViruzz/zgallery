@@ -86,7 +86,12 @@ function FileContainer ({ list }: Props) {
 
   const onClickFavorite = () => {
     const fileName = selectedItem.current.fileName
-    favoriteFile(fileName)
+    const $btnFavorite = document.querySelector('#lg-favorite')
+
+    if ($btnFavorite === null) return
+    const favorite = $btnFavorite.children[0].id === 'favorite-true' ? 'false' : 'true'
+
+    favoriteFile(fileName, favorite)
       .then(() => {
         const $btnFavorite = document.querySelector('#lg-favorite')
         if ($btnFavorite === null) return

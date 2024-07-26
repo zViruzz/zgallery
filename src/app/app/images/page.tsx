@@ -1,9 +1,9 @@
+'use client'
 import FileContainer from '@/components/FileContainer'
-import AddIcon from '@/components/icons/AddIcon'
-import { SORT_TYPE, SP_TABLET } from '@/static/static'
-import { type FileType, type ExtendedFileType } from '@/type'
-import authUser from '@/util/auth-user'
+import { SORT_TYPE } from '@/static/static'
+import { type ExtendedFileType } from '@/type'
 import { sortList } from '@/util/utils'
+import { useEffect, useState } from 'react'
 
 interface Props {
   searchParams: {
@@ -12,77 +12,57 @@ interface Props {
   }
 }
 
-export const revalidate = 0
+const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
 
-async function page ({ searchParams }: Props) {
-  const { supabase } = await authUser()
-  const { data: { user } } = await supabase.auth.getUser()
-  const { name, sort } = searchParams
+async function getImages (): Promise<ExtendedFileType[]> {
+  const apiUrl = `${DOMAIN_URL}/api/image`
 
-  const { data } = await supabase
-    .from(SP_TABLET.PROFILES)
-    .select('list_files')
-    .eq('user_id', user?.id)
-
-  if (data === null) return
-
-  let list: FileType[] =
-    data[0].list_files === null
-      ? []
-      : data[0].list_files.image
-
-  if (list.length === 0) {
-    return (
-      <div className='grid place-content-center md:text-2xl'>
-        <div>
-          Upload images with the <AddIcon className='inline mb-1 md:w-7 md:h-7 h-5 w-5' /> button
-        </div>
-      </div>
-    )
-  }
-
-  list = list.filter(img => img.fileType === 'image')
-
-  if (name !== undefined) {
-    list = list.filter(img => img.name.includes(name))
-  }
-
-  const pathList = list
-    .map(img => `${user?.id}/${img.fileName}`)
-
-  const { data: listOfUrls } = await supabase.storage
-    .from('image')
-    .createSignedUrls(pathList, 1000)
-
-  if (listOfUrls === null) return
-
-  const imageUrl: ExtendedFileType[] = list
-    .filter((item, index) =>
-      item.fileType === 'image' &&
-      listOfUrls[index] !== undefined
-    )
-    .map((item, index) => ({
-      ...item,
-      url: listOfUrls[index].signedUrl
-    }))
-
-  if (sort !== undefined) {
-    if (
-      sort !== SORT_TYPE.RECENT &&
-      sort !== SORT_TYPE.RECENT_INVERT &&
-      sort !== SORT_TYPE.A_Z &&
-      sort !== SORT_TYPE.Z_A
-    ) return
-
-    const newList = sortList(imageUrl, sort)
-    return (
-      <FileContainer list={newList} />
-    )
-  }
-
-  return (
-    <FileContainer list={imageUrl} />
-  )
+  const res = await fetch(apiUrl, {
+    method: 'GET',
+    cache: 'no-store'
+  })
+  const result = await res.json()
+  return result.list as ExtendedFileType[]
 }
 
-export default page
+export default function page ({ searchParams }: Props) {
+  const [list, setList] = useState<ExtendedFileType[]>([])
+  const { name, sort } = searchParams
+
+  useEffect(() => {
+    getImages()
+      .then(res => {
+        let newList = res
+
+        if (name !== undefined) {
+          newList = list.filter(img => img.name.includes(name))
+        }
+
+        if (sort !== undefined) {
+          if (
+            sort !== SORT_TYPE.RECENT &&
+            sort !== SORT_TYPE.RECENT_INVERT &&
+            sort !== SORT_TYPE.A_Z &&
+            sort !== SORT_TYPE.Z_A
+          ) return
+
+          newList = sortList(res, sort)
+        }
+
+        console.log('🚀 ~ useEffect ~ newList:', newList)
+        setList(newList)
+      })
+  }, [name, sort])
+
+  return (
+    <>
+      {
+        list.length === 0
+          ? <div className='grid place-content-center md:text-2xl'>
+            Loading
+          </div>
+          : <FileContainer list={list} />
+      }
+    </>
+  )
+}

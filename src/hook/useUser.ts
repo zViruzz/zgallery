@@ -72,8 +72,8 @@ function useUser () {
     await uploadRemoveSB(fileName, fileType)
   }
 
-  const favoriteFile = async (fileName: string) => {
-    await updatingFileFavorites(fileName)
+  const favoriteFile = async (fileName: string, favorite: string) => {
+    await updatingFileFavorites(fileName, favorite)
   }
 
   return {

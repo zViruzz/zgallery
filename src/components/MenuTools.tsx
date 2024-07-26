@@ -51,6 +51,7 @@ function MenuTools ({ isHiddenMenu, setHiddenMenu }: Props) {
     const params = new URLSearchParams(searchParams.toString())
     params.set('sort', sort)
     router.push(`${pathname}?${params.toString()}`)
+    // router.refresh()
   }
 
   return (
