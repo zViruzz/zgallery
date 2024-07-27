@@ -4,6 +4,7 @@ import { SORT_TYPE } from '@/static/static'
 import { type ExtendedFileType } from '@/type'
 import { sortList } from '@/util/utils'
 import { useEffect, useState } from 'react'
+import Loading from './loading'
 
 interface Props {
   searchParams: {
@@ -49,7 +50,6 @@ export default function page ({ searchParams }: Props) {
           newList = sortList(res, sort)
         }
 
-        console.log('🚀 ~ useEffect ~ newList:', newList)
         setList(newList)
       })
   }, [name, sort])
@@ -58,9 +58,7 @@ export default function page ({ searchParams }: Props) {
     <>
       {
         list.length === 0
-          ? <div className='grid place-content-center md:text-2xl'>
-            Loading
-          </div>
+          ? <Loading/>
           : <FileContainer list={list} />
       }
     </>

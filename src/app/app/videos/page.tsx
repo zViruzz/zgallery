@@ -1,10 +1,10 @@
+'use client'
 import FileContainer from '@/components/FileContainer'
-import AddIcon from '@/components/icons/AddIcon'
-import { SORT_TYPE, SP_TABLET } from '@/static/static'
-import { type FileType, type ExtendedFileType } from '@/type'
-import authUser from '@/util/auth-user'
+import { SORT_TYPE } from '@/static/static'
+import { type ExtendedFileType } from '@/type'
 import { sortList } from '@/util/utils'
-import { type SupabaseClient } from '@supabase/supabase-js'
+import { useEffect, useState } from 'react'
+import Loading from './loading'
 
 interface Props {
   searchParams: {
@@ -13,86 +13,54 @@ interface Props {
   }
 }
 
-const getSignedUrls = async (supabase: SupabaseClient, pathList: string[]) => {
-  const { data: resultUrls } = await supabase.storage
-    .from('video')
-    .createSignedUrls(pathList, 10000)
-  return resultUrls ?? []
+const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
+
+async function getVideos (): Promise<ExtendedFileType[]> {
+  const apiUrl = `${DOMAIN_URL}/api/video`
+
+  const res = await fetch(apiUrl, {
+    method: 'GET',
+    cache: 'no-store'
+  })
+  const result = await res.json()
+  return result.list as ExtendedFileType[]
 }
 
-async function page ({ searchParams }: Props) {
-  const { supabase } = await authUser()
-  const { data: { user } } = await supabase.auth.getUser()
+export default function page ({ searchParams }: Props) {
+  const [list, setList] = useState<ExtendedFileType[]>([])
   const { name, sort } = searchParams
 
-  const { data } = await supabase
-    .from(SP_TABLET.PROFILES)
-    .select('list_files')
-    .eq('user_id', user?.id)
+  useEffect(() => {
+    getVideos()
+      .then(res => {
+        let newList = res
 
-  if (data === null) return
+        if (name !== undefined) {
+          newList = list.filter(video => video.name.includes(name))
+        }
 
-  let list: FileType[] =
-    data[0].list_files === null
-      ? []
-      : data[0].list_files.image
+        if (sort !== undefined) {
+          if (
+            sort !== SORT_TYPE.RECENT &&
+            sort !== SORT_TYPE.RECENT_INVERT &&
+            sort !== SORT_TYPE.A_Z &&
+            sort !== SORT_TYPE.Z_A
+          ) return
 
-  if (list.length === 0) {
-    return (
-      <div className='grid place-content-center md:text-2xl'>
-        <div>
-          Upload videos with the <AddIcon className='inline mb-1 md:w-7 md:h-7 h-5 w-5' /> button
-        </div>
-      </div>
-    )
-  }
+          newList = sortList(res, sort)
+        }
 
-  list = list.filter(img => img.fileType === 'video')
-
-  if (name !== undefined) {
-    list = list.filter(img => img.name.includes(name))
-  }
-
-  const videoPathList = list
-    .filter(video => video.fileType === 'video')
-    .map(video => `${user?.id}/${video.fileName}/${video.fileName}`)
-
-  const thumbnailPathList = list
-    .filter(video => video.fileType === 'video')
-    .map(video => `${user?.id}/${video.fileName}/video_thumbnail.png`)
-
-  const listOfVideoUrls = await getSignedUrls(supabase, videoPathList)
-  const listOfThumbnailUrls = await getSignedUrls(supabase, thumbnailPathList)
-
-  const imageUrl: ExtendedFileType[] = list
-    .filter((item, index) =>
-      item.fileType === 'video' &&
-      listOfVideoUrls[index] !== undefined &&
-      listOfThumbnailUrls[index] !== undefined
-    )
-    .map((item, index) => ({
-      ...item,
-      url: listOfVideoUrls[index].signedUrl,
-      thumbnailUrl: listOfThumbnailUrls[index].signedUrl
-    }))
-
-  if (sort !== undefined) {
-    if (
-      sort !== SORT_TYPE.RECENT &&
-      sort !== SORT_TYPE.RECENT_INVERT &&
-      sort !== SORT_TYPE.A_Z &&
-      sort !== SORT_TYPE.Z_A
-    ) return
-
-    const newList = sortList(imageUrl, sort)
-    return (
-      <FileContainer list={newList} />
-    )
-  }
+        setList(newList)
+      })
+  }, [name, sort])
 
   return (
-    <FileContainer list={imageUrl} />
+    <>
+      {
+        list.length === 0
+          ? <Loading />
+          : <FileContainer list={list} />
+      }
+    </>
   )
 }
-
-export default page

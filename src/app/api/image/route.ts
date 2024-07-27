@@ -4,7 +4,7 @@ import { createServerClientHandle, deleteFile, favoriteFile } from '@/services/s
 import { type ExtendedFileType, type FileType, type resolutionType } from '@/type'
 import { SP_TABLET } from '@/static/static'
 
-export async function GET (request: Request) {
+export async function GET () {
   const supabase = await createServerClientHandle()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -21,7 +21,6 @@ export async function GET (request: Request) {
       : data[0].list_files.image
 
   if (list.length === 0) {
-    console.log('cero')
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 

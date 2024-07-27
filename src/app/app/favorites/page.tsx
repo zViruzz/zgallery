@@ -1,98 +1,66 @@
+'use client'
 import FileContainer from '@/components/FileContainer'
-import { SP_TABLET } from '@/static/static'
-import { type FileType, type ExtendedFileType } from '@/type'
-import authUser from '@/util/auth-user'
-import { type SupabaseClient } from '@supabase/supabase-js'
+import { SORT_TYPE } from '@/static/static'
+import { type ExtendedFileType } from '@/type'
+import { sortList } from '@/util/utils'
+import { useEffect, useState } from 'react'
+import Loading from './loading'
 
 interface Props {
   searchParams: {
     name: string
+    sort: string
   }
 }
 
-const getSignedUrls = async (supabase: SupabaseClient, pathList: string[], bucket: string) => {
-  const { data: resultUrls } = await supabase.storage
-    .from(bucket)
-    .createSignedUrls(pathList, 10000)
-  return resultUrls ?? []
+const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
+
+async function getImages (): Promise<ExtendedFileType[]> {
+  const apiUrl = `${DOMAIN_URL}/api/favorite`
+
+  const res = await fetch(apiUrl, {
+    method: 'GET',
+    cache: 'no-store'
+  })
+  const result = await res.json()
+  return result.list as ExtendedFileType[]
 }
 
-async function page ({ searchParams }: Props) {
-  const { supabase } = await authUser()
-  const { data: { user } } = await supabase.auth.getUser()
-  const { name } = searchParams
-  const imageUrl: ExtendedFileType[] = []
+export default function page ({ searchParams }: Props) {
+  const [list, setList] = useState<ExtendedFileType[]>([])
+  const { name, sort } = searchParams
 
-  const { data } = await supabase
-    .from(SP_TABLET.PROFILES)
-    .select('list_files')
-    .eq('user_id', user?.id)
+  useEffect(() => {
+    getImages()
+      .then(res => {
+        let newList = res
 
-  if (data === null) return
+        if (name !== undefined) {
+          newList = list.filter(img => img.name.includes(name))
+        }
 
-  let list: FileType[] =
-    data[0].list_files === null
-      ? []
-      : data[0].list_files.image
+        if (sort !== undefined) {
+          if (
+            sort !== SORT_TYPE.RECENT &&
+            sort !== SORT_TYPE.RECENT_INVERT &&
+            sort !== SORT_TYPE.A_Z &&
+            sort !== SORT_TYPE.Z_A
+          ) return
 
-  if (list.length === 0) {
-    return (
-      <div className='grid place-content-center md:text-2xl'>
-        <div>
-          No favorites added
-        </div>
-      </div>
-    )
-  }
+          newList = sortList(res, sort)
+        }
 
-  if (name !== undefined) {
-    list = list.filter(img => img.name.includes(name))
-  }
-
-  const filterFavorite = (list: FileType[]) => {
-    return list.filter(item => item.favorite)
-  }
-  const favoritesList = filterFavorite(list)
-
-  const imagePathList = favoritesList
-    .filter(img => img.fileType === 'image')
-    .map(img => `${user?.id}/${img.fileName}`)
-
-  const videoPathList = favoritesList
-    .filter(video => video.fileType === 'video')
-    .map(video => `${user?.id}/${video.fileName}/${video.fileName}`)
-
-  const thumbnailPathList = favoritesList
-    .filter(video => video.fileType === 'video')
-    .map(video => `${user?.id}/${video.fileName}/video_thumbnail.png`)
-
-  const listOfImageUrls = await getSignedUrls(supabase, imagePathList, 'image')
-  const listOfIVideoUrls = await getSignedUrls(supabase, videoPathList, 'video')
-  const listOfThumbnailUrls = await getSignedUrls(supabase, thumbnailPathList, 'video')
-
-  let indexImage = 0
-  let indexVideo = 0
-
-  for (const file of favoritesList) {
-    let url
-    let thumbnailUrl
-    const { fileType } = file
-
-    if (fileType === 'image') {
-      url = listOfImageUrls[indexImage].signedUrl
-      imageUrl.push({ ...file, url })
-      indexImage++
-    } else if (fileType === 'video') {
-      url = listOfIVideoUrls[indexVideo].signedUrl
-      thumbnailUrl = listOfThumbnailUrls[indexVideo].signedUrl
-      imageUrl.push({ ...file, url, thumbnailUrl })
-      indexVideo++
-    }
-  }
+        setList(newList)
+      })
+  }, [name, sort])
 
   return (
-    <FileContainer list={imageUrl} />
+    <>
+      {
+        list.length === 0
+          ? <Loading />
+          : <FileContainer list={list} />
+      }
+    </>
   )
 }
-
-export default page

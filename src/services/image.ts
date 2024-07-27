@@ -4,7 +4,7 @@ import { createServerClientHandle, getBucketSize, getListFiles, updateDataBaseLi
 import { type FileType, type resolutionType } from '@/type'
 
 const PLAN_LIMIT = {
-  FREE: 3700000,
+  FREE: 5700000,
   PREMIUN: 100000000
 }
 
