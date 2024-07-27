@@ -29,7 +29,7 @@ export async function GET () {
       : data[0].list_files.image
 
   if (list.length === 0) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ list: [] }, { status: 200 })
   }
 
   list = list.filter(img => img.fileType === 'video')

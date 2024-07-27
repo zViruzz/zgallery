@@ -5,6 +5,7 @@ import { type ExtendedFileType } from '@/type'
 import { sortList } from '@/util/utils'
 import { useEffect, useState } from 'react'
 import Loading from './loading'
+import AddIcon from '@/components/icons/AddIcon'
 
 interface Props {
   searchParams: {
@@ -28,6 +29,7 @@ async function getVideos (): Promise<ExtendedFileType[]> {
 
 export default function page ({ searchParams }: Props) {
   const [list, setList] = useState<ExtendedFileType[]>([])
+  const [loading, setLoading] = useState(true)
   const { name, sort } = searchParams
 
   useEffect(() => {
@@ -51,15 +53,22 @@ export default function page ({ searchParams }: Props) {
         }
 
         setList(newList)
+        setLoading(false)
       })
   }, [name, sort])
 
   return (
     <>
       {
-        list.length === 0
+        loading
           ? <Loading />
-          : <FileContainer list={list} />
+          : list.length === 0
+            ? <div className='grid place-content-center md:text-2xl'>
+              <div>
+                Upload videos with the <AddIcon className='inline mb-1 md:w-7 md:h-7 h-5 w-5' /> button
+              </div>
+            </div>
+            : <FileContainer list={list} />
       }
     </>
   )

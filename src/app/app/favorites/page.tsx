@@ -28,6 +28,7 @@ async function getImages (): Promise<ExtendedFileType[]> {
 
 export default function page ({ searchParams }: Props) {
   const [list, setList] = useState<ExtendedFileType[]>([])
+  const [loading, setLoading] = useState(true)
   const { name, sort } = searchParams
 
   useEffect(() => {
@@ -51,15 +52,19 @@ export default function page ({ searchParams }: Props) {
         }
 
         setList(newList)
+        setLoading(false)
       })
   }, [name, sort])
 
   return (
     <>
       {
-        list.length === 0
+        loading
           ? <Loading />
-          : <FileContainer list={list} />
+          : list.length === 0
+            ? <div className='grid place-content-center md:text-2xl'>
+            </div>
+            : <FileContainer list={list} />
       }
     </>
   )

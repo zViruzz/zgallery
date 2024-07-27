@@ -88,13 +88,18 @@ export async function deleteFile (fileName: string, fileType: 'image' | 'video')
         .eq('user_id', user?.id)
 
       if (column === null) return []
-      const prevList: File[] = column[0].list_files === null ? [] : column[0].list_files.image
+      const prevList: FileType[] = column[0].list_files === null ? [] : column[0].list_files.image
 
       return prevList
     }
     const prevList = await getPrevList(user)
+    const prevSize = await getBucketSize(supabase, user)
 
     const newList = prevList.filter(item => item.name !== fileName)
+    const itemSelect = prevList.filter(item => item.name === fileName)
+    console.log('🚀 ~ deleteFile ~ itemSelect:', itemSelect)
+    const newSize = prevSize - itemSelect[0].size
+    console.log('🚀 ~ deleteFile ~ newSize:', newSize)
 
     await supabase
       .from(SP_TABLET.PROFILES)
@@ -103,7 +108,8 @@ export async function deleteFile (fileName: string, fileType: 'image' | 'video')
           image: [
             ...newList
           ]
-        }
+        },
+        bucket_size: newSize
       })
       .eq('user_id', user?.id)
 
