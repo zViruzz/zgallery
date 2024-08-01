@@ -7,9 +7,10 @@ interface Props {
   description: string
   features: string[]
   textButton: string
+  handleClick: () => void
 }
 
-export default function CardPlan ({ title, price, description, features, textButton }: Props) {
+export default function CardPlan ({ title, price, description, features, textButton, handleClick }: Props) {
   return (
     <div className='h-96 w-[90%] sm:w-[70%] box-content border-2 rounded-3xl border-neutral-700 md:w-80'>
       <div className='w-full h-full p-8 flex flex-col'>
@@ -36,7 +37,10 @@ export default function CardPlan ({ title, price, description, features, textBut
         </div>
 
         <div className='h-full flex flex-col justify-end'>
-          <button className='bg-tertiary w-full h-10 rounded-lg hover:bg-[#930b34] active:bg-[#76092a]'>
+          <button
+            className='bg-tertiary w-full h-10 rounded-lg hover:bg-[#930b34] active:bg-[#76092a]'
+            onClick={handleClick}
+          >
             {textButton}
           </button>
         </div>

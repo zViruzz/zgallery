@@ -4,7 +4,7 @@ import { createServerClientHandle, getBucketSize, getListFiles, updateDataBaseLi
 import { type FileType, type resolutionType } from '@/type'
 
 const PLAN_LIMIT = {
-  FREE: 5700000,
+  BASIC: 5700000,
   PREMIUN: 100000000
 }
 
@@ -39,7 +39,7 @@ export async function interImage (image: File, resolution: resolutionType): Prom
   const fileName = incrementedName(image.name, prevList)
   const newSize = prevSize + image.size
 
-  if (userPlan === 'FREE' && PLAN_LIMIT.FREE < newSize) {
+  if (userPlan === 'FREE' && PLAN_LIMIT.BASIC < newSize) {
     console.log('Free plan limit exceeded')
 
     return {
