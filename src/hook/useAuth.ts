@@ -51,10 +51,25 @@ function useAuth () {
           data: {
             name,
             full_name: name,
-            user_plan: 'FREE'
+            user_plan: 'BASIC'
           }
         }
       })
+
+      console.log('🚀 ~ loginUser ~ error:', error?.message)
+
+      if (error?.message === 'Email rate limit exceeded') {
+        handleNotification({
+          message: 'Email rate limit exceeded',
+          type: 'ERROR'
+        })
+      }
+      if (error?.message === 'Invalid login credentials') {
+        handleNotification({
+          message: 'Your password or email address is invalid',
+          type: 'ERROR'
+        })
+      }
 
       if (error != null) console.error('A ocurido un error al autenticar', error)
       return { data, error }
@@ -70,7 +85,6 @@ function useAuth () {
         password
       })
 
-      console.log('🚀 ~ loginUser ~ error:', error?.message)
       if (error?.message === 'Email not confirmed') {
         handleNotification({
           message: 'Email not confirmed',
