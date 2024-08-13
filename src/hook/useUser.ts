@@ -3,12 +3,14 @@ import { createBrowserClient } from '@supabase/ssr'
 import { changeResolution, getResolutionImage, getResolutionVideo, getVideoThumbnail } from '../util/utils'
 import { updatingFileFavorites, uploadImageSB, uploadRemoveSB, uploadVideoSB } from '@/util/request-management'
 import { type ExtendedFileType } from '@/type'
+import { useNotificationContext } from '@/context/notification'
 
 function useUser () {
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
+  const { handleNotification } = useNotificationContext()
 
   const getUser = async () => {
     return await supabase.auth.getUser()
@@ -19,15 +21,30 @@ function useUser () {
       const resolution = await getResolutionImage(file)
       const result = await uploadImageSB(file, resolution)
 
-      // if (result.error === true) {
-      //   handleNotification({ message: result.message, type: 'ERROR' })
-      // } else {
-      //   router.refresh()
-      //   handleNotification({ message: `El archivo ${file.name} se envio correctamente`, type: 'DONE' })
-      // }
-      location.reload()
+      if (result.error === true) {
+        handleNotification({ message: result.message, type: 'ERROR' })
+      } else {
+        location.reload()
+      }
 
       return result
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const uploadVideo = async (file: File) => {
+    try {
+      const resolution = await getResolutionVideo(file)
+      const thumbnail = await getVideoThumbnail(file, 0)
+
+      const result = await uploadVideoSB(file, thumbnail, resolution)
+
+      if (result.error === true) {
+        handleNotification({ message: result.message, type: 'ERROR' })
+      } else {
+        location.reload()
+      }
     } catch (error) {
       console.log(error)
     }
@@ -52,17 +69,6 @@ function useUser () {
       link.setAttribute('download', file.fileName)
       document.body.appendChild(link)
       link.click()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const uploadVideo = async (file: File) => {
-    try {
-      const resolution = await getResolutionVideo(file)
-      const thumbnail = await getVideoThumbnail(file, 0)
-
-      await uploadVideoSB(file, thumbnail, resolution)
     } catch (error) {
       console.log(error)
     }

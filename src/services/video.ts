@@ -1,27 +1,81 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { incrementedName } from '@/util/utils'
-import { createServerClientHandle, getBucketSize, getListFiles, updateDataBaseList } from './supabase'
+import { createServerClientHandle, getBucketSize, getListFiles, getUploadLimit, updateDataBaseList } from './supabase'
 import { type resolutionType, type FileType } from '@/type'
 
-export async function interVideo (video: File, thumbnail: File, resolution: resolutionType) {
+interface ResponseInterVideo {
+  data: {
+    path: string
+  } | null
+  error: {
+    message: string
+    status: number
+  } | null
+}
+
+export async function interVideo (video: File, thumbnail: File, resolution: resolutionType): Promise<ResponseInterVideo> {
   try {
     const supabase = await createServerClientHandle()
     const { data: { user } } = await supabase.auth.getUser()
+
+    if (user === null) throw new Error('user not found')
+
+    const userPlan = user.user_metadata.user_plan
+    const planLimit = await getUploadLimit(user)
+
+    if (userPlan === undefined) {
+      return {
+        data: null,
+        error: {
+          message: 'User plan is undefined',
+          status: 500
+        }
+      }
+    }
 
     const prevList = await getListFiles(supabase, user)
     const prevSize = await getBucketSize(supabase, user)
     const fileName = incrementedName(video.name, prevList)
     const newSize = prevSize + video.size
 
-    const { data: responseVideo, error } = await supabase.storage
+    if (planLimit < newSize) {
+      const message = `You have exceeded the limit of your ${userPlan} plan. Please upgrade to continue.`
+      return {
+        data: null,
+        error: {
+          message,
+          status: 402
+        }
+      }
+    }
+
+    const { data: responseVideo, error: errorVideo } = await supabase.storage
       .from('video')
       .upload(`${user?.id}/${fileName}/${fileName}`, video)
 
-    await supabase.storage
+    const { error: errorThumbnail } = await supabase.storage
       .from('video')
       .upload(`${user?.id}/${fileName}/${thumbnail.name}.png`, thumbnail)
 
-    if (error !== null) return { data: null, error }
+    if (errorVideo !== null) {
+      return {
+        data: null,
+        error: {
+          message: errorVideo.message,
+          status: 500
+        }
+      }
+    }
+
+    if (errorThumbnail !== null) {
+      return {
+        data: null,
+        error: {
+          message: errorThumbnail.message,
+          status: 500
+        }
+      }
+    }
 
     const newVideo: FileType = {
       id: (responseVideo as any)?.id,
@@ -42,8 +96,13 @@ export async function interVideo (video: File, thumbnail: File, resolution: reso
     })
 
     return { data: responseVideo, error: null }
-  } catch (error) {
-    console.error(error)
-    return { data: null, error }
+  } catch (err) {
+    return {
+      data: null,
+      error: {
+        message: 'error while loading',
+        status: 500
+      }
+    }
   }
 }

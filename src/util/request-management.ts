@@ -40,11 +40,14 @@ export async function uploadVideoSB (video: File, thumbnail: File, resolution: {
       body: formData
     })
 
+    const result = await response.json()
+
     if (response.ok) {
       console.log('Archivo enviado correctamente.')
     } else {
       console.error('Error al enviar el archivo:', response.statusText)
     }
+    return result
   } catch (error) {
     console.error('Error de red:', error)
   }

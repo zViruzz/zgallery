@@ -183,3 +183,25 @@ export async function favoriteFile (fileName: string, favorite: string) {
     return { data: null, error }
   }
 }
+
+export async function getUploadLimit (user: User): Promise<number> {
+  const supabase = await createServerClientHandle()
+  const userPlan = user?.user_metadata.user_plan
+
+  const { data: plan, error } = await supabase
+    .from('plan')
+    .select('*')
+    .eq('name', userPlan)
+
+  if (error !== null) {
+    console.error('Error fetching plan:', error)
+    throw new Error('Failed to fetch user plan.')
+  }
+
+  if (plan === null || plan.length === 0) {
+    throw new Error('User plan not found.')
+  }
+
+  const planLimit = plan[0].limit
+  return planLimit
+}
