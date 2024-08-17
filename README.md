@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# zGallery
 
-## Getting Started
+Gallery to save your images and videos in the cloud
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Screenshots
+![404shots_so](https://github.com/user-attachments/assets/99c56f10-6479-40f4-a300-7d3ef62bd49c)
+##
+![602shots_so](https://github.com/user-attachments/assets/5767818b-56b3-4a1a-aef6-ac383f8aba69)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+All commands are run from the root of the project, from a terminal:
 
-To learn more about Next.js, take a look at the following resources:
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies.                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321` .     |
+| `npm run build`           | Build your production site to `./dist/` .         |
+| `npm run start`           | Starts your compilation locally, before deploying it.  |
+| `npm run test`       | Runs the tests defined with Jest. |
+| `npm run test:watch` | Runs the tests in watch mode.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Next > v14.2.5
+- React > v18.3.1
+- Lightgallery > v2.43.5
+- Tailwindcss > v3.4.3
+- Typescript > v5.4.5
+- Jest > v29.7.0
+- @supabase/ssr > v0.3.0
+- @supabase/supabase-js > v2.43.5
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+
+## Deployment
+
+Vercel: [Web](https://zgallery.vercel.app/)

@@ -6,7 +6,7 @@ function Header () {
       <div></div>
       <nav className='text-xl mr-28'>
         <ul className='flex [&>li>a]:p-3 gap-8'>
-          <li><a href='#'>Repository</a></li>
+          <li><a href='https://github.com/zViruzz/zgallery'>Repository</a></li>
           <li><Link href='/plans'>Plans</Link></li>
           <li><a href='/auth/login'>Log in</a></li>
         </ul>

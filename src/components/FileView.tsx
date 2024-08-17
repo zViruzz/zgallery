@@ -20,8 +20,8 @@ function FileView ({ url, fileName, name, fileType, width, height, thumbnailUrl 
                   className={`object-cover w-svw h-full rounded-xl duration-700 ease-in-out 
                   ${isLoading ? 'grayscale-[35%] blur-2xl scale-110' : 'grayscale-0 blur-0 scale-100'}`}
                   src={url}
-                  width={200}
-                  height={200}
+                  width={300}
+                  height={300}
                   alt={name}
                   onLoad={() => { setIsLoading(false) }}
                 />
@@ -31,8 +31,8 @@ function FileView ({ url, fileName, name, fileType, width, height, thumbnailUrl 
                   className={`object-cover w-svw h-full rounded-xl duration-700 ease-in-out 
                   ${isLoading ? 'grayscale-[35%] blur-2xl scale-110' : 'grayscale-0 blur-0 scale-100'}`}
                   src={url}
-                  width={200}
-                  height={200}
+                  width={300}
+                  height={300}
                   alt={name}
                   onLoad={() => { setIsLoading(false) }}
                 />
