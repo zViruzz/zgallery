@@ -28,11 +28,11 @@ export async function GET () {
       ? []
       : data[0].list_files.image
 
+  list = list.filter(img => img.fileType === 'video')
+
   if (list.length === 0) {
     return NextResponse.json({ list: [] }, { status: 200 })
   }
-
-  list = list.filter(img => img.fileType === 'video')
 
   const videoPathList = list
     .filter(video => video.fileType === 'video')
