@@ -4,6 +4,9 @@ import MercadoPagoConfig, { PreApprovalPlan } from 'mercadopago'
 import { redirect } from 'next/navigation'
 
 export async function premiunPlan (price: number) {
+  if (process.env.MP_ACCESS_TOKEN === undefined) {
+    throw new Error('MP_ACCESS_TOKEN is not defined')
+  }
   const client = new MercadoPagoConfig({
     accessToken: process.env.MP_ACCESS_TOKEN
   })
@@ -24,6 +27,8 @@ export async function premiunPlan (price: number) {
   }
 
   const result = await payment.create({ body })
-  console.log('🚀 ~ donate ~ result:', result)
+  if (result.init_point === undefined) {
+    throw new Error('init_point is not defined')
+  }
   redirect(result.init_point)
 }
