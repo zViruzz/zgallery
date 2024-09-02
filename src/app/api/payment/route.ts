@@ -1,4 +1,4 @@
-import MercadoPagoConfig, { PreApprovalPlan } from 'mercadopago'
+import MercadoPagoConfig, { Payment } from 'mercadopago'
 import { type NextRequest } from 'next/server'
 
 export async function POST (request: NextRequest) {
@@ -12,7 +12,8 @@ export async function POST (request: NextRequest) {
   const id = await request.json()
     .then((data) => data.data.id as string)
 
-  const payment = await new PreApprovalPlan(client).get({ preApprovalPlanId: id })
+  // const payment = await new PreApprovalPlan(client).get({ preApprovalPlanId: id })
+  const payment = await new Payment(client).get({ id })
   console.log('🚀 ~ POST ~ payment:', payment)
 
   return Response.json({ success: true, status: 200 })
