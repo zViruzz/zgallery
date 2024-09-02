@@ -6,7 +6,7 @@ import { type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import ButtonGoogle from '@/components/ButtonGoogle'
 import Link from 'next/link'
-import NotificationLayout from '@/components/Notification'
+import NotificationLayout from '@/components/NotificationLayout'
 import { useNotificationContext } from '@/context/notification'
 
 const { USERNAME, EMAIL, PASSWORD, REPASSWORD } = InputRegister

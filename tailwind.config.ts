@@ -8,9 +8,6 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      listStyleImage: {
-        checkmark: 'url("/src/assets/tilIcon.svg")'
-      },
       height: {
         86: '22rem'
       },

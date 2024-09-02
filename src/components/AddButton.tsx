@@ -2,7 +2,7 @@
 import AddIcon from '@/components/icons/AddIcon'
 import { useNotificationContext } from '@/context/notification'
 import useUser from '@/hook/useUser'
-import NotificationLayout from './Notification'
+import NotificationLayout from './NotificationLayout'
 
 interface Props {
   type: 'image' | 'video'

@@ -1,7 +1,9 @@
-import { type NotificationType } from '@/type'
-import React from 'react'
+'use client'
+import { useNotificationContext } from '@/context/notification'
 
-function NotificationLayout ({ message, visible, type }: NotificationType) {
+function NotificationLayout () {
+  const { notification: { message, visible, type } } = useNotificationContext()
+
   return (
     <div className={`${visible ? 'visible' : 'invisible'}
     ${type === 'ERROR' ? 'bg-tertiary' : 'bg-green-500'}

@@ -24,7 +24,6 @@ async function getImages (): Promise<ExtendedFileType[]> {
     cache: 'no-store'
   })
   const result = await res.json()
-  console.log('🚀 ~ getImages ~ result:', result)
   return result.list as ExtendedFileType[]
 }
 
