@@ -6,13 +6,12 @@ import { type FormEvent } from 'react'
 import Link from 'next/link'
 import ButtonGoogle from '@/components/ButtonGoogle'
 import InputForm from '@/components/InputForm'
-import NotificationLayout from '@/components/NotificationLayout'
 
 const { EMAIL, PASSWORD } = InputRegister
 
 function page () {
   const router = useRouter()
-  const { loginUser, signInWithGoogle, notification } = useAuth()
+  const { loginUser, signInWithGoogle } = useAuth()
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
@@ -31,7 +30,6 @@ function page () {
 
   return (
     <>
-      <NotificationLayout {...notification} />
       <div className='sm:w-[25rem] w-full bg-black rounded-2xl sm:px-14 py-16 px-[10%] box-content'>
         <form
           className='w-full h-full grid gap-5'

@@ -1,8 +1,6 @@
 'use client'
 import AddIcon from '@/components/icons/AddIcon'
-import { useNotificationContext } from '@/context/notification'
 import useUser from '@/hook/useUser'
-import NotificationLayout from './NotificationLayout'
 
 interface Props {
   type: 'image' | 'video'
@@ -10,7 +8,6 @@ interface Props {
 
 function AddButton ({ type }: Props) {
   const { uploadImage, uploadVideo } = useUser()
-  const { notification } = useNotificationContext()
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files === null) return
@@ -27,7 +24,6 @@ function AddButton ({ type }: Props) {
 
   return (
     <>
-      <NotificationLayout {...notification} />
       <form>
         <input
           className='hidden'

@@ -6,13 +6,12 @@ import { type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import ButtonGoogle from '@/components/ButtonGoogle'
 import Link from 'next/link'
-import NotificationLayout from '@/components/NotificationLayout'
 import { useNotificationContext } from '@/context/notification'
 
 const { USERNAME, EMAIL, PASSWORD, REPASSWORD } = InputRegister
 
 function page () {
-  const { registerUser, signInWithGoogle, notification } = useAuth()
+  const { registerUser, signInWithGoogle } = useAuth()
   const { handleNotification } = useNotificationContext()
   const router = useRouter()
 
@@ -44,7 +43,6 @@ function page () {
 
   return (
     <>
-      <NotificationLayout {...notification} />
       <div className='sm:w-[25rem] w-full bg-black rounded-2xl sm:px-14 py-16 px-[10%] box-content'>
         <form
           className='w-full h-full grid gap-5'
