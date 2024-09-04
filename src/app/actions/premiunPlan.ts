@@ -20,7 +20,7 @@ export async function premiunPlan (price: number) {
       frequency_type: 'months',
       repetitions: 12,
       billing_day: 10,
-      transaction_amount: price,
+      transaction_amount: Number(price),
       currency_id: 'ARS'
     },
     back_url: 'https://www.mercadopago.com.ar'
