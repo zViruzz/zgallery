@@ -14,13 +14,13 @@ export async function premiunPlan (price: number) {
   const payment = new PreApprovalPlan(client)
 
   const body = {
-    reason: 'zGallery',
+    reason: 'zGallery-test',
     auto_recurring: {
       frequency: 1,
       frequency_type: 'months',
       repetitions: 12,
       billing_day: 10,
-      transaction_amount: 1000,
+      transaction_amount: price,
       currency_id: 'ARS'
     },
     back_url: 'https://www.mercadopago.com.ar'

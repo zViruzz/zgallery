@@ -11,7 +11,7 @@
         "kind": "build",
         "isDefault": true
       },
-      "runOptions": { "runOn": "folderOpen" } // Ejecutar automáticamente al abrir la carpeta
+      // "runOptions": { "runOn": "folderOpen" } // Ejecutar automáticamente al abrir la carpeta
     },
     {
       "label": "pnpm run test",
