@@ -1,3 +1,4 @@
+import savePaymentData from '@/util/savePaymentData'
 import MercadoPagoConfig, { PreApproval } from 'mercadopago'
 import { type NextRequest } from 'next/server'
 
@@ -14,20 +15,13 @@ export async function POST (request: NextRequest) {
   console.log('🚀 ~ POST ~ res:', res)
 
   const payment = await new PreApproval(client).get({ id })
-    .then(res => res)
+    .then(async res => {
+      // Guarda los datos del pago en la base de datos
+      await savePaymentData(res)
+      return res
+    })
     .catch(res => { console.error(res) })
 
   console.log('🚀 ~ POST ~ payment:', payment)
   return Response.json({ success: true, status: 200 })
 }
-
-// 🚀 ~POST ~res: {
-//   action: 'created',
-//     application_id: 8702795964571019,
-//       data: { id: '2c93808491b45c3b0191bdfea614038d' },
-//   date: '2024-09-04T17:04:28Z',
-//     entity: 'preapproval_plan',
-//       id: 115610937369,
-//         type: 'subscription_preapproval_plan',
-//           version: 0
-// }
