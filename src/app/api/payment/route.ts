@@ -16,6 +16,7 @@ export async function POST (request: NextRequest) {
     .then(res => res)
     .catch(res => { console.error(res) })
 
+  console.log('🚀 ~ POST ~ payment:', payment)
   return Response.json({ success: true, status: 200 })
 }
 
