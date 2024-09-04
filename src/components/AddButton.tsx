@@ -1,6 +1,7 @@
 'use client'
 import AddIcon from '@/components/icons/AddIcon'
 import useUser from '@/hook/useUser'
+import NotificationLayout from './NotificationLayout'
 
 interface Props {
   type: 'image' | 'video'
@@ -24,6 +25,7 @@ function AddButton ({ type }: Props) {
 
   return (
     <>
+      <NotificationLayout />
       <form>
         <input
           className='hidden'

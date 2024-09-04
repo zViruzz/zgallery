@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import ButtonGoogle from '@/components/ButtonGoogle'
 import Link from 'next/link'
 import { useNotificationContext } from '@/context/notification'
+import NotificationLayout from '@/components/NotificationLayout'
 
 const { USERNAME, EMAIL, PASSWORD, REPASSWORD } = InputRegister
 
@@ -43,6 +44,7 @@ function page () {
 
   return (
     <>
+    <NotificationLayout/>
       <div className='sm:w-[25rem] w-full bg-black rounded-2xl sm:px-14 py-16 px-[10%] box-content'>
         <form
           className='w-full h-full grid gap-5'
