@@ -12,9 +12,8 @@ export async function POST (request: NextRequest) {
 
   const res = await request.json()
   const id = res.data.id as string
-  console.log('🚀 ~ POST ~ res:', res)
 
-  const payment = await new PreApproval(client).get({ id })
+  await new PreApproval(client).get({ id })
     .then(async res => {
       // Guarda los datos del pago en la base de datos
       await savePaymentData(res)
@@ -22,6 +21,5 @@ export async function POST (request: NextRequest) {
     })
     .catch(res => { console.error(res) })
 
-  console.log('🚀 ~ POST ~ payment:', payment)
   return Response.json({ success: true, status: 200 })
 }
