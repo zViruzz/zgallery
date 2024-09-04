@@ -15,7 +15,6 @@ export async function POST (request: NextRequest) {
 
   await new PreApproval(client).get({ id })
     .then(async res => {
-      // Guarda los datos del pago en la base de datos
       await savePaymentData(res)
       return res
     })
