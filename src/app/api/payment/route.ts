@@ -11,6 +11,7 @@ export async function POST (request: NextRequest) {
 
   const res = await request.json()
   const id = res.data.id as string
+  console.log('🚀 ~ POST ~ res:', res)
 
   const payment = await new PreApproval(client).get({ id })
     .then(res => res)
