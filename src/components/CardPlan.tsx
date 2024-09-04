@@ -21,15 +21,15 @@ export default function CardPlan ({ title, priceTag, price, description, feature
   )
 
   const handleClick = async () => {
-    const { data } = await supabase.auth.getUser()
-    if (data.user === null) {
-      handleNotification({
-        message: 'You are not logged in',
-        type: 'ERROR'
-      })
-      console.log('notification')
-      return
-    }
+    // const { data } = await supabase.auth.getUser()
+    // if (data.user === null) {
+    //   handleNotification({
+    //     message: 'You are not logged in',
+    //     type: 'ERROR'
+    //   })
+    //   console.log('notification')
+    //   return
+    // }
 
     await premiunPlan(price)
 
