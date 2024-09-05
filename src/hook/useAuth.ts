@@ -28,6 +28,7 @@ function useAuth () {
 
   const signInWithGoogle = async () => {
     try {
+      console.log('DOMAIN_URL: ', DOMAIN_URL)
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
