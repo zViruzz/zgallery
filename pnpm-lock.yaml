@@ -18,8 +18,8 @@ importers:
         specifier: 2.7.2
         version: 2.7.2
       mercadopago:
-        specifier: ^2.0.13
-        version: 2.0.13
+        specifier: 2.0.15
+        version: 2.0.15
       next:
         specifier: 14.2.5
         version: 14.2.5(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2142,8 +2142,8 @@ packages:
   makeerror@1.0.12:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
 
-  mercadopago@2.0.13:
-    resolution: {integrity: sha512-KktKwjimHrRu3unpKFe09yJMseJpOAnxumO776ljJLrlzczqw5GgbKIolhqAGa3DlsCzfrUqBHnR3Nf0qnF9Ag==}
+  mercadopago@2.0.15:
+    resolution: {integrity: sha512-sIV/Kow8i2raNrWT0CDjOLiEg92FiqgX55psWj4hEXcqmG3R9n5ST/yALN6awdgG0OzA/fq16YH0qYG/8y++Zg==}
 
   merge-stream@2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}
@@ -5696,7 +5696,7 @@ snapshots:
     dependencies:
       tmpl: 1.0.5
 
-  mercadopago@2.0.13:
+  mercadopago@2.0.15:
     dependencies:
       node-fetch: 2.7.0
       uuid: 9.0.1

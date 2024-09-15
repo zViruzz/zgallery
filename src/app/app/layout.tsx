@@ -21,9 +21,24 @@ async function layout ({ children }: { children: ReactNode }) {
     redirect('/auth/login')
   }
 
-  const isPlan = user.user_metadata.user_plan
+  const subscriptionPreapprovalId = user.user_metadata.subscription_preapproval_id
 
-  if (isPlan === undefined) {
+  const { data: subscription } = await supabase
+    .from('subscriptions')
+    .select('*')
+    .eq('preapproval_plan_id', subscriptionPreapprovalId)
+
+  if (subscription === null) {
+    throw new Error('subscroption is null')
+  }
+  const userStatus = subscription[0].status
+  const userReason = subscription[0].reason
+
+  if (userReason === 'zGallery-test-sub' && userStatus === 'authorized') {
+    await supabase.auth.updateUser({
+      data: { user_plan: 'PREMIUN' }
+    })
+  } else {
     await supabase.auth.updateUser({
       data: { user_plan: 'FREE' }
     })
