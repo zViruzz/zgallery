@@ -13,12 +13,17 @@ export async function POST (request: NextRequest) {
   const res = await request.json()
   const id = res.data.id as string
 
-  await new PreApproval(client).get({ id })
-    .then(async res => {
-      await savePaymentData(res)
-      return res
-    })
-    .catch(res => { console.error(res) })
+  if (res.type === 'subscription_preapproval') {
+    await new PreApproval(client).get({ id })
+      .then(async res => {
+        await savePaymentData(res)
+        return res
+      })
+      .catch(res => {
+        console.error(res)
+        return res
+      })
+  }
 
   return Response.json({ success: true, status: 200 })
 }

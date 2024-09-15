@@ -1,4 +1,5 @@
-const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
+// const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
+const DOMAIN_URL = 'https://7fk3t2-3000.csb.app'
 
 export async function uploadImageSB (file: File, resolution: { width: number, height: number }) {
   const apiUrl = `${DOMAIN_URL}/api/image` // Reemplaza con la URL de tu API

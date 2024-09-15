@@ -3,11 +3,13 @@ import logo from '../../public/logo.svg'
 import illustration from '../../public/ilu.png'
 import Image from 'next/image'
 import Link from 'next/link'
+import HomeMenuMobile from '@/components/HomeMenuMobile '
 
 export default function Home () {
   return (
     <>
       <Header />
+      <HomeMenuMobile/>
       <main className="min-h-screen justify-items-center items-center grid lg:grid-cols-2">
         <div className='lg:text-2xl  text-[20px] lg:text-left text-center flex flex-col  items-center lg:items-start'>
           <Image

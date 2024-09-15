@@ -14,7 +14,8 @@ interface Props {
   }
 }
 
-const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
+// const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
+const DOMAIN_URL = 'https://7fk3t2-3000.csb.app'
 
 async function getVideos (): Promise<ExtendedFileType[]> {
   const apiUrl = `${DOMAIN_URL}/api/video`
