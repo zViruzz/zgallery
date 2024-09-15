@@ -10,7 +10,8 @@ interface signinUserType {
   password: string
 }
 
-const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
+// const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
+const DOMAIN_URL = 'https://7fk3t2-3000.csb.app'
 
 function useAuth () {
   if (DOMAIN_URL === undefined) console.error('DOMAIN_URL  is undefined')
