@@ -25,7 +25,7 @@ export default function page () {
             priceTag='Free'
             description='unlimited'
             features={[
-              '2 gb storage ',
+              '50 mb storage ',
               'Access to all main features'
             ]}
             textButton='Start'
@@ -37,7 +37,7 @@ export default function page () {
             priceTag='$ 1 usd'
             description='Per month'
             features={[
-              '2 gb storage ',
+              '100 mb storage ',
               'Access to all main features',
               'Change resolution'
             ]}
