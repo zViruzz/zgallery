@@ -21,13 +21,21 @@ export default function CardPlan ({ title, priceTag, price, description, feature
   )
 
   const handleClick = async () => {
-    const { data } = await supabase.auth.getUser()
-    if (data.user === null) {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user === null) {
       handleNotification({
         message: 'You are not logged in',
         type: 'ERROR'
       })
-      console.log('notification')
+      return
+    }
+
+    console.log('🚀 ~ handleClick ~ user.user_metadata.subscription_status:', user.user_metadata.subscription_status)
+    if (user.user_metadata.subscription_status === 'authorized') {
+      handleNotification({
+        message: 'You are already subscribed',
+        type: 'ERROR'
+      })
       return
     }
 

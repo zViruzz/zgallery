@@ -36,11 +36,17 @@ async function layout ({ children }: { children: ReactNode }) {
 
   if (userReason === 'zGallery-test-sub' && userStatus === 'authorized') {
     await supabase.auth.updateUser({
-      data: { user_plan: 'PREMIUN' }
+      data: {
+        user_plan: 'PREMIUN',
+        subscription_status: userStatus
+      }
     })
   } else {
     await supabase.auth.updateUser({
-      data: { user_plan: 'FREE' }
+      data: {
+        user_plan: 'FREE',
+        subscription_status: userStatus
+      }
     })
   }
 
