@@ -11,7 +11,7 @@ import 'lightgallery/css/lg-video.css'
 import 'lightgallery/css/lg-thumbnail.css'
 import 'lightgallery/css/lg-zoom.css'
 
-import { buttonDelete, buttonEditSize, buttonFavorite, iconFavoriteFalse, iconFavoriteTrue } from './strings'
+import { buttonDelete, buttonEditSize, buttonEditSizeDisabled, buttonFavorite, iconFavoriteFalse, iconFavoriteTrue } from './strings'
 import { useCallback, useRef } from 'react'
 import { type ExtendedFileType } from '@/type'
 import DeletionWarning from './DeletionWarning'
@@ -25,7 +25,7 @@ interface Props {
 
 // TODO: Arreglar el problema de fovoritos o el refresh
 function FileContainer ({ list }: Props) {
-  const { deleteFile, favoriteFile, imageTransform } = useUser()
+  const { deleteFile, favoriteFile, imageTransform, getUser } = useUser()
   const pathname = usePathname()
   const lightGallery = useRef<any>(null)
   const selectedItem = useRef<ExtendedFileType>({
@@ -102,14 +102,20 @@ function FileContainer ({ list }: Props) {
       })
   }
 
-  const afterLoad = (element: any) => {
+  const afterLoad = async (element: any) => {
+    const { data: { user } } = await getUser()
+    const userPlan = user?.user_metadata.user_plan
     const select = list[element.index]
     if (select === undefined) return
     selectedItem.current = select
 
     if (document.querySelector('#lg-edit') === null && pathname === '/app/images') {
       const $lgContainer = document.querySelector('.lg-toolbar')
-      $lgContainer?.insertAdjacentHTML('beforeend', buttonEditSize)
+      if (userPlan !== 'PREMIUN') {
+        $lgContainer?.insertAdjacentHTML('beforeend', buttonEditSizeDisabled)
+      } else {
+        $lgContainer?.insertAdjacentHTML('beforeend', buttonEditSize)
+      }
     }
 
     const btnExits =
