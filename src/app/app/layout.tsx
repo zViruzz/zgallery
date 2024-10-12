@@ -10,6 +10,7 @@ import GalleryIcon from '@/components/icons/GalleryIcon'
 import AlbumIcon from '@/components/icons/AlbumIcon'
 import VideoIcon from '@/components/icons/VideoIcon'
 import HeartIcon from '@/components/icons/HeartIcon'
+import ArrowUpIcon from '@/components/icons/ArrowUpIcon'
 
 export const revalidate = 0
 
@@ -71,10 +72,18 @@ async function layout ({ children }: { children: ReactNode }) {
                 </Link>
               </li>
             </ul>
-          </div>
 
+          </div>
           <div>
-            <Profile user={user} />
+            <div className='mb-5'>
+              <Link href='/plans' className='text-base flex bg-secodary rounded-xl px-3 py-2 items-center'>
+                <div>Upgrade your plan</div>
+                <ArrowUpIcon width={30} height={30}/>
+              </Link>
+            </div>
+            <div>
+              <Profile user={user} />
+            </div>
           </div>
         </div>
       </nav>

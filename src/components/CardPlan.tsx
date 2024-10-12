@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { premiunPlan } from '@/app/actions/premiunPlan'
-import TilIcon from './icons/TilIcon'
 import { useNotificationContext } from '@/context/notification'
 import { createBrowserClient } from '@supabase/ssr'
+import TilIcon from './icons/TilIcon'
 
 interface Props {
   title: string

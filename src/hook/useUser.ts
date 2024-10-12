@@ -1,9 +1,19 @@
+import { useNotificationContext } from '@/context/notification'
+import type { ExtendedFileType } from '@/type'
+import {
+  updatingFileFavorites,
+  uploadImageSB,
+  uploadRemoveSB,
+  uploadVideoSB
+} from '@/util/request-management'
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createBrowserClient } from '@supabase/ssr'
-import { changeResolution, getResolutionImage, getResolutionVideo, getVideoThumbnail } from '../util/utils'
-import { updatingFileFavorites, uploadImageSB, uploadRemoveSB, uploadVideoSB } from '@/util/request-management'
-import { type ExtendedFileType } from '@/type'
-import { useNotificationContext } from '@/context/notification'
+import {
+  changeResolution,
+  getResolutionImage,
+  getResolutionVideo,
+  getVideoThumbnail
+} from '../util/utils'
 
 function useUser () {
   const supabase = createBrowserClient(
@@ -50,9 +60,14 @@ function useUser () {
     }
   }
 
-  const imageTransform = async (file: ExtendedFileType, transform: { width: number, height: number }) => {
+  const imageTransform = async (
+    file: ExtendedFileType,
+    transform: { width: number, height: number }
+  ) => {
     try {
-      const { data: { user } } = await getUser()
+      const {
+        data: { user }
+      } = await getUser()
 
       const { data } = await supabase.storage
         .from('image')
