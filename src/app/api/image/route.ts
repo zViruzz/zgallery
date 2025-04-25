@@ -1,93 +1,101 @@
-import { NextResponse } from 'next/server'
-import { interImage } from '@/services/image'
-import { createServerClientHandle, deleteFile, favoriteFile } from '@/services/supabase'
-import { type ExtendedFileType, type FileType, type resolutionType } from '@/type'
-import { SP_TABLET } from '@/static/static'
+import { interImage } from "@/services/image";
+import {
+	createServerClientHandle,
+	deleteFile,
+	favoriteFile,
+} from "@/services/supabase";
+import { SP_TABLET } from "@/static/static";
+import type { ExtendedFileType, FileType, resolutionType } from "@/type";
+import { NextResponse } from "next/server";
 
-export async function GET () {
-  const supabase = await createServerClientHandle()
-  const { data: { user } } = await supabase.auth.getUser()
+export async function GET() {
+	const supabase = await createServerClientHandle();
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
 
-  const { data } = await supabase
-    .from(SP_TABLET.PROFILES)
-    .select('list_files')
-    .eq('user_id', user?.id)
+	const { data } = await supabase
+		.from(SP_TABLET.PROFILES)
+		.select("list_files")
+		.eq("user_id", user?.id);
 
-  if (data === null) return NextResponse.json({ error: 'is null data' }, { status: 500 })
+	console.log("🚀 ~ GET ~ data:", data);
+	if (data === null)
+		return NextResponse.json({ error: "is null data" }, { status: 500 });
 
-  let list: FileType[] =
-    data[0].list_files === null
-      ? []
-      : data[0].list_files.image
+	let list: FileType[] =
+		data[0].list_files === null ? [] : data[0].list_files.image;
 
-  list = list.filter(img => img.fileType === 'image')
+	list = list.filter((img) => img.fileType === "image");
 
-  if (list.length === 0) {
-    return NextResponse.json({ list: [] }, { status: 200 })
-  }
+	if (list.length === 0) {
+		return NextResponse.json({ list: [] }, { status: 200 });
+	}
 
-  const pathList = list
-    .map(img => `${user?.id}/${img.fileName}`)
+	const pathList = list.map((img) => `${user?.id}/${img.fileName}`);
 
-  const { data: listOfUrls } = await supabase.storage
-    .from('image')
-    .createSignedUrls(pathList, 10000)
+	const { data: listOfUrls } = await supabase.storage
+		.from("image")
+		.createSignedUrls(pathList, 10000);
 
-  if (listOfUrls === null) return NextResponse.json({ error: 'is null listOfUrls' }, { status: 500 })
+	if (listOfUrls === null)
+		return NextResponse.json({ error: "is null listOfUrls" }, { status: 500 });
 
-  const imageUrl: ExtendedFileType[] = list
-    .filter((item, index) =>
-      item.fileType === 'image' &&
-      listOfUrls[index] !== undefined
-    )
-    .map((item, index) => ({
-      ...item,
-      url: listOfUrls[index].signedUrl
-    }))
+	const imageUrl: ExtendedFileType[] = list
+		.filter(
+			(item, index) =>
+				item.fileType === "image" && listOfUrls[index] !== undefined,
+		)
+		.map((item, index) => ({
+			...item,
+			url: listOfUrls[index].signedUrl,
+		}));
 
-  return NextResponse.json({ list: imageUrl })
+	return NextResponse.json({ list: imageUrl });
 }
 
-export async function POST (request: Request) {
-  try {
-    const formData = await request.formData()
-    const image = formData.get('image') as File
-    const resolution = JSON.parse(formData.get('resolution') as string) as resolutionType
+export async function POST(request: Request) {
+	try {
+		const formData = await request.formData();
+		const image = formData.get("image") as File;
+		const resolution = JSON.parse(
+			formData.get("resolution") as string,
+		) as resolutionType;
 
-    const { data, error } = await interImage(image, resolution)
+		const { data, error } = await interImage(image, resolution);
 
-    if (error !== null) {
-      return NextResponse.json(
-        { message: error.message, error: true },
-        { status: error.status }
-      )
-    }
-    return NextResponse.json(data)
-  } catch (error) {
-    console.log(error)
-  }
+		if (error !== null) {
+			return NextResponse.json(
+				{ message: error.message, error: true },
+				{ status: error.status },
+			);
+		}
+		return NextResponse.json(data);
+	} catch (error) {
+		console.log(error);
+	}
 }
 
-export async function DELETE (request: Request) {
-  const formData = await request.formData()
-  const name = formData.get('name') as string
-  const fileType = formData.get('fileType') as 'image'
+export async function DELETE(request: Request) {
+	const formData = await request.formData();
+	const name = formData.get("name") as string;
+	const fileType = formData.get("fileType") as "image";
 
-  const { data, error } = await deleteFile(name, fileType)
-  if (error !== null) return NextResponse.json(error)
+	const { data, error } = await deleteFile(name, fileType);
+	if (error !== null) return NextResponse.json(error);
 
-  return NextResponse.json(data)
+	return NextResponse.json(data);
 }
 
-export async function PATCH (request: Request) {
-  const { searchParams } = new URL(request.url)
-  const name = searchParams.get('name')
-  const favorite = searchParams.get('favorite')
+export async function PATCH(request: Request) {
+	const { searchParams } = new URL(request.url);
+	const name = searchParams.get("name");
+	const favorite = searchParams.get("favorite");
 
-  if (name === null) return
-  if (favorite === null) return
+	if (name === null) return;
+	if (favorite === null) return;
 
-  const res = favoriteFile(name, favorite)
+	const res = favoriteFile(name, favorite);
 
-  return NextResponse.json(res)
+	return NextResponse.json(res);
 }

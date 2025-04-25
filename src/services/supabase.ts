@@ -192,14 +192,13 @@ export async function getUploadLimit (user: User): Promise<number> {
     .from('plan')
     .select('*')
     .eq('name', userPlan)
-
+    
   if (error !== null) {
-    console.error('Error fetching plan:', error)
     throw new Error('Failed to fetch user plan.')
   }
 
   if (plan === null || plan.length === 0) {
-    throw new Error('User plan not found.')
+    throw new Error('User plan not found')
   }
 
   const planLimit = plan[0].limit

@@ -32,7 +32,7 @@ export async function interImage (image: File, resolution: resolutionType): Prom
         }
       }
     }
-
+    
     const prevList = await getListFiles(supabase, user)
     const prevSize = await getBucketSize(supabase, user)
     const fileName = incrementedName(image.name, prevList)
@@ -87,10 +87,11 @@ export async function interImage (image: File, resolution: resolutionType): Prom
 
     }
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Error uploading image';
     return {
       data: null,
       error: {
-        message: 'error while loading',
+        message: errorMessage,
         status: 500
       }
     }
