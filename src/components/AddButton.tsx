@@ -7,7 +7,7 @@ interface Props {
   type: 'image' | 'video'
 }
 
-function AddButton ({ type }: Props) {
+function AddButton({ type }: Props) {
   const { uploadImage, uploadVideo } = useUser()
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {

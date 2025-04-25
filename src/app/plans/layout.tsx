@@ -1,8 +1,8 @@
-async function layout ({ children }: { children: React.ReactNode }) {
+async function layout({ children }: { children: React.ReactNode }) {
   return (
-      <>
-        {children}
-      </>
+    <>
+      {children}
+    </>
   )
 }
 

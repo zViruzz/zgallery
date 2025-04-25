@@ -1,15 +1,15 @@
 'use client'
-import useAuth from '@/hook/useAuth'
-import { InputRegister } from '@/static/static'
-import { useRouter } from 'next/navigation'
-import { type FormEvent } from 'react'
-import Link from 'next/link'
 import ButtonGoogle from '@/components/ButtonGoogle'
 import InputForm from '@/components/InputForm'
+import useAuth from '@/hook/useAuth'
+import { InputRegister } from '@/static/static'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import type { FormEvent } from 'react'
 
 const { EMAIL, PASSWORD } = InputRegister
 
-function page () {
+function page() {
   const router = useRouter()
   const { loginUser, signInWithGoogle } = useAuth()
 
@@ -31,25 +31,16 @@ function page () {
   return (
     <>
       <div className='sm:w-[25rem] w-full bg-black rounded-2xl sm:px-14 py-16 px-[10%] box-content'>
-        <form
-          className='w-full h-full grid gap-5'
-          onSubmit={handleSubmit}
-        >
-
+        <form className='w-full h-full grid gap-5' onSubmit={handleSubmit}>
           <div className='flex justify-center'>
             <h2 className='text-3xl'>Login</h2>
           </div>
 
           <div className='flex flex-col h-full w-full gap-5'>
             <div>
-              <InputForm
-                id={EMAIL}
-                type='email'
-                placeholder='Email'
-                required={true}
-              />
+              <InputForm id={EMAIL} type='email' placeholder='Email' required={true} />
             </div>
-            <div >
+            <div>
               <InputForm
                 id={PASSWORD}
                 type='password'
@@ -65,17 +56,15 @@ function page () {
 
           <div className='flex flex-col gap-3'>
             <div className='flex justify-end'>
-              <a href='#'>Forgot password</a>
+              <a href='/'>Forgot password</a>
             </div>
-            <button
-              type='submit'
-              className='bg-tertiary w-full py-3 rounded-lg'
-            >
+            <button type='submit' className='bg-tertiary w-full py-3 rounded-lg'>
               Login
             </button>
-            <p className='text-center'>Dont have an account? <Link href='/auth/register'>Register</Link></p>
+            <p className='text-center'>
+              Dont have an account? <Link href='/auth/register'>Register</Link>
+            </p>
           </div>
-
         </form>
       </div>
     </>

@@ -1,5 +1,4 @@
 import BarTools from "@/components/BarTools";
-import { createBrowserClient } from "@supabase/ssr";
 import React, { type ReactNode } from "react";
 
 function layout({ children }: { children: ReactNode }) {

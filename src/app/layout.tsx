@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: 'Image and video gallery'
 }
 
-export default function RootLayout ({
+export default function RootLayout({
   children
 }: {
   children: React.ReactNode

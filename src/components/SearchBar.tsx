@@ -1,12 +1,12 @@
+import { useRouter } from 'next/navigation'
 import React, { type FormEvent, useRef } from 'react'
 import SearchIcon from './icons/SearchIcon'
-import { useRouter } from 'next/navigation'
 
 interface Props {
   setHiddenSearch: (bol: boolean) => void
   isHiddenSearch: boolean
 }
-function SearchBar ({ setHiddenSearch, isHiddenSearch }: Props) {
+function SearchBar({ setHiddenSearch, isHiddenSearch }: Props) {
   const searchRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
@@ -53,6 +53,7 @@ function SearchBar ({ setHiddenSearch, isHiddenSearch }: Props) {
       </section>
       <div className={`${isHiddenSearch ? 'md:w-10  md:opacity-100' : 'hidden md:grid md:w-0 md:opacity-0'} grid place-content-center`}>
         <button
+          type='button'
           className={'grid h-10 w-10 place-content-center rounded-full'}
           onClick={handleClickButton}
         >

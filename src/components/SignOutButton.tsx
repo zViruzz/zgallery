@@ -2,7 +2,7 @@
 import useAuth from '@/hook/useAuth'
 import { useRouter } from 'next/navigation'
 
-function SignOutButton () {
+function SignOutButton() {
   const { signOut } = useAuth()
   const router = useRouter()
 
@@ -13,7 +13,7 @@ function SignOutButton () {
   }
 
   return (
-    <button onClick={handleClick}>
+    <button type='button' onClick={handleClick}>
       Sign Out
     </button>
   )

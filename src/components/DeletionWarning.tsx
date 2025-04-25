@@ -4,11 +4,12 @@ interface Props {
   handleClickDelete: () => void
 }
 
-function DeletionWarning ({ handleClickDelete }: Props) {
+function DeletionWarning({ handleClickDelete }: Props) {
   return (
     <div className={'hidden message-delete bg-black bg-opacity-20 absolute z-[5999] top-0 left-0 min-w-full h-screen place-content-center'}>
       <div className='bg-black flex flex-col p-11 gap-5  rounded-2xl relative'>
         <button
+          type='button'
           className='absolute px-5 py-3 right-0 top-0'
           onClick={() => {
             const $messageDelete = document.querySelector('.message-delete')
@@ -24,6 +25,7 @@ function DeletionWarning ({ handleClickDelete }: Props) {
         </div>
         <div className='grid place-content-center'>
           <button
+            type='button'
             className='bg-tertiary p-3 rounded-lg block'
             onClick={handleClickDelete}
           >

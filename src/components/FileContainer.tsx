@@ -1,33 +1,42 @@
 'use client'
 import FileView from './FileView'
-import LightGallery from 'lightgallery/react'
 
 import lgThumbnail from 'lightgallery/plugins/thumbnail'
-import lgZoom from 'lightgallery/plugins/zoom'
 import video from 'lightgallery/plugins/video'
+import lgZoom from 'lightgallery/plugins/zoom'
 
 import 'lightgallery/css/lightgallery.css'
 import 'lightgallery/css/lg-video.css'
 import 'lightgallery/css/lg-thumbnail.css'
 import 'lightgallery/css/lg-zoom.css'
 
-import { buttonDelete, buttonEditSize, buttonEditSizeDisabled, buttonFavorite, iconFavoriteFalse, iconFavoriteTrue } from './strings'
-import { useCallback, useRef } from 'react'
-import { type ExtendedFileType } from '@/type'
-import DeletionWarning from './DeletionWarning'
 import useUser from '@/hook/useUser'
-import PanelEditSize from './PanelEditSize'
+import type { ExtendedFileType } from '@/type'
+
+import type { LightGallery as LightGalleryType } from 'lightgallery/lightgallery'
+import LightGallery from 'lightgallery/react'
 import { usePathname } from 'next/navigation'
+import { useCallback, useRef } from 'react'
+import DeletionWarning from './DeletionWarning'
+import PanelEditSize from './PanelEditSize'
+import {
+  buttonDelete,
+  buttonEditSize,
+  buttonEditSizeDisabled,
+  buttonFavorite,
+  iconFavoriteFalse,
+  iconFavoriteTrue,
+} from './strings'
 
 interface Props {
   list: ExtendedFileType[]
 }
 
 // TODO: Arreglar el problema de fovoritos o el refresh
-function FileContainer ({ list }: Props) {
+function FileContainer({ list }: Props) {
   const { deleteFile, favoriteFile, imageTransform, getUser } = useUser()
   const pathname = usePathname()
-  const lightGallery = useRef<any>(null)
+  const lightGallery = useRef<LightGalleryType | null>(null)
   const selectedItem = useRef<ExtendedFileType>({
     id: '',
     fileType: 'image',
@@ -37,9 +46,9 @@ function FileContainer ({ list }: Props) {
     height: 0,
     width: 0,
     size: 0,
-    url: ''
+    url: '',
   })
-
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const onInit = useCallback((detail: any) => {
     if (detail !== null) {
       lightGallery.current = detail.instance
@@ -55,7 +64,7 @@ function FileContainer ({ list }: Props) {
         const $messageDelete = document.querySelector('.message-delete')
         $messageDelete?.classList.remove('grid')
         $messageDelete?.classList.add('hidden')
-        lightGallery.current.closeGallery()
+        lightGallery.current?.closeGallery()
       })
       .then(() => {
         location.reload()
@@ -91,19 +100,24 @@ function FileContainer ({ list }: Props) {
     if ($btnFavorite === null) return
     const favorite = $btnFavorite.children[0].id === 'favorite-true' ? 'false' : 'true'
 
-    favoriteFile(fileName, favorite)
-      .then(() => {
-        const $btnFavorite = document.querySelector('#lg-favorite')
-        if ($btnFavorite === null) return
-        $btnFavorite.children[0].id === 'favorite-true'
-          ? $btnFavorite.innerHTML = iconFavoriteFalse
-          : $btnFavorite.innerHTML = iconFavoriteTrue
-        location.reload()
-      })
+    favoriteFile(fileName, favorite).then(() => {
+      const $btnFavorite = document.querySelector('#lg-favorite')
+      if ($btnFavorite === null) return
+      $btnFavorite.children[0].id === 'favorite-true'
+      if ($btnFavorite.children[0].id === 'favorite-true') {
+        $btnFavorite.innerHTML = iconFavoriteFalse
+      } else {
+        $btnFavorite.innerHTML = iconFavoriteTrue
+      }
+      location.reload()
+    })
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const afterLoad = async (element: any) => {
-    const { data: { user } } = await getUser()
+    const {
+      data: { user },
+    } = await getUser()
     const userPlan = user?.user_metadata.user_plan
     const select = list[element.index]
     if (select === undefined) return
@@ -119,8 +133,8 @@ function FileContainer ({ list }: Props) {
     }
 
     const btnExits =
-      (document.querySelector('#lg-delete') !== null) &&
-      (document.querySelector('#lg-favorite') !== null)
+      document.querySelector('#lg-delete') !== null &&
+      document.querySelector('#lg-favorite') !== null
 
     if (!btnExits) {
       const $lgContainer = document.querySelector('.lg-toolbar')
@@ -132,15 +146,18 @@ function FileContainer ({ list }: Props) {
     if ($btnFavorite === null) return
 
     select.favorite
-      ? $btnFavorite.innerHTML = iconFavoriteTrue
-      : $btnFavorite.innerHTML = iconFavoriteFalse
+    if (select.favorite) {
+      $btnFavorite.innerHTML = iconFavoriteTrue
+    } else {
+      $btnFavorite.innerHTML = iconFavoriteFalse
+    }
 
     document.querySelector('#lg-delete')?.addEventListener('click', onClickDelete)
     document.querySelector('#lg-favorite')?.addEventListener('click', onClickFavorite)
     document.querySelector('#lg-edit')?.addEventListener('click', onClickEditSize)
   }
 
-  const beforeLoad = (element: any) => {
+  const beforeLoad = () => {
     document.querySelector('#lg-delete')?.removeEventListener('click', onClickDelete)
     document.querySelector('#lg-favorite')?.removeEventListener('click', onClickFavorite)
     document.querySelector('#lg-edit')?.removeEventListener('click', onClickEditSize)
@@ -148,13 +165,8 @@ function FileContainer ({ list }: Props) {
 
   return (
     <>
-      <PanelEditSize
-        selectedItem={selectedItem}
-        imageTransform={imageTransform}
-      />
-      <DeletionWarning
-        handleClickDelete={handleClickDelete}
-      />
+      <PanelEditSize selectedItem={selectedItem} imageTransform={imageTransform} />
+      <DeletionWarning handleClickDelete={handleClickDelete} />
       <LightGallery
         elementClassNames='gallery-methods-demo gallery-view grid grid-cols-gallery grid-rows-gallery [&>div]:bg-black [&>div]:rounded-xl gap-5 overflow-y-auto px-7 pr-4 mr-3 md:pl-14 md:mr-6 md:pr-8 md:grid-cols-gallery_md md:grid-rows-gallery_md py-3'
         speed={500}
@@ -163,15 +175,10 @@ function FileContainer ({ list }: Props) {
         onInit={onInit}
         plugins={[lgZoom, lgThumbnail, video]}
       >
-        {
-          list.map((item) => {
-            return (
-              <FileView key={item.id} {...item} />
-            )
-          })
-        }
+        {list.map((item) => {
+          return <FileView key={item.id} {...item} />
+        })}
       </LightGallery>
-
     </>
   )
 }

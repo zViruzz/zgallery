@@ -1,17 +1,17 @@
 import Header from '@/components/HeaderHome'
-import logo from '../../public/logo.svg'
-import illustration from '../../public/ilu.png'
 import Image from 'next/image'
 import Link from 'next/link'
+import illustration from '../../public/ilu.png'
+import logo from '../../public/logo.svg'
 
-export default function Home () {
+export default function Home() {
   return (
     <>
       <Header />
       <main className="min-h-screen justify-items-center items-center grid lg:grid-cols-2">
         <div className='lg:text-2xl  text-[20px] lg:text-left text-center flex flex-col  items-center lg:items-start'>
           <Image
-          className='lg:w-80 lg:h-auto w-[70%] mb-5 '
+            className='lg:w-80 lg:h-auto w-[70%] mb-5 '
             src={logo}
             width={350}
             alt="Logo"

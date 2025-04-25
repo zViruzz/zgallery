@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-function page () {
+function page() {
   return (
     <div className='bg-black flex flex-col p-10 gap-5  rounded-2xl'>
       <div className='text-xl'>

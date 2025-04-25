@@ -5,7 +5,7 @@ interface Props {
   required?: boolean
 }
 
-function InputForm ({ id, type, required, placeholder }: Props) {
+function InputForm({ id, type, required, placeholder }: Props) {
   return (
     <input
       id={id}

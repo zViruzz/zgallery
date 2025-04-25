@@ -3,78 +3,86 @@ import { MercadoPagoConfig, PreApprovalPlan } from 'mercadopago'
 
 import { createBrowserClient } from '@supabase/ssr'
 
-export default function usePlans () {
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+export default function usePlans() {
+	const supabase = createBrowserClient(
+		process.env.NEXT_PUBLIC_SUPABASE_URL ||
+			(() => {
+				throw new Error('NEXT_PUBLIC_SUPABASE_URL is not defined')
+			})(),
+		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+			(() => {
+				throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY is not defined')
+			})(),
+	)
 
-  const client = new MercadoPagoConfig({
-    accessToken: process.env.MP_ACCESS_TOKEN!
-  })
+	const client = new MercadoPagoConfig({
+		accessToken:
+			process.env.MP_ACCESS_TOKEN ||
+			(() => {
+				throw new Error('MP_ACCESS_TOKEN is not defined')
+			})(),
+	})
 
-  const payment = new PreApprovalPlan(client)
+	const payment = new PreApprovalPlan(client)
 
-  const changePlanBasic = async () => {
-    try {
-      const { data, error } = await supabase.auth.updateUser({
-        data: { user_plan: 'BASIC' }
-      })
+	const changePlanBasic = async () => {
+		try {
+			const { data, error } = await supabase.auth.updateUser({
+				data: { user_plan: 'BASIC' },
+			})
 
-      if (error != null) console.error('A ocurido un error al cambiar de plan', error)
-      return { data, error }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+			if (error != null) console.error('A ocurido un error al cambiar de plan', error)
+			return { data, error }
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
-  const changePlanPremiun = async () => {
-    console.log('change plan')
-    try {
-      const body = {
-        auto_recurring: {
-          frequency: 1,
-          frequency_type: 'months',
-          repetitions: 12,
-          billing_day: 10,
-          billing_day_proportional: false,
-          free_trial: {
-            frequency: 1,
-            frequency_type: 'months'
-          },
-          transaction_amount: 10,
-          currency_id: 'ARS'
-        },
-        back_url: 'https://www.yoursite.com',
-        payment_methods_allowed: {
-          payment_types: [
-            {
-              id: 'credit_card'
-            }
-          ],
-          payment_methods: [
-            {
-              id: 'bolbradesco'
-            }
-          ]
-        },
-        reason: 'Yoga classes'
-      }
+	const changePlanPremiun = async () => {
+		console.log('change plan')
+		try {
+			const body = {
+				auto_recurring: {
+					frequency: 1,
+					frequency_type: 'months',
+					repetitions: 12,
+					billing_day: 10,
+					billing_day_proportional: false,
+					free_trial: {
+						frequency: 1,
+						frequency_type: 'months',
+					},
+					transaction_amount: 10,
+					currency_id: 'ARS',
+				},
+				back_url: 'https://www.yoursite.com',
+				payment_methods_allowed: {
+					payment_types: [
+						{
+							id: 'credit_card',
+						},
+					],
+					payment_methods: [
+						{
+							id: 'bolbradesco',
+						},
+					],
+				},
+				reason: 'Yoga classes',
+			}
 
-      payment.create({ body })
-        .then(console.log)
-        .catch(console.log)
+			payment.create({ body }).then(console.log).catch(console.log)
 
-      // const { data, error } = await supabase.auth.updateUser({
-      //   data: { user_plan: 'PREMIUN' }
-      // })
+			// const { data, error } = await supabase.auth.updateUser({
+			//   data: { user_plan: 'PREMIUN' }
+			// })
 
-      // if (error != null) console.error('A ocurido un error al cambiar de plan', error)
-      // return { data, error }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+			// if (error != null) console.error('A ocurido un error al cambiar de plan', error)
+			// return { data, error }
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
-  return { changePlanBasic, changePlanPremiun }
+	return { changePlanBasic, changePlanPremiun }
 }

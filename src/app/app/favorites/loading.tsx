@@ -1,4 +1,4 @@
-function loading () {
+function loading() {
   return (
     <div className='grid place-content-center'>
       <div className='loader' />

@@ -1,12 +1,12 @@
 'use client'
+import profileNull from '@/assets/profile-null.jpg'
 import EditIcon from '@/components/icons/EditIcon'
 import useAuth from '@/hook/useAuth'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import profileNull from '@/assets/profile-null.jpg'
 import { useState } from 'react'
 
-function page () {
+function page() {
   const { user, signOut, changePassword } = useAuth()
   const [showNotification, setShowNotification] = useState(true)
   const router = useRouter()
@@ -73,6 +73,7 @@ function page () {
                 {user?.user_metadata.name}
               </div>
               <button
+                type='button'
                 className='flex items-center'
                 onClick={handleClickChangeName}
               >
@@ -90,6 +91,7 @@ function page () {
                 *********
               </div>
               <button
+                type='button'
                 className='flex items-center'
                 onClick={handleClickChangePassword}
               >
@@ -103,15 +105,14 @@ function page () {
 
           <div className='[&>button]:px-3 [&>button]:py-2 [&>button]:rounded-lg [&>button]:bg-primary'>
 
-            <button onClick={handleClickSignOut}>
+            <button
+              type='button'
+              onClick={handleClickSignOut}>
               Sign out
             </button>
           </div>
-
         </div>
-
       </div>
-
     </div>
   )
 }

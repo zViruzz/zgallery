@@ -1,24 +1,24 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
-import SearchBar from './SearchBar'
-import AddButton from './AddButton'
-import MenuIcon from './icons/MenuIcon'
-import MenuTools from './MenuTools'
 import { NotificationProvider } from '@/context/notification'
+import React, { useEffect, useRef, useState } from 'react'
+import AddButton from './AddButton'
+import MenuTools from './MenuTools'
+import SearchBar from './SearchBar'
+import MenuIcon from './icons/MenuIcon'
 
 interface Props {
   title: string
   type?: 'image' | 'video'
 }
 
-function BarTools ({ type, title }: Props) {
+function BarTools({ type, title }: Props) {
   const [isHiddenSearch, setHiddenSearch] = useState(true)
   const [isHiddenMenu, setHiddenMenu] = useState(true)
 
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    function handleClickOutside (event: MouseEvent) {
+    function handleClickOutside(event: MouseEvent) {
       if (containerRef.current !== null &&
         !containerRef.current.contains(event.target as Node)
       ) {
@@ -53,6 +53,7 @@ function BarTools ({ type, title }: Props) {
             type === undefined
               ? null
               : <div
+                // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
                 tabIndex={0}
                 className={`${isHiddenSearch ? 'block' : 'hidden md:block'} hover:bg-neutral-800 rounded-full`}
               >
@@ -61,6 +62,7 @@ function BarTools ({ type, title }: Props) {
           }
           <div className={`${isHiddenSearch ? 'grid' : 'hidden md:grid'} rounded-full h-10 w-10 place-content-center relative`}>
             <button
+              type='button'
               className='rounded-full grid h-10 w-10 place-content-center '
               onClick={handleClickMenu}>
               <MenuIcon className='w-[23px] h-[23px] md:w-[27px] md:h-[27px]' />

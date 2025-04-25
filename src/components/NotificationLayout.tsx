@@ -1,7 +1,7 @@
 'use client'
 import { useNotificationContext } from '@/context/notification'
 
-function NotificationLayout () {
+function NotificationLayout() {
   const { notification: { message, visible, type } } = useNotificationContext()
 
   return (

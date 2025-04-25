@@ -13,11 +13,11 @@ interface Props {
   textButton: string
 }
 
-export default function CardPlan ({ title, priceTag, price, description, features, textButton }: Props) {
+export default function CardPlan({ title, priceTag, price, description, features, textButton }: Props) {
   const { handleNotification } = useNotificationContext()
   const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_URL || (() => { throw new Error('NEXT_PUBLIC_SUPABASE_URL is not defined') })(),
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || (() => { throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY is not defined') })()
   )
 
   const handleClick = async () => {
@@ -67,8 +67,9 @@ export default function CardPlan ({ title, priceTag, price, description, feature
         <div className='h-full flex flex-col justify-end'>
 
           <button
-            disabled={price === 0}
+            type='button'
             onClick={handleClick}
+            disabled={price === 0}
             className='bg-tertiary w-full h-10 rounded-lg hover:bg-[#930b34] active:bg-[#76092a] disabled:bg-[#4f2230] disabled:text-[#5b5b5b]'
           >
             {textButton}

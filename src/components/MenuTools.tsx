@@ -26,14 +26,15 @@ const options = [
   }
 ]
 
-function MenuTools ({ isHiddenMenu, setHiddenMenu }: Props) {
+function MenuTools({ isHiddenMenu, setHiddenMenu }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const router = useRouter()
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    function handleClickOutside (event: MouseEvent) {
+    function handleClickOutside(event: MouseEvent) {
       if (containerRef.current !== null &&
         !containerRef.current.contains(event.target as Node)
       ) {
@@ -65,7 +66,7 @@ function MenuTools ({ isHiddenMenu, setHiddenMenu }: Props) {
         {options.map(({ value, label }) => {
           return (
             <li key={value}>
-              <button onClick={() => { handleClickSort(value) }}>
+              <button type='button' onClick={() => { handleClickSort(value) }}>
                 {label}
               </button>
             </li>

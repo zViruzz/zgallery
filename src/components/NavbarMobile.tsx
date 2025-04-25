@@ -1,16 +1,16 @@
 'use client'
 import Link from 'next/link'
-import MenuBurgerIcon from './icons/MenuBurgerIcon'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import MobileMenu from './MobileMenu'
+import MenuBurgerIcon from './icons/MenuBurgerIcon'
 
 interface Props {
   avatar: string
   name: string
 }
 
-function NavBarMobile ({ name, avatar }: Props) {
+function NavBarMobile({ name, avatar }: Props) {
   const pathname = usePathname()
   const [hiddenMenu, setHiddenMenu] = useState<boolean>(true)
 
@@ -54,6 +54,7 @@ function NavBarMobile ({ name, avatar }: Props) {
         <div
           className={`${hiddenMenu ? 'invisible opacity-0' : 'visible opacity-100'} flex bg-[#00000068] absolute w-full h-screen bottom-0 left-0 justify-center items-end flex-col transition-all ease-out`}
         >
+          {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
           <div
             className='h-full w-full'
             onClick={handleClickOutsideMenu}

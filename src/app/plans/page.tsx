@@ -1,11 +1,9 @@
 'use client'
-
 import CardPlan from '@/components/CardPlan'
-
 import NotificationLayout from '@/components/NotificationLayout'
 import { NotificationProvider } from '@/context/notification'
 
-export default function page () {
+export default function page() {
   return (
     <NotificationProvider>
       <NotificationLayout />

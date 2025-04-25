@@ -1,8 +1,8 @@
-import Image from 'next/image'
 import profileNull from '@/assets/profile-null.jpg'
+import Image from 'next/image'
+import Link from 'next/link'
 import HeartIcon from './icons/HeartIcon'
 import SettingIcon from './icons/SettingIcon'
-import Link from 'next/link'
 
 interface Props {
   avatar: string
