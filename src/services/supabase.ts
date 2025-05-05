@@ -113,9 +113,7 @@ export async function deleteFile(fileName: string, fileType: 'image' | 'video') 
 
 		const newList = prevList.filter((item) => item.name !== fileName)
 		const itemSelect = prevList.filter((item) => item.name === fileName)
-		console.log('🚀 ~ deleteFile ~ itemSelect:', itemSelect)
 		const newSize = prevSize - itemSelect[0].size
-		console.log('🚀 ~ deleteFile ~ newSize:', newSize)
 
 		await supabase
 			.from(SP_TABLET.PROFILES)

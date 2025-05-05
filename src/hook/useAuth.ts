@@ -61,8 +61,6 @@ function useAuth() {
 				},
 			})
 
-			console.log('🚀 ~ loginUser ~ error:', error?.message)
-
 			if (error?.message === 'Email rate limit exceeded') {
 				handleNotification({
 					message: 'Email rate limit exceeded',
