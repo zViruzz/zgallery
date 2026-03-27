@@ -1,15 +1,15 @@
 'use client'
+import type { FormEvent } from 'react'
 import InputForm from '@/components/InputForm'
 import NotificationLayout from '@/components/NotificationLayout'
 import { useNotificationContext } from '@/context/notification'
 import useAuth from '@/hook/useAuth'
 import { InputRegister } from '@/static/static'
-import type { FormEvent } from 'react'
 
 const { EMAIL } = InputRegister
 const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL
 
-function page() {
+export default function Page() {
 	const { supabase } = useAuth()
 	const { handleNotification } = useNotificationContext()
 
@@ -64,5 +64,3 @@ function page() {
 		</form>
 	)
 }
-
-export default page

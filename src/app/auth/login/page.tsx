@@ -9,7 +9,7 @@ import { InputRegister } from '@/static/static'
 
 const { EMAIL, PASSWORD } = InputRegister
 
-function page() {
+export default function Page() {
 	const router = useRouter()
 	const { loginUser, signInWithGoogle } = useAuth()
 
@@ -29,45 +29,41 @@ function page() {
 	}
 
 	return (
-		<>
-			<div className='sm:w-[25rem] w-full bg-black rounded-2xl sm:px-14 py-16 px-[10%] box-content'>
-				<form className='w-full h-full grid gap-5' onSubmit={handleSubmit}>
-					<div className='flex justify-center'>
-						<h2 className='text-3xl'>Login</h2>
-					</div>
+		<div className='sm:w-[25rem] w-full bg-black rounded-2xl sm:px-14 py-16 px-[10%] box-content'>
+			<form className='w-full h-full grid gap-5' onSubmit={handleSubmit}>
+				<div className='flex justify-center'>
+					<h2 className='text-3xl'>Login</h2>
+				</div>
 
-					<div className='flex flex-col h-full w-full gap-5'>
-						<div>
-							<InputForm id={EMAIL} type='email' placeholder='Email' required={true} />
-						</div>
-						<div>
-							<InputForm
-								id={PASSWORD}
-								type='password'
-								placeholder='Password'
-								required={true}
-							/>
-						</div>
-						<div className='flex justify-center gap-4'>
-							<ButtonGoogle onClick={handleClickGoogle} />
-						</div>
+				<div className='flex flex-col h-full w-full gap-5'>
+					<div>
+						<InputForm id={EMAIL} type='email' placeholder='Email' required={true} />
 					</div>
+					<div>
+						<InputForm
+							id={PASSWORD}
+							type='password'
+							placeholder='Password'
+							required={true}
+						/>
+					</div>
+					<div className='flex justify-center gap-4'>
+						<ButtonGoogle onClick={handleClickGoogle} />
+					</div>
+				</div>
 
-					<div className='flex flex-col gap-3'>
-						<div className='flex justify-end'>
-							<Link href='/auth/reset-password'>Forgot password</Link>
-						</div>
-						<button type='submit' className='bg-tertiary w-full py-3 rounded-lg'>
-							Login
-						</button>
-						<p className='text-center'>
-							Dont have an account? <Link href='/auth/register'>Register</Link>
-						</p>
+				<div className='flex flex-col gap-3'>
+					<div className='flex justify-end'>
+						<Link href='/auth/reset-password'>Forgot password</Link>
 					</div>
-				</form>
-			</div>
-		</>
+					<button type='submit' className='bg-tertiary w-full py-3 rounded-lg'>
+						Login
+					</button>
+					<p className='text-center'>
+						Dont have an account? <Link href='/auth/register'>Register</Link>
+					</p>
+				</div>
+			</form>
+		</div>
 	)
 }
-
-export default page

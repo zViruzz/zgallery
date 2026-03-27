@@ -3,7 +3,7 @@ import { createBrowserClient } from '@supabase/ssr'
 import Link from 'next/link'
 import { useEffect } from 'react'
 
-function page() {
+export default function Page() {
 	const supabase = createBrowserClient(
 		process.env.NEXT_PUBLIC_SUPABASE_URL ??
 			(() => {
@@ -41,5 +41,3 @@ function page() {
 		</div>
 	)
 }
-
-export default page

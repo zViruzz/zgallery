@@ -1,12 +1,12 @@
 'use client'
+import { createBrowserClient } from '@supabase/ssr'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import { useEffect, useState } from 'react'
 import FileContainer from '@/components/FileContainer'
 import AddIcon from '@/components/icons/AddIcon'
 import { SORT_TYPE } from '@/static/static'
 import type { ExtendedFileType } from '@/type'
 import { sortList } from '@/util/utils'
-import { createBrowserClient } from '@supabase/ssr'
-import type { SupabaseClient } from '@supabase/supabase-js'
-import { useEffect, useState } from 'react'
 import Loading from './loading'
 
 interface Props {
@@ -48,7 +48,7 @@ const changePlanBasic = async (supabase: SupabaseClient) => {
 	}
 }
 
-export default function page({ searchParams }: Props) {
+export default function Page({ searchParams }: Props) {
 	const [list, setList] = useState<ExtendedFileType[]>([])
 	const [loading, setLoading] = useState(true)
 	const { name, sort } = searchParams
@@ -67,7 +67,6 @@ export default function page({ searchParams }: Props) {
 		changePlanBasic(supabase)
 	}, [])
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		getImages().then((res) => {
 			let newList = res

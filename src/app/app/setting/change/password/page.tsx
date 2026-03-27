@@ -1,11 +1,11 @@
 'use client'
+import { useRouter } from 'next/navigation'
+import type { FormEvent } from 'react'
 import InputForm from '@/components/InputForm'
 import useAuth from '@/hook/useAuth'
 import { InputRegister } from '@/static/static'
-import { useRouter } from 'next/navigation'
-import type { FormEvent } from 'react'
 
-function page() {
+export default function Page() {
 	const { PASSWORD } = InputRegister
 	const { supabase } = useAuth()
 	const router = useRouter()
@@ -42,5 +42,3 @@ function page() {
 		</>
 	)
 }
-
-export default page
